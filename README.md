@@ -1,20 +1,60 @@
----
-title: "README installation SURFMAP"
-author: "Hugo Schweke"
-date: "February 8, 2021"
-output: pdf_document
----
+# Overview
 
-# Requirements
+SURFMAP is a tool allowing users to visualize different amino-acid properties of any available protein structure on a 2D map. Properties that can be mapped are:
+- the stickiness
+- hydrophobicity from the kyte & doolitle scale
+- hydrophobicity from the wimley-white scale
+- electrostatics (requires APBS)
+- the circular variance
+- the bfactor
 
-SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It should work under Mac OSX but has never been tested. It does not work under Windows.
-It is written in python 2.7, R 3.6 and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is needed only to do electrostatics calculations.
+SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written in python (version 3.7), R (version 3.6)
+and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is needed
+only to do electrostatics calculations.
 
+
+# Download
+
+You can click [here](https://github.com/i2bc/SURFMAP/releases/latest/) to access the latest release.
+
+After downloading, you'll need to uncompress the project. If you downloaded:
+- the .zip file: type on a terminal (Unix and macOS): `unzip surfmap-x.x.x.zip`
+- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf surfmap-x.x.x.tar.gz`
+
+
+Alternatively, you can also clone the whole project:
+```
+git clone https://github.com/i2bc/ORFmine.git
+```
 
 
 # Installation
-After downloading SURFMAP, you need to do the following:
 
+There are two ways to install SURFMAP:
+- the simplest and recommended way is to use a docker image of SURFMAP. It works on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
+- the alternative is to manually install SURFMAP on your system (only for Unix and MacOS).  You will need to install MSMS (1) and APBS (2) (facultative) separately from SURFMAP.
+
+
+## Use of SURFMAP through a docker image
+You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine. 
+
+Once you’ve successfully registered to the hub and installed docker, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`. First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
+``` bash
+chmod +x run_surfmap.py
+```
+
+
+
+Once you’ve successfully registered to the hub and installed docker, you can create an alias of the following wrapper script in your .basrhc (or .bash_profile ). To do so, replace PATH/TO/SURFMAP with the path where you’ve
+downloaded SURFMAP and execute the following commands:
+chmod +x PATH/TO/SURFMAP/run_surfmap.py
+echo -e "\n# Alias to run surfmap from its docker image\nalias surfmap='python3 PATH/TO/SURFMAP/run_surf
+1You can now use surfmap with the following command surfmap. Note that the first time you’ll use it you
+may have to type docker login in the terminal and fill the field with your docker ID and docker password.
+It will then take few minutes to download the image on your machine.
+
+
+## Manual installation of SURFMAP
 
 **I - R packages and python library**
 

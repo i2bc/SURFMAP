@@ -58,8 +58,9 @@ docker_template_cmd = [
 ]
 
 if args.d:
-    # docker_template_cmd[7] = os.path.dirname(os.path.abspath(args.d)) + ':' + '/output/' + ':rw'
-    docker_template_cmd[14] = '/output/' + args.d
+    docker_template_cmd[7] = os.path.dirname(os.path.abspath(args.d)) + ':' + '/output/' + ':rw'
+    # docker_template_cmd[7] = os.path.abspath(args.d) + ':' + '/output/' + ':rw'
+    docker_template_cmd[14] = '/output/' + os.path.basename(args.d)
 
 for opt_args in OPTIONAL_ARGUMENTS:
     if opt_args in args.__dict__ and args.__dict__.get(opt_args):
