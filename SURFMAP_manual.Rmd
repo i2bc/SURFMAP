@@ -2,12 +2,14 @@
 title: "SURFMAP manual"
 author: "Hugo Schweke"
 date: "February 8, 2021"
-output: pdf_document
-toc: true
+output:
+  pdf_document: default
+  word_document: default
+toc: yes
 includes:
-    in_header: latex/header.tex
-    before_body: latex/before_body.tex
-    after_body: latex/after_body.tex
+  in_header: latex/header.tex
+  before_body: latex/before_body.tex
+  after_body: latex/after_body.tex
 ---
 
 ```{r setup, include=FALSE}
@@ -17,11 +19,11 @@ knitr::opts_chunk$set(echo = TRUE)
 \newpage
 
 
-# I- What is SURFMAP?
-In a nutshell, SURFMAP is a small software designed to compute the surface properties of a protein, and to map this criterion on a 2-D plan through a sinusoidal projection. It enables thus the rapid visualization of a surface propertie across the whole surface of a protein. Such view can prove to be very useful when comparing the surface properties of homologous proteins for example.  
+# I - What is SURFMAP?
+In a nutshell, SURFMAP is a small software designed to compute the surface properties of a protein, and to map this property on a 2-D plan through a sinusoidal projection. It enables the rapid visualization of a surface property across the whole surface of a protein. Such view can prove to be very useful when comparing the surface properties of homologous proteins, for example.  
 \vspace{1cm}
 
-# II- A basic overview
+# II - A basic overview
 
 ## Surface properties mapped by SURFMAP
 
@@ -33,11 +35,11 @@ The properties that SURFMAP is mapping must be chosen among:
 
 - Wimley–White hydrophobicity (3): measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. 
 
-- circular variance (4): this measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as invaginations and protuberant regions.
+- circular variance (4): this measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions.
 
 - electrostatic potential: SURFMAP can call the APBS software (5) that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map.
 
-- b-factor: the user also have the possibility to map any value contained in the b-factor of the pdb structure provided in input.  
+- b-factor: the user have the possibility to map any value contained in the b-factor of the pdb structure provided in input.  
 
 - binding_sites: this option is similar to the b-factor option, but use a discrete set of colors, instead of a continuous one. When using this option, please provide a pdb file with discrete values in b-factor.  
 <br>
@@ -46,7 +48,7 @@ The properties that SURFMAP is mapping must be chosen among:
 
 SURFMAP needs in input a pdb file. To use SURFMAP you need to execute the script SURFMAP_launcher.py. This script serves as a pipeline and will launch successively all the necessary scripts.  
 
-In the directory example there is several files (a pdb file, and 2 coordinates mapping file) to familiarise yourself with SURFMAP.
+In the directory example there are several files (a pdb file, and 2 coordinates mapping file) to familiarize yourself with SURFMAP.
 
 Basically there are two mandatory arguments: the input pdb file, and the surface property you want to map. All the rest is optional.  
 <br>
@@ -59,70 +61,69 @@ Basically there are two mandatory arguments: the input pdb file, and the surface
 
 - The first step of the cartography involves a call to MSMS (7). So you need to give in input a file that can be handled by MSMS.
 
-When you provide 
-
 
 \vspace{1cm}
 
-# III- List of arguments of SURFMAP_launcher.py
+# III - List of arguments of SURFMAP_launcher.py
 
 SURFMAP_launcher.py can take the following arguments:  
 <br>
 
-###-pdb  
-input file. The input file need to be in pdb format (**MANDATORY**)  
+### -pdb  
+Input file. The input file need to be in pdb format (**MANDATORY**)  
 <br>
 
-###-tomap
-surface propertie of the protein to map
-There are the following possibilities: stickiness, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, electrostatics potential, circular variance or any value in the bfactor of the input pdb file. If the user chose the option "all"  (**MANDATORY**)  
+### -tomap
+Surface property of the protein to map
+There are the following possibilities: stickiness, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, electrostatics potential, circular variance or any value in the bfactor of the input pdb file. 
+If the user chose the option "all", the stickiness, circular variance, Kyte-Doolittle hydrophobicity and Wimley-White hydrophibicity are mapped.  (**MANDATORY**)  
 <br>
 
-###-rad
+### -rad
 radius of the atoms used to create the shell. Default value is 3.0Å, normally you do not have to choose another radius. (**OPTIONAL**)  
 <br>
 
-###-d
-name of the output directory. By default a directory “output_SURFMAP_INPUTPDB_PROPERTY” is created in the current directory (for example output_SURFMAP_1g3n_A_stickiness/) (**OPTIONAL**)  
+### -d
+name of the output directory. By default a directory “output_SURFMAP_INPUTPDB_PROPERTY” is created in the current directory (for example output_SURFMAP_1g3n_A_stickiness/). (**OPTIONAL**)  
 <br>
 
-###-s
-size of a grid cell (in degrees). Default value is 5, which results in a 72 (360/5) x 36 (180/5) grid map. Value must be congruent with 180 (180%%value = 0), otherwise SURFMAP will raise an error message (**OPTIONAL**)  
+### -s
+size of a grid cell (in degrees). Default value is 5, which results in a 72 (360/5) x 36 (180/5) grid map. Value must be congruent with 180 (180%%value = 0), otherwise SURFMAP will raise an error message. (**OPTIONAL**)  
 <br>
 
-###-res
+### -res
 to map the coordinates of residues on the 2-D map (**OPTIONAL**).  
 Format is the following: CHAIN RESNB RES  
-With CHAIN the chain index in the input pdb, RESNB the residue numer in the input pdb, and RES the residue type.  
-Important: residue numbers must correspond to the numbering in the input pdb file   
+With CHAIN the chain index in the input pdb, RESNB the residue number in the input pdb, and RES the residue type.  
+Important: residue numbers must correspond to the numbering in the input pdb file.   
 <br>
 
-###--coords
+### -\phantom{}-coords
 map a set of coordinates on the resulting map (**OPTIONAL**) 
 <br>
 
-###--nosmooth
+### -\phantom{}-nosmooth
 With this option the smoothing step is skipped (By default output maps are smoothed).   (**OPTIONAL**)  
 <br>
 
-###--png
+### -\phantom{}-png
 option to generate a png file. By default SURFMAP generates a pdf file. (**OPTIONAL**)  
 <br>
 
-###--keep
+### -\phantom{}-keep
 option to keep all intermediary files. By default SURFMAP keeps only a pdf + txt file of the smoothed matrix. (**OPTIONAL**)  
 <br>
 
 \vspace{1cm}
 
-# IV- List of scripts
+# IV - List of scripts
 
-## main directory  
+## Main directory  
 **- SURFMAP_launcher.py**   
 Launcher script for SURFMAP. Type "python SURFMAP_launcher.py -h" to see all the arguments. This is this script that will execute all the other SURFMAP's scripts.  
 <br>
 
-## directory "scripts"  
+## Directory "scripts"  
 <br />
 **- computeCoordList.R** 
 <br /> 
@@ -165,7 +166,7 @@ This script is mainly use to call MSMS to compute the solvent excluded surface o
 script used specifically for electrostatics calculation. It simply modifies the format of the output file of the APBS executable "multivalue".  
 <br>
   
-## directory "tools"  
+## Directory "tools"  
   
 **- Structure.py**  
 Contains a set functions used by SURFMAP  
@@ -177,7 +178,7 @@ script that associate the closest residues to each particles. compute all the su
 
 
 \newpage
-# V- References
+# V - References
 
 (1) Levy ED, De S, Teichmann SA. Cellular crowding imposes global constraints on the chemistry and evolution of proteomes. Proc Natl Acad Sci U S A. 2012 Dec 11;109(50):20461-6. doi: 10.1073/pnas.1209312109. Epub 2012 Nov 26. PMID: 23184996; PMCID: PMC3528536.
 
