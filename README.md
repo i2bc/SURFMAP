@@ -54,7 +54,9 @@ Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve download
 
 Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing `surfmap` in a terminal the following message:
 
-<pre>usage: run_surfmap.py [-h] -pdb PDB -tomap
+<pre>
+<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font> $surfmap
+    usage: run_surfmap.py [-h] -pdb PDB -tomap
                       {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
                       [-coords COORDS] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
                       [--png] [--keep]
