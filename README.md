@@ -54,7 +54,7 @@ Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve download
 
 From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`. Note that the first time you’ll type it you may have to type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. 
 
-Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing `surfmap` in a terminal the following message:
+Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing the `surfmap` command in a terminal the following message:
 
 <pre>
 <font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ surfmap
@@ -90,7 +90,7 @@ sudo apt install python-numpy
 
 http://mgltools.scripps.edu/downloads#msms
 
-2 - For the installation, please follow the instruction in the following page:
+2 - For the installation, please follow the instructions in the following page:
 
 https://ssbio.readthedocs.io/en/latest/instructions/msms.html
 
@@ -102,7 +102,17 @@ https://ssbio.readthedocs.io/en/latest/instructions/msms.html
 export MSMS=/path/to/MSMS/
 ```
 
-Then type source `~/.bashrc` in the terminal. From now on if you type `echo $MSMS` in your terminal the output should be the path to MSMS.
+Then type `source ~/.bashrc` in the terminal to make the export effective.
+
+From now on if you type the `msms` command in your terminal the output should be as shown below:
+
+<pre><font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ msms
+MSMS 2.6.1 started on nchenche
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+MSMS: No input stream specified
+</pre>
+
 
 4- There is a known bug in the file pdb_to_xyzr. You must do the following for it to function correctly:
 
@@ -119,7 +129,7 @@ If you want to compute electrostatics potential, you will also need to install A
 The install documentation from the pre-compiled binaries is accessible [there](https://apbs.readthedocs.io/en/latest/getting/index.html#installing-from-pre-compiled-binaries).
 
 
-After downloading the pre-compiled binaries, you will need to edit your `~/.bashrc` file to make your system aware of the location of some APBS-3.0.0 required path. Let's say you have downloaded the (Linux) pre-compiled binaries of APBS here: `~/APBS-3.0.0.Linux`. Then open your favorite text editor and add the following lines:
+After downloading the pre-compiled binaries, you will need to edit your `~/.bashrc` file to make your system aware of the location of some APBS-3.0.0 required paths. Let's say you have downloaded the (Linux) pre-compiled binaries of APBS here: `~/APBS-3.0.0.Linux`. Then open your favorite text editor and add the following lines:
 
 ```bash
 export PATH="$HOME/APBS-3.0.0.Linux/bin:$PATH"
@@ -156,17 +166,3 @@ Now SURFMAP should be ready for use. Open the MANUAL for more details about the 
 (1) Michel Sanner, Arthur J. Olson, Jean Claude Spehner (1996). Reduced Surface: an Efficient Way to Compute Molecular Surfaces. Biopolymers, Vol 38, (3), 305-320.
 
 (2) Jurrus E, Engel D, Star K, Monson K, Brandi J, Felberg LE, Brookes DH, Wilson L, Chen J, Liles K, Chun M, Li P, Gohara DW, Dolinsky T, Konecny R, Koes DR, Nielsen JE, Head-Gordon T, Geng W, Krasny R, Wei GW, Holst MJ, McCammon JA, Baker NA. Improvements to the APBS biomolecular solvation software suite. Protein Science, 27, 112-128, 2018.
-
-
-## Docker command
-```
-docker run -it --rm -v $(pwd):/input/:ro -v $(pwd):/output/:rw surfmap_v0 -pdb /input/1vew_A.pdb -tomap electrostatics -d /output/output_elec
-```
-
-```
-docker run -it --rm -v $(pwd):/home/surfmap/data/:rw surfmap_v0 -pdb /home/surfmap/data/1vew_A.pdb -tomap bfactor -d /home/surfmap/data/test
-```
-
-```
-docker run -it --rm --entrypoint=/bin/bash surfmap_v0
-```
