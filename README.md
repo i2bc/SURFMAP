@@ -18,8 +18,8 @@ only to do electrostatics calculations.
 You can click [here](https://github.com/i2bc/SURFMAP/releases/latest/) to access the latest release.
 
 After downloading, you'll need to uncompress the project. If you downloaded:
-- the .zip file: type on a terminal (Unix and macOS): `unzip surfmap-x.x.x.zip`
-- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf surfmap-x.x.x.tar.gz`
+- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.x.zip`
+- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
 
 
 Alternatively, you can also clone the whole project:
@@ -32,26 +32,34 @@ git clone https://github.com/i2bc/ORFmine.git
 
 There are two ways to install SURFMAP:
 - the simplest and recommended way is to use a docker image of SURFMAP. It works on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
-- the alternative is to manually install SURFMAP on your system (only for Unix and MacOS).  You will need to install MSMS (1) and APBS (2) (facultative) separately from SURFMAP.
+- the alternative is to manually install SURFMAP on your system (only for Unix and MacOS). You will need to install MSMS (1) and APBS (2) (facultative) separately from SURFMAP.
 
 
 ## Use of SURFMAP through a docker image
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine. 
 
-Once you’ve successfully registered to the hub and installed docker, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`. First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
+Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`. First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
 ``` bash
 chmod +x run_surfmap.py
 ```
 
+Additionally you can create an alias of this python script to make it accessible from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
 
+```bash
+# Alias to run surfmap from its docker image"
+alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
+```
 
-Once you’ve successfully registered to the hub and installed docker, you can create an alias of the following wrapper script in your .basrhc (or .bash_profile ). To do so, replace PATH/TO/SURFMAP with the path where you’ve
-downloaded SURFMAP and execute the following commands:
-chmod +x PATH/TO/SURFMAP/run_surfmap.py
-echo -e "\n# Alias to run surfmap from its docker image\nalias surfmap='python3 PATH/TO/SURFMAP/run_surf
-1You can now use surfmap with the following command surfmap. Note that the first time you’ll use it you
-may have to type docker login in the terminal and fill the field with your docker ID and docker password.
-It will then take few minutes to download the image on your machine.
+Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`. Note that the first time you’ll type it you may have to type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. 
+
+Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing `surfmap` in a terminal the following message:
+
+<pre>usage: run_surfmap.py [-h] -pdb PDB -tomap
+                      {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
+                      [-coords COORDS] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
+                      [--png] [--keep]
+run_surfmap.py: error: the following arguments are required: -pdb, -tomap
+</pre>
 
 
 ## Manual installation of SURFMAP
