@@ -50,13 +50,15 @@ Additionally you can create an alias of this python script to make it accessible
 alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
 ```
 
-Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`. Note that the first time you’ll type it you may have to type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. 
+Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to.
+
+From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`. Note that the first time you’ll type it you may have to type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. 
 
 Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing `surfmap` in a terminal the following message:
 
 <pre>
-<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font> $surfmap
-    usage: run_surfmap.py [-h] -pdb PDB -tomap
+<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ surfmap
+usage: run_surfmap.py [-h] -pdb PDB -tomap
                       {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
                       [-coords COORDS] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
                       [--png] [--keep]
