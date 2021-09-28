@@ -15,7 +15,7 @@ SURFMAP provides the user the ability to compute 5 different protein surface pro
 | Wimley–White hydrophobicity (3) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. |
 | Circular variance (4) | This measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions. |
 | Electrostatic potential through APBS (5) | SURFMAP can call the APBS software that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map. |
-| B-factor values | The user have the possibility to map any value contained in the b-factor of the pdb structure provided in input. Two options are available: the mapping of either continuous values or discrete values |
+| B-factor values | The user have the possibility to map any value contained in the b-factor column of the pdb file provided in input. Two options are available: the mapping of either continuous values or discrete values. |
 
 
 
