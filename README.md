@@ -1,3 +1,9 @@
+# Summary
+* <p><a href="#Overview">Description</a></p>
+* <p><a href="Download">Installation</a></p>
+* <p><a href="#Installation">Usage description</a></p>
+
+
 # Overview
 
 SURFMAP is a tool allowing users to visualize different amino-acid properties of any available protein structure on a 2D map. Properties that can be mapped are:
