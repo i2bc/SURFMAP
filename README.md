@@ -9,20 +9,15 @@ SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written 
 SURFMAP provides the user the ability to compute 5 different protein surface properties: 
 
 | Protein surface property | Description |
-|---|---|
+|----|----|
 | Stickiness (1) | Measure of the propensity of an amino acid to be enriched (or depleted) at protein binding sites. The stickiness enables to detect regions that are theoretically more prone to interaction, i.e. "more sticky", from other regions. |
 | Kyte-Doolittle hydrophobicity (2) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Kyte-Doolittle hydrophobicity scale. |
 | Wimley–White hydrophobicity (3) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. |
-| Circular variance (4) | this measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions. |
-| Electrostatic potential | SURFMAP can call the APBS software (5) that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map. |
+| Circular variance (4) | This measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions. |
+| Electrostatic potential through APBS (5) | SURFMAP can call the APBS software that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map. |
+| B-factor values | The user have the possibility to map any value contained in the b-factor of the pdb structure provided in input. Two options are available: the mapping of either continuous values or discrete values |
 
 
-
-
-- b-factor: the user have the possibility to map any value contained in the b-factor of the pdb structure provided in input.  
-
-- binding_sites: this option is similar to the b-factor option, but use a discrete set of colors, instead of a continuous one. When using this option, please provide a pdb file with discrete values in b-factor.  
-<br>
 
 # Download
 
