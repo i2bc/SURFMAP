@@ -9,6 +9,7 @@ SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written 
 SURFMAP provides the user the ability to compute 5 different protein surface properties: 
 
 | Protein surface property | Description |
+|---|---|
 | Stickiness (1) | Measure of the propensity of an amino acid to be enriched (or depleted) at protein binding sites. The stickiness enables to detect regions that are theoretically more prone to interaction, i.e. "more sticky", from other regions. |
 | Kyte-Doolittle hydrophobicity (2) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Kyte-Doolittle hydrophobicity scale. |
 | Wimley–White hydrophobicity (3) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. |
