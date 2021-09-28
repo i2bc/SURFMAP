@@ -1,23 +1,27 @@
-# Summary
-* <p><a href="#Overview">Description</a></p>
-* <p><a href="Download">Installation</a></p>
-* <p><a href="#Installation">Usage description</a></p>
-
-
 # Overview
 
-SURFMAP is a tool allowing users to visualize different amino-acid properties of any available protein structure on a 2D map. Properties that can be mapped are:
-- the stickiness
-- hydrophobicity from the kyte & doolitle scale
-- hydrophobicity from the wimley-white scale
-- electrostatics (requires APBS)
-- the circular variance
-- the bfactor
+SURFMAP is a small software designed to compute different surface properties (see below) of a protein, and to map each of them on a 2-D plan through a sinusoidal projection. It enables the rapid visualization of a surface property across the whole surface of a protein. Such view can prove to be very useful when comparing the surface properties of homologous proteins, for example. 
 
-SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written in python (version 3.7), R (version 3.6)
-and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is needed
-only to do electrostatics calculations.
+SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written in python (version 3.7), R (version 3.6) and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is only required if the user wants to perform electrostatics calculations.
 
+## Surface properties mapped by SURFMAP
+
+SURFMAP provides the user the ability to compute 5 different protein surface properties: 
+
+| Protein surface property | Description |
+| Stickiness (1) | Measure of the propensity of an amino acid to be enriched (or depleted) at protein binding sites. The stickiness enables to detect regions that are theoretically more prone to interaction, i.e. "more sticky", from other regions. |
+| Kyte-Doolittle hydrophobicity (2) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Kyte-Doolittle hydrophobicity scale. |
+| Wimley–White hydrophobicity (3) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. |
+| Circular variance (4) | this measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions. |
+| Electrostatic potential | SURFMAP can call the APBS software (5) that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map. |
+
+
+
+
+- b-factor: the user have the possibility to map any value contained in the b-factor of the pdb structure provided in input.  
+
+- binding_sites: this option is similar to the b-factor option, but use a discrete set of colors, instead of a continuous one. When using this option, please provide a pdb file with discrete values in b-factor.  
+<br>
 
 # Download
 
