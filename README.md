@@ -3,11 +3,12 @@
 SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can thus be used to analyze and/or compare protein surface properties.
 
 
-# Requirements
+### Requirements
 
 SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS  software(1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
 
 All these requirements (including the APBS software) are fullfilled in a [pre-built docker image of SURFMAP](#Run-SURFMAP-through-its-pre-built-docker-image) that we recommend the user to use.
+
 
 # Download
 
@@ -30,12 +31,12 @@ The easiest and recommended way to run SURFMAP is to take profit of its pre-buil
 
 Yet if you want/need to install SURFMAP on your machine, please refer to the [fully manual installation](#Installation) section.  
 
-## 1. Get docker on your machine
+### 1. Get docker on your machine
 
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-## 2. Make use of the python script proxy `run_surfmap.py`
+### 2. Make use of the python script proxy `run_surfmap.py`
 
 Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
 
@@ -66,15 +67,23 @@ usage: run_surfmap.py [-h] -pdb PDB -tomap
 run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
+<br>
+
 
 # Fully manual installation of SURFMAP
 
-This section guides you step-by-step on how to install SURFMAP on your machine. The first basic requirement is a Unix-based system machine (any Linux distribution, MacOS, or Windows 10 through WSL2). You will also need to have python (version >= 3.7) and R (version >= 3.6) installed on your machine.
+### Requirements
 
+- a Unix-based system machine (any Linux distribution, MacOS, or Windows 10 through WSL2)
+- python >= 3.7
+- R >= 3.6
+- external softwares:
+  - MSMS
+  - APBS (only if you want to perform electrostatics calculations)
 
-## I- R packages and python library
+## I. Install the required R packages and python library
 
-Install the following R packages inside an R console:
+Please open an R console and install the following R packages:
 
 ```R
 install.packages("optparse")
@@ -82,31 +91,28 @@ install.packages("data.table")
 install.packages("gplots")
 ```
 
-Install the python library numpy, in Ubuntu you can do it with the following command:
+Install the python dependencies with the following command:
 
 ```bash
-sudo apt install python-numpy
+pip install -r requirements.txt
 ```
 
-## II- Install MSMS
+## II. Install MSMS
 
-### 1. To download the software, please go to the page:
+#### 1. Get the MSMS software
 
-http://mgltools.scripps.edu/downloads#msms
+You can download MSMS [here](http://mgltools.scripps.edu/downloads#msms)
 
-### 2. For the installation, please follow the instructions in the following page:
 
-https://ssbio.readthedocs.io/en/latest/instructions/msms.html
+#### 2. Indicate your system where MSMS is located
 
-### 3. Once MSMS is installed, export the path to MSMS in your bashrc. For this do the following:
-
-- open the `.bashrc` file in your favorite text editor and add the following line:
+After downloading MSMS and having unarchive it, open the `.bashrc` (or `~/.bash_profile` or `~/.profile`) file in your favorite text editor and add the following line:
 
 ```bash
 export MSMS=/path/to/MSMS/
 ```
 
-Then type `source ~/.bashrc` in the terminal to make the export effective.
+Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the export effective.
 
 From now on if you type the `msms` command in your terminal the output should be as shown below:
 
@@ -117,16 +123,18 @@ Compilation flags -O2 -DVERBOSE -DTIMING
 MSMS: No input stream specified
 </pre>
 
+Note: If anythong goes wrong, you can refer to [MSMS instruction page](https://ssbio.readthedocs.io/en/latest/instructions/msms.html).
 
-### 4. There is a known bug in the file pdb_to_xyzr. You must do the following for it to function correctly:
 
-- open the file with your favorite text editor.
+#### 3. Correct a known bug in the pdb_to_xyzr file 
+
+Please open `pdb_to_xyzr` the file with your favorite text editor and then:
 
 - at line 31, replace the content `{nawk 'BEGIN {` with `{nawk -v pathmsms="$MSMS" 'BEGIN {`
 
 - at line 34, replace the content `numfile = "./atmtypenumbers"` with `numfile = pathmsms"./atmtypenumbers"`
 
-## III Install APBS
+## III. Install APBS
 
 If you want to compute electrostatics potential, you will also need to install APBS. We recommend to install the pre-compiled binaries from the version 3.0.0 that can be found [here](https://github.com/Electrostatics/apbs/releases/tag/v3.0.0).
 
@@ -147,19 +155,6 @@ You now have to fix a bug in a file used by APBS. To do so, simply type the foll
 ```bash
 sed -i '152s/nsmall/nsmall\[i\]/' $APBS/tools/manip/psize.py
 ```
-
-## IV- Install pdb2pqr
-
-pdb2pqr is required to make easier the generation of the APBS input file. pdb2pqr is a python package that can be easily installed through the following command:
-```bash
-pip install pdb2pqr
-```
-
-A supplementary module is also required to use pdb2pqr:
-```bash
-pip install requests
-```
-
 
 
 Now SURFMAP should be ready for use. Open the MANUAL for more details about the software.
