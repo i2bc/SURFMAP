@@ -21,10 +21,11 @@ git clone https://github.com/i2bc/ORFmine.git
 ```
 
 
-# Usage of SURFMAP
+# Run SURFMAP through its pre-built docker image
 
-## Through a docker image
-The easiest and recommended way to use SURFMAP is to take profit of its pre-built docker image. This image contains all the requirements to run SURFMAP so that the user don't need to install anything on its machine (except docker). This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
+The easiest and recommended way to run SURFMAP is to take profit of its pre-built docker image. This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS & APBS) to run SURFMAP so that the user don't need to install anything on its machine (except docker).  
+
+Yet if you want/need to install SURFMAP on your machine, please refer to the [full manual install](#Installation) section.  
 
 ### Step 1: Get docker on your machine
 
