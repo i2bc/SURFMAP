@@ -1,22 +1,9 @@
-# Overview
+# Quick overview
 
-SURFMAP is a small software designed to compute different surface properties (see below) of a protein, and to map each of them on a 2-D plan through a sinusoidal projection. It enables the rapid visualization of a surface property across the whole surface of a protein. Such view can prove to be very useful when comparing the surface properties of homologous proteins, for example. 
+SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can thus be used to analyze and/or compare protein surface properties.
 
-SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written in python (version 3.7), R (version 3.6) and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is only required if the user wants to perform electrostatics calculations.
 
-## Surface properties mapped by SURFMAP
-
-SURFMAP provides the user the ability to compute 5 different protein surface properties: 
-
-| Protein surface property | Description |
-|----|----|
-| Stickiness (1) | Measure of the propensity of an amino acid to be enriched (or depleted) at protein binding sites. The stickiness enables to detect regions that are theoretically more prone to interaction, i.e. "more sticky", from other regions. |
-| Kyte-Doolittle hydrophobicity (2) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Kyte-Doolittle hydrophobicity scale. |
-| Wimley–White hydrophobicity (3) | Measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. |
-| Circular variance (4) | This measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions. |
-| Electrostatic potential through APBS (5) | SURFMAP can call the APBS software that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map. |
-| B-factor values | The user have the possibility to map any value contained in the b-factor column of the pdb file provided in input. Two options are available: the mapping of either continuous values or discrete values. |
-
+# Requirements
 
 
 # Download
@@ -34,18 +21,20 @@ git clone https://github.com/i2bc/ORFmine.git
 ```
 
 
-# Installation
+# Usage of SURFMAP
 
-There are two ways to install SURFMAP:
-- the simplest and recommended way is to use a docker image of SURFMAP. It works on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
-- the alternative is to manually install SURFMAP on your system (only for Unix and MacOS). You will need to install MSMS (1) and APBS (2) (facultative) separately from SURFMAP.
+## Through a docker image
+The easiest and recommended way to use SURFMAP is to take profit of its pre-built docker image. This image contains all the requirements to run SURFMAP so that the user don't need to install anything on its machine (except docker). This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
+
+### Step 1: Get docker on your machine
+
+You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-## Use of SURFMAP through a docker image
-You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine. 
+### Step 2: Make use of the python script proxy `run_surfmap.py`
 
 Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`. First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
-``` bash
+```bash
 chmod +x run_surfmap.py
 ```
 
@@ -73,6 +62,16 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 
 
 ## Manual installation of SURFMAP
+
+### Installation
+
+There are two ways to install SURFMAP:
+- the simplest and recommended way is to use a docker image of SURFMAP. It works on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2).
+- the alternative is to manually install SURFMAP on your system (only for Unix and MacOS). You will need to install MSMS (1) and APBS (2) (facultative) separately from SURFMAP.
+
+### Requirements
+SURFMAP was developed under Linux on a Ubuntu 18.04 distribution. It is written in python (version 3.7), R (version 3.6) and bash. It calls the MSMS (1) and APBS (2) softwares. The first is mandatory while the second is only required if the user wants to perform electrostatics calculations.
+
 
 **I - R packages and python library**
 
