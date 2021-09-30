@@ -116,19 +116,25 @@ SURFMAP requires 2 mandatory arguments as inputs:
         <td><code>-tomap</code></td>
         <td>must be followed by one of the following options:
             <ul style="list-style-type:none">
-                <li>- <code>wimley_white</code></li>
-                <li>- <code>kyte_doolittle</code></li>
-                <li>- <code>stickiness</code></li>
-                <li>- <code>circular_variance</code></li>
-                <li>- <code>circular_variance_atom</code></li>
-                <li>- <code>electrostatics</code></li>
-                <li>- <code>bfactor</code></li>
-                <li>- <code>binding_sites</code></li>
-                <li>- <code>all</code></li>
+                <li><code>wimley_white</code></li>
+                <li><code>kyte_doolittle</code></li>
+                <li><code>stickiness</code></li>
+                <li><code>circular_variance</code></li>
+                <li><code>circular_variance_atom</code></li>
+                <li><code>electrostatics</code></li>
+                <li><code>bfactor</code></li>
+                <li><code>binding_sites</code></li>
+                <li><code>all</code></li>
             </ul>
         </td>
     </tr>    
 </table>
+
+| |  |
+| --- | --- |
+| `-pdb` | must be followed by a protein structure in a PDB format |
+| `-tomap` | must be followed by one of the following options:<br>&nbsp;&nbsp;- wimley_white<br>&nbsp;&nbsp;- kyte_doolittle<br>&nbsp;&nbsp;- stickiness<br>&nbsp;&nbsp;- circular_variance<br>&nbsp;&nbsp;- circular_variance_atom<br>&nbsp;&nbsp;- electrostatics<br>&nbsp;&nbsp;- bfactor<br>&nbsp;&nbsp;- binding_sites<br>&nbsp;&nbsp;- all |
+
 
 
 # Fully manual installation of SURFMAP
