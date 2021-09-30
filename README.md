@@ -87,9 +87,51 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 
 # Usage of SURFMAP
 
-In the following section, we will assume that the SURFMAP program is called through the [`surfmap`](#surfmap-alias) command 
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` alias command (see [here](#surfmap-alias)). 
+
+To illustrate how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
+
+<pre><font color="#3465A4"><b>example/</b></font>
+├── 1g3n_A_CV.pdb
+├── 1g3n_A.pdb
+├── 1gv3_A_binding_sites.pdb
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness</b></font>
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness_allfiles</b></font>
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness_mapping_residues</b></font>
+├── <font color="#3465A4"><b>example_1gv3_A_stickiness_binding_sites</b></font>
+├── <font color="#3465A4"><b>example_mapping_stickiness</b></font>
+├── README
+└── residues_to_map.txt
+</pre>
+
+### Mandatory arguments
+
+SURFMAP requires 2 mandatory arguments as inputs:
+<table>
+    <tr>
+        <td><code>-pdb</code></td>
+        <td>must be followed by a protein structure in a PDB format</td>
+    </tr>
+    <tr>
+        <td><code>-tomap</code></td>
+        <td>must be followed by one of the following options:
+            <ul>
+                <li><code>wimley_white</code></li>
+                <li><code>kyte_doolittle</code></li>
+                <li><code>stickiness</code></li>
+                <li><code>circular_variance</code></li>
+                <li><code>circular_variance_atom</code></li>
+                <li><code>electrostatics</code></li>
+                <li><code>bfactor</code></li>
+                <li><code>binding_sites</code></li>
+                <li><code>all</code></li>
+            </ul>
+        </td>
+    </tr>    
+</table>
 
 
+circular_variance,wimley_white,kyte_doolittle,bfactor,all,electrostatics,stickiness,binding_sites,circular_variance_atom
 
 
 # Fully manual installation of SURFMAP
