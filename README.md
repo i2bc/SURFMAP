@@ -14,7 +14,7 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 
 You can click [here](https://github.com/i2bc/SURFMAP/releases/latest/) to access the latest release.
 
-After downloading, you'll need to uncompress the project. If you downloaded:
+After downloading, you'll need to unarchive the project. If you downloaded:
 - the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.x.zip`
 - the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
 
@@ -23,6 +23,20 @@ Alternatively, you can also clone the whole project:
 ```
 git clone https://github.com/i2bc/ORFmine.git
 ```
+
+After having unarchived (or cloned) the project, you should have the following files/directories:
+
+<pre><font color="#3465A4"><b>.</b></font>
+├── <font color="#3465A4"><b>example</b></font>
+├── README.md
+├── requirements.txt
+├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
+├── <font color="#3465A4"><b>scripts</b></font>
+├── <font color="#4E9A06"><b>SURFMAP_launcher.py</b></font>
+├── SURFMAP_manual.pdf
+├── SURFMAP_manual.Rmd
+└── <font color="#3465A4"><b>tools</b></font>
+</pre>
 
 
 # Run SURFMAP through its pre-built docker image
@@ -45,6 +59,7 @@ First make sure this script is executable (the following command should also wor
 chmod +x run_surfmap.py
 ```
 
+<a id="surfmap-alias"></a>
 Additionally you can create an alias of this python script to make it accessible from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
 
 ```bash
@@ -68,6 +83,13 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
 <br>
+
+
+# Usage of SURFMAP
+
+In the following section, we will assume that the SURFMAP program is called through the [`surfmap`](#surfmap-alias) command 
+
+
 
 
 # Fully manual installation of SURFMAP
