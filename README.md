@@ -182,7 +182,7 @@ Now SURFMAP should be ready for use. After typing in a terminal `apbs` you shoul
 
 Depending on your system, you may face some missing libraries issues.
 
-#### 1. libreadline is missing
+#### 1. The libreadline library is missing
 
  If you are getting the following error message while running APBS:
 
@@ -202,7 +202,7 @@ So to fix the problem, i'll just have create a symlink to make APBS recognize `l
  sudo ln -s /lib/x86_64-linux-gnu/libreadline.so.8 /lib/x86_64-linux-gnu/libreadline.so.4
  ```
 
- #### 2. libg2c is missing
+ #### 2. The libg2c library is missing
 
 If you are getting the following error message while running APBS:
 
