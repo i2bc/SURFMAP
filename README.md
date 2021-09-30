@@ -36,7 +36,7 @@ Yet if you want/need to install SURFMAP on your machine, please refer to the [fu
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-### 2. Make use of the python script proxy `run_surfmap.py`
+### 2. Make the proxy script `run_surfmap.py` executable from anywhere
 
 Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
 
@@ -52,7 +52,7 @@ Additionally you can create an alias of this python script to make it accessible
 alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
 ```
 
-Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to.
+Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the alias effective.
 
 From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`. Note that the first time you’ll type it you may have to type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. 
 
@@ -141,7 +141,7 @@ If you want to compute electrostatics potential, you will also need to install A
 The install documentation from the pre-compiled binaries is accessible [there](https://apbs.readthedocs.io/en/latest/getting/index.html#installing-from-pre-compiled-binaries).
 
 
-After downloading the pre-compiled binaries, you will need to edit your `~/.bashrc` file to make your system aware of the location of some APBS-3.0.0 required paths. Let's say you have downloaded the (Linux) pre-compiled binaries of APBS here: `~/APBS-3.0.0.Linux`. Then open your favorite text editor and add the following lines:
+After downloading the pre-compiled binaries, you will need to edit your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file to make your system aware of the location of some APBS-3.0.0 required paths. Let's say you have downloaded the (Linux) pre-compiled binaries of APBS here: `~/APBS-3.0.0.Linux`. Then open your favorite text editor and add the following lines:
 
 ```bash
 export PATH="$HOME/APBS-3.0.0.Linux/bin:$PATH"
@@ -149,15 +149,70 @@ export LD_LIBRARY_PATH="$HOME/APBS-3.0.0.Linux/lib"
 export APBS="$HOME/APBS-3.0.0.Linux/share/apbs"
 ```
 
-Finally type `source ~/.bashrc` in the terminal. From now on the `apbs` command should be accessible.
+Finally type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal. From now on the `apbs` command should be accessible.
 
 You now have to fix a bug in a file used by APBS. To do so, simply type the following command:
 ```bash
 sed -i '152s/nsmall/nsmall\[i\]/' $APBS/tools/manip/psize.py
 ```
 
+Now SURFMAP should be ready for use. After typing in a terminal `apbs` you shoul see:
 
-Now SURFMAP should be ready for use. Open the MANUAL for more details about the software.
+<pre>----------------------------------------------------------------------
+    APBS -- Adaptive Poisson-Boltzmann Solver Version 3.0
+    
+    ...
+    ...
+
+    apbs [options] apbs.in
+
+    where apbs.in is a formatted input file and [options] are:
+
+--output-file=&lt;name&gt;     Enables output logging to the path
+    listed in &lt;name&gt;.  Uses flat-file
+    format is --output-format is not used.
+--output-format=&lt;type&gt;   Specifies format for logging.  Options
+    for type are either &quot;xml&quot; or &quot;flat&quot;.
+--help                   Display this help information.
+--version                Display the current APBS version.
+----------------------------------------------------------------------
+</pre>
+
+### Notes on possible missing libraries
+
+Depending on your system, you may face some missing libraries issues.
+
+#### 1. libreadline is missing
+
+ If you are getting the following error message while running APBS:
+
+ ```
+ apbs: error while loading shared libraries: libreadline.so.4: cannot open shared object file: No such file or directory 
+ ```
+
+ Your system is likely to have a `libreadline.so` in a more recent version. You can find it on a Linux distribution with the following command: `ldconfig -p | grep libreadline`
+
+ On my machine, it tells me that `libreadline.so.8` is present in `/lib/x86_64-linux-gnu/`:
+<pre><font color="#CC0000"><b>libreadline</b></font>.so.8 (libc6,x86-64) =&gt; /lib/x86_64-linux-gnu/<font color="#CC0000"><b>libreadline</b></font>.so.8
+</pre>
+
+So to fix the problem, i'll just have create a symlink to make APBS recognize `libreadline.so.8` as `libreadline.so.4`:
+
+ ```
+ sudo ln -s /lib/x86_64-linux-gnu/libreadline.so.8 /lib/x86_64-linux-gnu/libreadline.so.4
+ ```
+
+ #### 2. libg2c is missing
+
+If you are getting the following error message while running APBS:
+
+ ```
+apbs: error while loading shared libraries: libg2c.so.0: cannot open shared object file: No such file or directory
+ ```
+
+ In this case, you'll have to install a gfortran compiler, for instance [g77](https://gcc.gnu.org/fortran/)
+
+
 
 
 # References
