@@ -104,7 +104,7 @@ To illustrate how to use SURFMAP, we will use files in the `example/` directory 
 └── residues_to_map.txt
 </pre>
 
-### Mandatory arguments
+### SURFMAP inputs
 
 SURFMAP requires 2 mandatory arguments as inputs:
 <table style="margin-left: auto;  margin-right: auto;">
@@ -129,6 +129,21 @@ SURFMAP requires 2 mandatory arguments as inputs:
         </td>
     </tr>    
 </table>
+
+
+SURFMAP requires two mandatory arguments as inputs: `-pdb` and `-tomap`:
+
+- the `-pdb` argument must be followed by a protein structure in PDB format
+- the `-tomap` argument must be given one of the following options:
+  - `wimley_white`
+  - `kyte_doolittle`
+  - `stickiness`
+  - `circular_variance`
+  - `circular_variance_atom`
+  - `electrostatics`
+  - `bfactor`
+  - `binding_sites`
+
 
 
 # Fully manual installation of SURFMAP
