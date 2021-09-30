@@ -107,7 +107,7 @@ To illustrate how to use SURFMAP, we will use files in the `example/` directory 
 ### Mandatory arguments
 
 SURFMAP requires 2 mandatory arguments as inputs:
-<table>
+<table style="margin-left: auto;  margin-right: auto;">
     <tr>
         <td><code>-pdb</code></td>
         <td>must be followed by a protein structure in a PDB format</td>
@@ -115,23 +115,20 @@ SURFMAP requires 2 mandatory arguments as inputs:
     <tr>
         <td><code>-tomap</code></td>
         <td>must be followed by one of the following options:
-            <ul>
-                <li><code>wimley_white</code></li>
-                <li><code>kyte_doolittle</code></li>
-                <li><code>stickiness</code></li>
-                <li><code>circular_variance</code></li>
-                <li><code>circular_variance_atom</code></li>
-                <li><code>electrostatics</code></li>
-                <li><code>bfactor</code></li>
-                <li><code>binding_sites</code></li>
-                <li><code>all</code></li>
+            <ul style="list-style-type:none">
+                <li>- <code>wimley_white</code></li>
+                <li>- <code>kyte_doolittle</code></li>
+                <li>- <code>stickiness</code></li>
+                <li>- <code>circular_variance</code></li>
+                <li>- <code>circular_variance_atom</code></li>
+                <li>- <code>electrostatics</code></li>
+                <li>- <code>bfactor</code></li>
+                <li>- <code>binding_sites</code></li>
+                <li>- <code>all</code></li>
             </ul>
         </td>
     </tr>    
 </table>
-
-
-circular_variance,wimley_white,kyte_doolittle,bfactor,all,electrostatics,stickiness,binding_sites,circular_variance_atom
 
 
 # Fully manual installation of SURFMAP
