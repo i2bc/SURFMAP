@@ -130,21 +130,6 @@ SURFMAP requires 2 mandatory arguments as inputs:
     </tr>    
 </table>
 
-|  |  |
-| --- | --- |
-| `-pdb` | must be followed by a protein structure in a PDB format |
-| `-tomap` | must be followed by one of the following options:<br>&nbsp;&nbsp;- wimley_white<br>&nbsp;&nbsp;- kyte_doolittle<br>&nbsp;&nbsp;- stickiness<br>&nbsp;&nbsp;- circular_variance<br>&nbsp;&nbsp;- circular_variance_atom<br>&nbsp;&nbsp;- electrostatics<br>&nbsp;&nbsp;- bfactor<br>&nbsp;&nbsp;- binding_sites<br>&nbsp;&nbsp;- all |
-
-
-
-|  |  |
-| --- | --- |
-| `-pdb` | must be followed by a protein structure in a PDB format |
-| `-tomap` | must be followed by one of the following options: |
-
-
-
-
 
 # Fully manual installation of SURFMAP
 
