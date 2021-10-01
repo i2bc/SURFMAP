@@ -119,7 +119,11 @@ SURFMAP allows to compute different protein surface features and to map them on 
   - bfactor
   - binding_sites
 
+For instance, the following command line will map the stickiness protein surface feature for the chain A of the protein [1G3N](https://www.rcsb.org/structure/1G3N):
 
+```bash
+surfmap -pdb 1g3n_A.pdb -tomap stickiness
+```
 
 # Fully manual installation of SURFMAP
 
