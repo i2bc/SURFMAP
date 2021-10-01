@@ -106,43 +106,18 @@ To illustrate how to use SURFMAP, we will use files in the `example/` directory 
 
 ### SURFMAP inputs
 
-SURFMAP requires 2 mandatory arguments as inputs:
-<table style="margin-left: auto;  margin-right: auto;">
-    <tr>
-        <td><code>-pdb</code></td>
-        <td>must be followed by a protein structure in a PDB format</td>
-    </tr>
-    <tr>
-        <td><code>-tomap</code></td>
-        <td>must be followed by one of the following options:
-            <ul style="list-style-type:none">
-                <li><code>wimley_white</code></li>
-                <li><code>kyte_doolittle</code></li>
-                <li><code>stickiness</code></li>
-                <li><code>circular_variance</code></li>
-                <li><code>circular_variance_atom</code></li>
-                <li><code>electrostatics</code></li>
-                <li><code>bfactor</code></li>
-                <li><code>binding_sites</code></li>
-                <li><code>all</code></li>
-            </ul>
-        </td>
-    </tr>    
-</table>
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
 
-
-SURFMAP requires two mandatory arguments as inputs: `-pdb` and `-tomap`:
-
-- the `-pdb` argument must be followed by a protein structure in PDB format
-- the `-tomap` argument must be given one of the following options:
-  - `wimley_white`
-  - `kyte_doolittle`
-  - `stickiness`
-  - `circular_variance`
-  - `circular_variance_atom`
-  - `electrostatics`
-  - `bfactor`
-  - `binding_sites`
+- the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
+- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The available keywords are listed below (see XXX for a description):
+  - wimley_white
+  - kyte_doolittle
+  - stickiness
+  - circular_variance
+  - circular_variance_atom
+  - electrostatics
+  - bfactor
+  - binding_sites
 
 
 
