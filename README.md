@@ -1,4 +1,13 @@
+# Table of contents
+
+- [Quick overview](#Quick-overview)
+- [Download](#Download)
+- [Run SURFMAP through its pre-built docker image](#Run-SURFMAP-through-its-pre-built-docker-image)
+- [Usage of SURFMAP](#Usage-of-SURFMAP)
+
+
 # Quick overview
+[Go to the top](#Table-of-contents)
 
 SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can thus be used to analyze and/or compare protein surface properties.
 
@@ -11,6 +20,7 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 
 
 # Download
+[Go to the top](#Table-of-contents)
 
 You can click [here](https://github.com/i2bc/SURFMAP/releases/latest/) to access the latest release.
 
@@ -40,10 +50,11 @@ After having unarchived (or cloned) the project, you should have the following f
 
 
 # Run SURFMAP through its pre-built docker image
+[Go to the top](#Table-of-contents)
 
 The easiest and recommended way to run SURFMAP is to take profit of its pre-built docker image. This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS & APBS) to run SURFMAP so that the user don't need to install anything on its machine (except docker).  
 
-Yet if you want/need to install SURFMAP on your machine, please refer to the [fully manual installation](#Installation) section.  
+Yet if you want/need to install SURFMAP on your machine, please refer to the [fully manual installation](#Fully-manual-installation-of-SURFMAP) section.  
 
 ### 1. Get docker on your machine
 
@@ -86,6 +97,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 
 
 # Usage of SURFMAP
+[Go to the top](#Table-of-contents)
 
 In the following section, we will assume that the SURFMAP program is called through the `surfmap` alias command (see [here](#surfmap-alias)). 
 
