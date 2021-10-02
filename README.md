@@ -37,15 +37,15 @@ git clone https://github.com/i2bc/ORFmine.git
 After having unarchived (or cloned) the project, you should have the following files/directories:
 
 <pre><font color="#3465A4"><b>.</b></font>
-├── <font color="#3465A4"><b>example</b></font>
+├── <font color="#3465A4"><b>example/</b></font>
 ├── README.md
 ├── requirements.txt
 ├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
-├── <font color="#3465A4"><b>scripts</b></font>
+├── <font color="#3465A4"><b>scripts/</b></font>
 ├── <font color="#4E9A06"><b>SURFMAP_launcher.py</b></font>
 ├── SURFMAP_manual.pdf
 ├── SURFMAP_manual.Rmd
-└── <font color="#3465A4"><b>tools</b></font>
+└── <font color="#3465A4"><b>tools/</b></font>
 </pre>
 
 
@@ -103,22 +103,22 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 
 In the following section, we will assume that the SURFMAP program is called through the `surfmap` alias command (see [here](#surfmap-alias)). 
 
-To illustrate how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
+To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
 <pre><font color="#3465A4"><b>example/</b></font>
 ├── 1g3n_A_CV.pdb
 ├── 1g3n_A.pdb
 ├── 1gv3_A_binding_sites.pdb
-├── <font color="#3465A4"><b>example_1g3n_A_stickiness</b></font>
-├── <font color="#3465A4"><b>example_1g3n_A_stickiness_allfiles</b></font>
-├── <font color="#3465A4"><b>example_1g3n_A_stickiness_mapping_residues</b></font>
-├── <font color="#3465A4"><b>example_1gv3_A_stickiness_binding_sites</b></font>
-├── <font color="#3465A4"><b>example_mapping_stickiness</b></font>
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness/</b></font>
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness_allfiles/</b></font>
+├── <font color="#3465A4"><b>example_1g3n_A_stickiness_mapping_residues/</b></font>
+├── <font color="#3465A4"><b>example_1gv3_A_stickiness_binding_sites/</b></font>
+├── <font color="#3465A4"><b>example_mapping_stickiness/</b></font>
 ├── README
 └── residues_to_map.txt
 </pre>
 
-### SURFMAP inputs
+### SURFMAP inputs and outputs
 
 SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
 
@@ -138,6 +138,23 @@ For instance, the following command line will map the stickiness protein surface
 ```bash
 surfmap -pdb 1g3n_A.pdb -tomap stickiness
 ```
+
+The above command will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
+
+<pre><font color="#3465A4"><b>output_SURFMAP_1g3n_A_stickiness/</b></font>
+├── log_parameters
+├── <font color="#3465A4"><b>maps/</b></font>
+│   └── 1g3n_A_stickiness_map.pdf
+└── <font color="#3465A4"><b>smoothed_matrices/</b></font>
+    └── 1g3n_A_stickiness_smoothed_matrix.txt
+</pre>
+
+
+![image info](.example/example_1g3n_A_stickiness/maps/1g3n_A_stickiness_map.pdf)
+
+
+
+
 
 # Fully manual installation of SURFMAP
 
