@@ -101,7 +101,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-In the following section, we will assume that the SURFMAP program is called through the `surfmap` alias command (see [here](#surfmap-alias)). 
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `SURFMAP_launcher.py` if you have installed SURFMAP locally on your machine. 
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
@@ -149,12 +149,26 @@ The above command will generate an output directory named `output_SURFMAP_1g3n_A
     └── 1g3n_A_stickiness_smoothed_matrix.txt
 </pre>
 
+with:
+- `log_parameters`: a summary of the basic parameters used to compute the map
+- `1g3n_A_stickiness_map.pdf`: the generated 2-D map in pdf format
+- `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
 
 
-<div style="text-align:center;">
-    <img src="example/example_1g3n_A_stickiness/maps/1g3n_A_stickiness_map.png"/>
-</div>
+### SURFMAP optional parameters
 
+The following table lists the optional parameters that can be used when running SURFMAP:
+
+| Optional parameters | Description |
+| --- | --- |
+| `-coords` | File with coordinates to point on maps. Must be of the following format: protein; phi; theta |
+| `-res` | File containing a list of residues to map on the projection |
+| `-rad` | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
+| `-d` | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
+| `-s` | Size of a grid cell. Necessary that 180%cellsize == 0 (default: 5) |
+| `--nosmooth` | If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!) |
+| `--png` | If chosen, a map in png format is computed (default: only pdf format is generated) |
+| `--keep` | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
 
 
 
