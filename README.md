@@ -2,14 +2,14 @@
 
 - [Quick overview](#Quick-overview)
 - [Download](#Download)
-- [Run SURFMAP through its pre-built docker image](#Run-SURFMAP-through-its-pre-built-docker-image)
+- [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 
 
 # Quick overview
 [Go to the top](#Table-of-contents)
 
-SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can thus be used to analyze and/or compare protein surface properties.
+SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 
 
 ### Requirements
@@ -49,7 +49,7 @@ After having unarchived (or cloned) the project, you should have the following f
 </pre>
 
 
-# Run SURFMAP through its pre-built docker image
+# Use of the pre-built docker image of SURFMAP
 [Go to the top](#Table-of-contents)
 
 The easiest and recommended way to run SURFMAP is to take profit of its pre-built docker image. This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS & APBS) to run SURFMAP so that the user don't need to install anything on its machine (except docker).  
@@ -61,7 +61,9 @@ Yet if you want/need to install SURFMAP on your machine, please refer to the [fu
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-### 2. Make the proxy script `run_surfmap.py` executable from anywhere
+### 2. Make the script `run_surfmap.py` callable from anywhere
+
+`run_surfmap.py` is a python script that acts as a proxy to call the script `SURFMAP_launcher.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
 
 Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
 
