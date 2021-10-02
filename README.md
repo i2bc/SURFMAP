@@ -150,7 +150,7 @@ The above command will generate an output directory named `output_SURFMAP_1g3n_A
 </pre>
 
 
-![image](example/example_1g3n_A_stickiness/maps/1g3n_A_stickiness_map.pdf)
+![image](example/example_1g3n_A_stickiness/maps/1g3n_A_stickiness_map.png)
 
 
 
