@@ -225,7 +225,7 @@ Compilation flags -O2 -DVERBOSE -DTIMING
 MSMS: No input stream specified
 </pre>
 
-Note: If anythong goes wrong, you can refer to [MSMS instruction page](https://ssbio.readthedocs.io/en/latest/instructions/msms.html).
+Note: If anything goes wrong, you can refer to [MSMS instruction page](https://ssbio.readthedocs.io/en/latest/instructions/msms.html).
 
 
 #### 3. Correct a known bug in the pdb_to_xyzr file 
