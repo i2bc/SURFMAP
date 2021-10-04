@@ -34,7 +34,7 @@ Alternatively, you can also clone the whole project:
 git clone https://github.com/i2bc/ORFmine.git
 ```
 
-After having unarchived (or cloned) the project, you should have the following files/directories:
+Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SURFMAP-x-x-x` where you should have the following files/directories:
 
 <pre><font color="#3465A4"><b>.</b></font>
 ├── <font color="#3465A4"><b>example/</b></font>
@@ -47,6 +47,14 @@ After having unarchived (or cloned) the project, you should have the following f
 ├── SURFMAP_manual.Rmd
 └── <font color="#3465A4"><b>tools/</b></font>
 </pre>
+
+Please now type the following command:
+```bash
+pwd
+```
+
+This command will output the path of the current working directory where SURFMAP is located. Please note carefully this path as we will refer to it later as `PATH/TO/SURFMAP`
+
 
 
 # Use of the pre-built docker image of SURFMAP
@@ -161,14 +169,14 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| `-coords` | File with coordinates to point on maps. Must be of the following format: protein; phi; theta |
-| `-res` | File containing a list of residues to map on the projection |
-| `-rad` | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
-| `-d` | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
-| `-s` | Size of a grid cell. Necessary that 180%cellsize == 0 (default: 5) |
-| `--nosmooth` | If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!) |
-| `--png` | If chosen, a map in png format is computed (default: only pdf format is generated) |
-| `--keep` | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
+| -coords | File with coordinates to point on maps. Must be of the following format: protein; phi; theta |
+| -res | File containing a list of residues to map on the projection |
+| -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
+| -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
+| -s | Size of a grid cell. Necessary that 180%cellsize == 0 (default: 5) |
+| --nosmooth | If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!) |
+| --png | If chosen, a map in png format is computed (default: only pdf format is generated) |
+| --keep | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
 
 
 
@@ -225,7 +233,7 @@ Compilation flags -O2 -DVERBOSE -DTIMING
 MSMS: No input stream specified
 </pre>
 
-Note: If anythong goes wrong, you can refer to [MSMS instruction page](https://ssbio.readthedocs.io/en/latest/instructions/msms.html).
+Note: If anything goes wrong, you can refer to [MSMS instruction page](https://ssbio.readthedocs.io/en/latest/instructions/msms.html).
 
 
 #### 3. Correct a known bug in the pdb_to_xyzr file 
