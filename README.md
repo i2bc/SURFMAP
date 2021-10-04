@@ -204,7 +204,7 @@ install.packages("gplots")
 Install the python dependencies with the following command:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## II. Install MSMS
