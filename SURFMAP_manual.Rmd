@@ -35,16 +35,16 @@ The properties that SURFMAP is mapping must be chosen among:
 
 - Wimley–White hydrophobicity (3): measure of the degree of hydrophobicity/hydrophilicity of amino acids according to the Wimley–White hydrophobicity scale. 
 
-- circular variance (4): this measure characterizes the geometric properties of molecular structures by distinguishing between atoms accessible to the surface and buried atoms. In our case it is useful for the mapping of geometrical properties of the protein surface such as cavities and protuberant regions.
+- circular variance (4): The circular variance (CV) measures the atom density around each atom. The CV provides a useful descriptor of the local geometry of a surface region. CV values range between 0 and 1 with low values reflecting protruding residues, and high values indicating residues located in cavities. This measure can be calculated at the residue level (mean CV of the residue's atoms), or at the atom level.
 
 - electrostatic potential: SURFMAP can call the APBS software (5) that will compute the electrostatic potential, using the CHARMM forcefield (6), and map the resulting potential on a 2-D map.
 
 - b-factor: the user have the possibility to map any value contained in the b-factor of the pdb structure provided in input.  
 
-- binding_sites: this option is similar to the b-factor option, but use a discrete set of colors, instead of a continuous one. When using this option, please provide a pdb file with discrete values in b-factor.  
+- binding sites: this option is similar to the b-factor option, but use a discrete set of colors, instead of a continuous one. When using this option, please provide a pdb file with discrete values in b-factor.  
 <br>
 
-## Basic functioning of SURFMAP
+## Quick usage of SURFMAP
 
 SURFMAP needs in input a pdb file. To use SURFMAP you need to execute the script SURFMAP_launcher.py. This script serves as a pipeline and will launch successively all the necessary scripts.  
 
