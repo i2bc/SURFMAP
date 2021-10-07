@@ -46,12 +46,60 @@ The properties that SURFMAP is mapping must be chosen among:
 
 ## Quick usage of SURFMAP
 
-SURFMAP needs in input a pdb file. To use SURFMAP you need to execute the script SURFMAP_launcher.py. This script serves as a pipeline and will launch successively all the necessary scripts.  
+SURFMAP needs in input a pdb file. If you installed the dockerized version of SURFMAP and created an alias `surfmap`, you will simply need to type the alias in the terminal followed by the required arguments. If youare not working with the dockerized version of SURFMAP, you can launch it by executing the script SURFMAP_launcher.py. This script serves as a pipeline and will launch successively all the necessary scripts.  
 
 In the directory example there are several files (a pdb file, and 2 coordinates mapping file) to familiarize yourself with SURFMAP.
 
-Basically there are two mandatory arguments: the input pdb file, and the surface property you want to map. All the rest is optional.  
+Basically there are two mandatory arguments: the input pdb file, and the surface property you want to map. All the rest is optional. In the next section you will see more in details how to use SURFMAP.
 <br>
+
+# Usage of SURFMAP
+
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `SURFMAP_launcher.py` if you have installed SURFMAP locally on your machine. 
+
+To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
+
+- `1g3n_A_CV.pdb`
+- `1g3n_A.pdb`
+- `1gv3_A_binding_sites.pdb`
+- `example_1g3n_A_stickiness/>`
+- `example_1g3n_A_stickiness_allfiles/`
+- `example_1g3n_A_stickiness_mapping_residues/`
+- `example_1gv3_A_stickiness_binding_sites/`
+- `example_mapping_stickiness/>`
+-  `README`
+- `residues_to_map.txt`
+
+### SURFMAP inputs and outputs
+
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
+
+- the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
+- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
+  - wimley_white
+  - kyte_doolittle
+  - stickiness
+  - circular_variance
+  - circular_variance_atom
+  - electrostatics
+  - bfactor
+  - binding_sites
+  - all
+
+For instance, the following command line will map the stickiness protein surface feature for the chain A of the protein [1G3N](https://www.rcsb.org/structure/1G3N):
+
+```bash
+surfmap -pdb 1g3n_A.pdb -tomap stickiness
+```
+
+The above command will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
+
+- `log_parameters`: a summary of the basic parameters used to compute the map
+
+- `maps/1g3n_A_stickiness_map.pdf`: the generated 2-D map in pdf format
+
+- `smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
+
 
 ## Warnings
 
