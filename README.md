@@ -131,7 +131,7 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
-- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
+- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
   - wimley_white
   - kyte_doolittle
   - stickiness
