@@ -7,7 +7,7 @@ import argparse, os, shutil, subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb", required = True, help = "input pdb file (path + file name)")
-    parser.add_argument("-coords", help = "file with coordinates to point on maps. Must be of the following format: phi; theta.")
+    parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "file containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "radius added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default = 3.0 Angstrom)")
     parser.add_argument("-d", required = False, help = "output directory where all files will be written. Defaults = MappedValues in current directory.")
@@ -49,9 +49,9 @@ def main():
         cellsize = 5
 
     try:
-        coordfile = args.coords
+        coordstomap = args.coords
     except:
-        coordfile = None
+        coordstomap = None
     
     if args.d:
         outdir = args.d
@@ -200,9 +200,9 @@ def main():
         if args.png:
             if args.coords:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordfile, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordfile, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id]
             else:
                 if args.res:
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
@@ -211,9 +211,9 @@ def main():
         else:
             if args.coords:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordfile, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordfile, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id]
             else:
                 if args.res:
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
