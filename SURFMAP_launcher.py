@@ -7,7 +7,7 @@ import argparse, os, shutil, subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb", required = True, help = "input pdb file (path + file name)")
-    parser.add_argument("-coords", help = "file with coordinates to point on maps. Must be of the following format: protein; phi; theta.")
+    parser.add_argument("-coords", help = "file with coordinates to point on maps. Must be of the following format: phi; theta.")
     parser.add_argument("-res", help = "file containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "radius added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default = 3.0 Angstrom)")
     parser.add_argument("-d", required = False, help = "output directory where all files will be written. Defaults = MappedValues in current directory.")
