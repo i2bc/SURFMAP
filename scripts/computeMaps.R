@@ -209,20 +209,10 @@ for (file in (1:length(files))) {
     rec = substr(files[file],0,17)
     
     # Coordinates of the points to plot.
-
-    # TO COMMENT IN FINAL VERSION !!!!
-    #nat_phi=theta_phi_nat[which(theta_phi_nat$rec==rec),3]
-    #nat_theta=theta_phi_nat[which(theta_phi_nat$rec==rec),2]
-    nat_phi=theta_phi_nat[which(theta_phi_nat[,1]==rec),3]
+    nat_phi=theta_phi_nat[which(theta_phi_nat[,1]==rec),1]
     nat_theta=theta_phi_nat[which(theta_phi_nat[,1]==rec),2]
-    #cat("nat phi: ", nat_phi, "\n")
-    #########################
 
-    # TO UNCOMMENT IN FINAL VERSION !!!!!
-    #nat_phi=theta_phi_nat[,4]
-    #nat_theta=theta_phi_nat[,3]
     # Sinusoidal projection of the coordinates.
-
     nat_phi=nat_phi-pi
     nat_theta=nat_theta-pi/2
     nat_phi=nat_phi*cos(nat_theta)
