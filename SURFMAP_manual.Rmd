@@ -99,7 +99,29 @@ The above command will generate an output directory named `output_SURFMAP_1g3n_A
 - `maps/1g3n_A_stickiness_map.pdf`: the generated 2-D map in pdf format
 
 - `smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
+\vspace{2cm}
 
+Here are several SURFMAP commands to calculate maps with different parameters:
+
+
+SURFMAP command to compute a stickiness map of the pdb file 1g3n_A.pdb. The option `--keep` means that all the intermediary files are kept. Resulting files are in the directory `example_1g3n_A_stickiness_allfiles/`:
+```bash
+surfmap -pdb 1g3n_A.pdb -tomap stickiness --keep
+```
+\vspace{0.5cm}
+
+SURFMAP command to compute maps with residues from file residues_to_map.txt mapped directly on the map.  Resulting files are in the directory `example_1g3n_A_stickiness_mapping_residues/`:
+
+```bash
+surfmap -pdb 1g3n_A.pdb -tomap stickiness -res residues_to_map.txt
+```
+\vspace{0.5cm}
+
+SURFMAP command to compute map of bfactor with discrete values (initially developped for binding site mapping). Resulting files are in the directory `example_1gv3_A_stickiness_binding_sites/`:
+```bash
+surfmap -pdb 1gv3_A_binding_sites.pdb -tomap binding_sites
+```
+\vspace{0.5cm}
 
 ## Warnings
 
@@ -144,10 +166,6 @@ to map the coordinates of residues on the 2-D map (**OPTIONAL**).
 Format is the following: CHAIN RESNB RES  
 With CHAIN the chain index in the input pdb, RESNB the residue number in the input pdb, and RES the residue type.  
 Important: residue numbers must correspond to the numbering in the input pdb file.   
-<br>
-
-### -\phantom{}-coords
-map a set of coordinates on the resulting map (**OPTIONAL**) 
 <br>
 
 ### -\phantom{}-nosmooth
