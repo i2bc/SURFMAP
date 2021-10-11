@@ -98,7 +98,7 @@ Once the SURFMAP image has been successfully downloaded on your machine, you sho
 <font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ surfmap
 usage: run_surfmap.py [-h] -pdb PDB -tomap
                       {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
-                      [-coords COORDS] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
+                      [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
                       [--png] [--keep]
 run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 </pre>
@@ -170,7 +170,6 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| -coords | File with coordinates to point on maps. Must be of the following format: protein; phi; theta |
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
