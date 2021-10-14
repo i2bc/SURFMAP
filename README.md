@@ -14,7 +14,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 
 ### Requirements
 
-SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS  software(1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
+SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software(1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
 
 All these requirements (including the APBS software) are fullfilled in a [pre-built docker image of SURFMAP](#Run-SURFMAP-through-its-pre-built-docker-image) that we recommend the user to use.
 
@@ -22,11 +22,12 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 # Download
 [Go to the top](#Table-of-contents)
 
-You can click [here](https://github.com/i2bc/SURFMAP/releases/latest/) to access the latest release.
+You can click [here](https://github.com/i2bc/SURFMAP/releases/tag/v1.0) to access the latest source code of the release.
+
 
 After downloading, you'll need to unarchive the project. If you downloaded:
-- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.x.zip`
-- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
+- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.zip`
+- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.tar.gz`
 
 
 Alternatively, you can also clone the whole project:
