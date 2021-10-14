@@ -185,6 +185,9 @@ The following table lists the optional parameters that can be used when running 
 
 
 
+<br>
+<br>
+
 # Manual installation of SURFMAP
 [Go to the top](#Table-of-contents)
 
@@ -328,18 +331,29 @@ apbs: error while loading shared libraries: libg2c.so.0: cannot open shared obje
 
  In this case, you'll have to install a gfortran compiler, for instance [g77](https://gcc.gnu.org/fortran/)
 
-
+<br>
+<br>
 
 # How to cite SURFMAP
+[Go to the top](#Table-of-contents)
 
 If SURFMAP has been useful to your research, please cite us as well as the original MSMS paper:
 
 > Schweke H, Mucchielli-Giorgi MH, Chevrollier N, Gosset S, lopes A. SURFMAP: a software for mapping in two dimensions protein surface features.
 
-> Sanner MF, Olson AJ, Spehner JC. Reduced surface: an efficient way to compute molecular surfaces. Biopolymers. 1996 Mar;38(3):305-20. doi: 10.1002/(SICI)1097-0282(199603)38:3%3C305::AID-BIP4%3E3.0.CO;2-Y. PMID: 8906967.
+> Sanner MF, Olson AJ, Spehner JC. Reduced surface: an efficient way to compute molecular surfaces. Biopolymers. 1996 Mar;38(3):305-20. doi: 10.1002/(SICI)1097-0282(199603)38:3%3C305::AID-BIP4%3E3.0.CO;2-Y. PMID: 8906967. https://doi.org/10.1002/(sici)1097-0282(199603)38:3%3c305::aid-bip4%3e3.0.co;2-y
 
+<br>
+Please also cite the APBS authors in the case you used their software with SURFMAP:
+
+> Jurrus E, Engel D, Star K, Monson K, Brandi J, Felberg LE, Brookes DH, Wilson L, Chen J, Liles K, Chun M, Li P, Gohara DW, Dolinsky T, Konecny R, Koes DR, Nielsen JE, Head-Gordon T, Geng W, Krasny R, Wei G-W, Holst MJ, McCammon JA, Baker NA. Improvements to the APBS biomolecular solvation software suite. Protein Sci, 27 (1), 112-128, 2018. https://doi.org/10.1002/pro.3280
+
+
+<br>
+<br>
 
 # References
+[Go to the top](#Table-of-contents)
 
 (1) Michel Sanner, Arthur J. Olson, Jean Claude Spehner (1996). Reduced Surface: an Efficient Way to Compute Molecular Surfaces. Biopolymers, Vol 38, (3), 305-320.
 
