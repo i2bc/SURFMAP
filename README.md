@@ -4,6 +4,9 @@
 - [Download](#Download)
 - [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
+- [Manual installation of SURFMAP](#Manual-installation-of-SURFMAP)
+- [How to cite SURFMAP](#How-to-cite-SURFMAP)
+
 
 
 # Quick overview
@@ -12,7 +15,8 @@
 SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 
 
-### Requirements
+# Prerequisites
+[Go to the top](#Table-of-contents)
 
 SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software(1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
 
@@ -32,10 +36,10 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 
 Alternatively, you can also clone the whole project:
 ```
-git clone https://github.com/i2bc/ORFmine.git
+git clone https://github.com/i2bc/SURFMAP.git
 ```
 
-Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SURFMAP-x-x-x` where you should have the following files/directories:
+Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SURFMAP-x-x` where you should have the following files/directories:
 
 <pre><font color="#3465A4"><b>.</b></font>
 ├── <font color="#3465A4"><b>example/</b></font>
@@ -63,7 +67,7 @@ This command will output the path of the current working directory where SURFMAP
 
 The easiest and recommended way to run SURFMAP is to take profit of its pre-built docker image. This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS & APBS) to run SURFMAP so that the user don't need to install anything on its machine (except docker).  
 
-Yet if you want/need to install SURFMAP on your machine, please refer to the [fully manual installation](#Fully-manual-installation-of-SURFMAP) section.  
+Yet if you want/need to install SURFMAP on your machine, please refer to the [Manual installation of SURFMAP](#Manual-installation-of-SURFMAP) section.  
 
 ### 1. Get docker on your machine
 
@@ -181,7 +185,8 @@ The following table lists the optional parameters that can be used when running 
 
 
 
-# Fully manual installation of SURFMAP
+# Manual installation of SURFMAP
+[Go to the top](#Table-of-contents)
 
 ### Requirements
 
@@ -324,6 +329,14 @@ apbs: error while loading shared libraries: libg2c.so.0: cannot open shared obje
  In this case, you'll have to install a gfortran compiler, for instance [g77](https://gcc.gnu.org/fortran/)
 
 
+
+# How to cite SURFMAP
+
+If SURFMAP has been useful to your research, please cite us as well as the original MSMS paper:
+
+> Schweke H, Mucchielli-Giorgi MH, Chevrollier N, Gosset S, lopes A. SURFMAP: a software for mapping in two dimensions protein surface features.
+
+> Sanner MF, Olson AJ, Spehner JC. Reduced surface: an efficient way to compute molecular surfaces. Biopolymers. 1996 Mar;38(3):305-20. doi: 10.1002/(SICI)1097-0282(199603)38:3%3C305::AID-BIP4%3E3.0.CO;2-Y. PMID: 8906967.
 
 
 # References
