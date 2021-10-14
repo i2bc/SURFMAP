@@ -1,3 +1,6 @@
 **/*.py[cod]
 **/__pycache__/
 **/*io.mc
+APBS*
+MSMS
+Dockerfile
