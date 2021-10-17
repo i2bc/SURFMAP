@@ -20,7 +20,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 
 SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software(1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
 
-All these requirements (including the APBS software) are fullfilled in a [pre-built docker image of SURFMAP](#Run-SURFMAP-through-its-pre-built-docker-image) that we recommend the user to use.
+All these requirements (including the APBS software) are fullfilled in a [pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use.
 
 
 # Download
