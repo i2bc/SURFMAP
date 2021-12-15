@@ -146,8 +146,9 @@ minval=0
 maxval=0
 
 if (!is.na(opt$coord)) {
+  cat("opt$coord: ", opt$coord, "\n")
   theta_phi_nat = read.table(opt$coord, stringsAsFactors=F)
-  col_names = c("rec", "theta", "phi")
+  col_names = c("phi", "theta")
   colnames(theta_phi_nat) = col_names
 }
 
@@ -202,15 +203,11 @@ for (file in (1:length(files))) {
     res_theta = res_theta*180/pi+90
   }
   
-  # Retieving coordinates of points to plot (if user has enterd coord file).
+  # Retieving coordinates of points to plot (if user has entered coord file).
   if (!is.na(opt$coord)) {
-    filename = tools::file_path_sans_ext(file)
-    filename = basename(filename)
-    rec = substr(files[file],0,17)
-    
     # Coordinates of the points to plot.
-    nat_phi=theta_phi_nat[which(theta_phi_nat[,1]==rec),1]
-    nat_theta=theta_phi_nat[which(theta_phi_nat[,1]==rec),2]
+    nat_phi=theta_phi_nat[,1]
+    nat_theta=theta_phi_nat[,2]
 
     # Sinusoidal projection of the coordinates.
     nat_phi=nat_phi-pi
@@ -250,7 +247,8 @@ for (file in (1:length(files))) {
     minval = -1.273
     maxval = 1.273
     range = abs(minval-maxval)
-    scale_main = "interaction\npropensity"
+    #scale_main = "interaction\npropensity"
+    scale_main = "stickiness"
     main_title = paste0("stickiness map\n", pdb_id)
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
     colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
@@ -300,7 +298,8 @@ for (file in (1:length(files))) {
 
     scale_main = "b-factor"
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    #colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    colorScale <- colorRampPalette(c("red", "white", "blue"))(1000)
     scale_at = c(ceiling(minval*100000)/100000, round(maxval-range*5/6,5), round(maxval-range*4/6,5), round(maxval-range*3/6,5), round(maxval-range*2/6,5), round(maxval-range*1/6,5), floor(maxval*100000)/100000)
   
   } else if (!is.na(opt$discrete)) { # b-factor scale
@@ -359,9 +358,6 @@ for (file in (1:length(files))) {
   } else { 
       axis_scale = c(ceiling(minval*100000)/100000, round(maxval-range*5/6,5), round(maxval-range*4/6,5), round(maxval-range*3/6,5), round(maxval-range*2/6,5), round(maxval-range*1/6,5), floor(maxval*100000)/100000)}
 
-  # Reverse the matrix for correct display.
-  val_matrix = apply(val_matrix,2,rev)
-  
   # Creation of the image.
   image.nan.better(t(val_matrix),col=colorScale,
                    zlim=c(minval,maxval),
