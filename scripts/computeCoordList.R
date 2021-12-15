@@ -10,15 +10,6 @@ library(data.table)
 
 
 
-###################  PARAM   ##########################
-
-# Energy colum
-colmax = 3
-
-################## END PARAM ##########################
-
-
-
 ################## FUNCTIONS ##########################
 
 # This function returns a data frame representing the subdivision of the energy 
@@ -122,15 +113,7 @@ for (file in (1:length(files))) {
   
   data[,1] = (data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
   data[,1] = data[,1]-pi # Now phi values are included in [-pi, pi]
-  
-  # Just checking phi and theta values.
-  #minphi = min(data[,1])
-  #maxphi = max(data[,1])
-  #mintheta = min(data[,2])
-  #maxtheta = max(data[,2])
-  #cat("minphi: ",minphi,"\tmaxphi: ",maxphi,"\n")
-  #cat("mintheta: ",mintheta,"\tmaxtheta: ",maxtheta,"\n")
-  
+
   # sinusoidal projection
   # If theta belongs to [0, pi], phiproj=phi*sin(theta),
   # If theta belongs to [-pi/2, pi/2], phiproj=phi*cos(theta)
