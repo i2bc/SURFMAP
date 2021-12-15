@@ -56,13 +56,15 @@ def main():
     args = parser.parse_args()
 
     pdbarg = args.pdb
-    pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
-    pdbname = os.path.basename(pdbarg)
     resfile = args.res
     ppttomap = args.tomap
     
     if not os.path.isfile(pdbarg):
         print("pdb file not found. It seems that the input pdb file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
+        exit()
+
+    if not pdbarg.endswith(".pdb"):
+        print("The file provided in input seems to not be a pdb file. Please provide a file with a '.pdb' extension.")
         exit()
 
     if args.res:
@@ -120,6 +122,8 @@ def main():
     except:
         pass
    
+    pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
+    pdbname = os.path.basename(pdbarg)
     curdir = os.getcwd()
     absdir = os.path.dirname(os.path.abspath(__file__))
     surftool = absdir+"/tools/SurfmapTools.py"
