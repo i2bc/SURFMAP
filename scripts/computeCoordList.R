@@ -44,8 +44,6 @@ energy_matrix <- function(data, nb_file) {
 
   colnames(dataf)[1] = "abscissa"
   colnames(dataf)[2] = "ordinate"
-  #colnames(dataf)[1] = "phi"
-  #colnames(dataf)[2] = "theta"
   colnames(dataf)[3] = "score"
   colnames(dataf)[4] = "index_sol"
 

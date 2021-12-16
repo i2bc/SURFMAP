@@ -192,6 +192,10 @@ comp_val_matrix <- function(data) {
   } else {
     filledmat[,4] = apply(filledmat, 1, smoother_adj, datamat = filledmat)
   }
+
+  filledmat[,3] = round(filledmat[,3],3)
+  filledmat[,4] = round(filledmat[,4],3)
+
   colnames(filledmat) = c("abscissa", "ordinate", "value", "svalue")
 
   return(filledmat)
