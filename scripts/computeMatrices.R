@@ -157,7 +157,7 @@ comp_val_matrix <- function(data) {
   blankmat <- matrix(nrow = 360/width*180/height, ncol = 2)
   blankmat[,1] <- rep(seq(0+width,360,by=width),each = 180/width) 
   blankmat[,2] <- rep(seq(0+height,180,by=height),360/width) 
-  colnames(blankmat) = c("phi", "theta")
+  colnames(blankmat) = c("abscissa", "ordinate")
 
   # Creating matrix with averaged values in each pixels
   # First splitting input dataframe into list of dataframe per abscissa range.
@@ -181,7 +181,7 @@ comp_val_matrix <- function(data) {
   datameancells = do.call(rbind, datameancells)
     
   # Creating the matrix.
-  filledmat = merge(as.data.frame(blankmat), as.data.frame(datameancells), by=c("phi", "theta"), all = TRUE)
+  filledmat = merge(as.data.frame(blankmat), as.data.frame(datameancells), by=c("abscissa", "ordinate"), all = TRUE)
 
   # Finding all pixels outside projection and attributing a value of 100 to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
@@ -192,7 +192,7 @@ comp_val_matrix <- function(data) {
   } else {
     filledmat[,4] = apply(filledmat, 1, smoother_adj, datamat = filledmat)
   }
-  colnames(filledmat) = c("phi", "theta", "value", "svalue")
+  colnames(filledmat) = c("abscissa", "ordinate", "value", "svalue")
 
   return(filledmat)
 }
