@@ -200,7 +200,7 @@ for (file in (1:length(files))) {
     res_phi = res_phi*cos(res_theta)
     # Conversion of the coordinates from radians to degrees.
     res_phi = res_phi*180/pi+180
-    res_theta = res_theta*180/pi+90
+    res_theta = 180-(res_theta*180/pi+90)
   }
   
   # Retieving coordinates of points to plot (if user has entered coord file).
@@ -375,7 +375,6 @@ for (file in (1:length(files))) {
   
   # Add native site to plot.
   if (!is.na(opt$coord)) {
-    #points(nat_phi/360, nat_theta/180, pch = c(8,13,10,7,3,4), col = "black", cex = 4, lwd = 3)
     points(nat_phi/360, nat_theta/180, pch = 8, col = "black", cex = 3, lwd = 2)
     #text(nat_phi/360, nat_theta/180+22/180, labels = theta_phi_nat[,2], cex = 1.8)
   }
