@@ -6,3 +6,4 @@ MSMS
 Dockerfile
 example/output**
 **.Rmd
+.vscode
