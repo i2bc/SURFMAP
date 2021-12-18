@@ -1,5 +1,8 @@
 # SURFMAP
-<img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
+<p align="center">
+  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
+</p>
+
 
 
 # Table of contents
