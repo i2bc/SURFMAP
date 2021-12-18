@@ -1,31 +1,3 @@
-<style>
-  .column {
-    float: left;
-  }
-
-  .column.txt {
-    width: 60%;
-    padding-right: 12px;
-    text-align: justify;
-  }
-
-  .column.img {
-    width: 38%;
-  }
-
-  .column.img img {
-    width: 100%;
-  }
-
-  /* Clear floats after image containers */
-  .txt-img-container::after {
-    content: "";
-    clear: both;
-    display: block;
-  } 
-</style>
-
-
 # SURFMAP
 ![SURFMAP art drawing](./doc/images/toc_Schweke_SURFMAP_cmyk.png)
 
@@ -44,14 +16,14 @@
 # Aims
 [Go to the top](#Table-of-contents)
 
-<div class="txt-img-container">
-  <div class="column txt">
+<div style='display:flex'>
+  <div style='width:60%; padding-right: 12px; text-align: justify'>
     <p>
     SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.    
     </p>
   </div>
-  <div class="column img">
-    <img src="./doc/images/toc_Schweke_SURFMAP_rev.png" width="100"/> 
+  <div style='width:35%; margin-top: 4px'>
+    <img src="./doc/images/toc_Schweke_SURFMAP_rev.png" width="100%"/> 
   </div>
 </div>
 
