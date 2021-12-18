@@ -1,17 +1,63 @@
+<style>
+  .column {
+    float: left;
+  }
+
+  .column.txt {
+    width: 60%;
+    padding-right: 12px;
+    text-align: justify;
+  }
+
+  .column.img {
+    width: 38%;
+  }
+
+  .column.img img {
+    width: 100%;
+  }
+
+  /* Clear floats after image containers */
+  .txt-img-container::after {
+    content: "";
+    clear: both;
+    display: block;
+  } 
+</style>
+
+
 # SURFMAP
 ![SURFMAP art drawing](./doc/images/toc_Schweke_SURFMAP_cmyk.png)
-
-SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 
 
 # Table of contents
 
+- [Aims](#Aims)
 - [Prerequisites](#Prerequisites)
 - [Download](#Download)
 - [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 - [Manual installation of SURFMAP](#Manual-installation-of-SURFMAP)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
+
+
+# Aims
+[Go to the top](#Table-of-contents)
+
+<div class="txt-img-container">
+  <div class="column txt">
+    <p>
+    SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.    
+    </p>
+  </div>
+  <div class="column img">
+    <img src="./doc/images/toc_Schweke_SURFMAP_rev.png" width="100"/> 
+  </div>
+</div>
+
+
+[Go to the top](#Table-of-contents)
+
 
 
 # Prerequisites
