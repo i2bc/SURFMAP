@@ -18,8 +18,7 @@
 
 |  |  |
 | --- | --- |
-|     SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.    
- | <img src="./doc/images/toc_Schweke_SURFMAP_rev.png" width="30%"/>  |
+| SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties. | <img src="./doc/images/toc_Schweke_SURFMAP_rev.png" width="70%"/>  |
 
 # Prerequisites
 [Go to the top](#Table-of-contents)
