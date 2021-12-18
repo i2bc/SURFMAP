@@ -142,6 +142,26 @@ pre code {
 .tabset-dropdown > .nav-tabs > li {
   display: none;
 }
+
+.container-txt-img {
+  display: flex;
+}
+
+.column.txt {
+  width: 40%;
+  text-align: justify;
+  padding-right: 8px;
+}
+
+.column.img {
+  width: 50%;
+  margin-top: -20px;
+}
+
+.column.img img {
+  width: 100%;
+}
+
 </style>
 
 <!-- code folding -->
@@ -160,40 +180,56 @@ pre code {
 
 
 <div id="header">
-
-
-
-
+  <h1 style="text-align: center">SURFMAP</h1>
+  <p align="center">
+    <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
+  </p>
 </div>
 
 
 <div id="table-of-contents" class="section level1">
 <h1>Table of contents</h1>
 <ul>
-<li><a href="#Quick-overview">Quick overview</a></li>
-<li><a href="#Download">Download</a></li>
-<li><a href="#Use-of-the-pre-built-docker-image-of-SURFMAP">Use of the pre-built docker image of SURFMAP</a></li>
-<li><a href="#Usage-of-SURFMAP">Usage of SURFMAP</a></li>
-<li><a href="#Manual-installation-of-SURFMAP">Manual installation of SURFMAP</a></li>
-<li><a href="#How-to-cite-SURFMAP">How to cite SURFMAP</a></li>
+  <li><a href="#aims">Aims</a></li>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#use-of-the-pre-built-docker-image-of-surfmap">Use of the pre-built docker image of SURFMAP</a></li>
+<li><a href="#usage-of-surfmap">Usage of SURFMAP</a></li>
+<li><a href="#manual-installation-of-surfmap">Manual installation of SURFMAP</a></li>
+<li><a href="#how-to-cite-surfmap">How to cite SURFMAP</a></li>
 </ul>
 </div>
-<div id="quick-overview" class="section level1">
-<h1>Quick overview</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
-<p>SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.</p>
+
+<div id="aims" class="section level1">
+  <h1>Aims</h1>
+  <p><a href="#table-of-contents">Go to the top</a></p>
+
+  <div class="container-txt-img">
+    <div class="column txt">
+      <p>
+        SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
+      </p>
+    </div>
+
+    <div class="column img">
+      <img src="./doc/images/toc_Schweke_SURFMAP_rev.png"/>
+    </div>
+  </div>
 </div>
+    
+<div>
+
 <div id="prerequisites" class="section level1">
 <h1>Prerequisites</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <p>SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software (1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.</p>
-<p>All these requirements (including the APBS software) are fullfilled in a <a href="#Use-of-the-pre-built-docker-image-of-SURFMAP">pre-built docker image of SURFMAP</a>.</p>
+<p>All these requirements (including the APBS software) are fullfilled in a <a href="#use-of-the-pre-built-docker-image-of-surfmap">pre-built docker image of SURFMAP</a>.</p>
 <p><strong>Please take note that we strongly advise to use the docker image. The installation process is much smoother as the user will not have to install the MSMS (1) and APBS (2) softwares.</strong></p>
 </div>
 <div id="download" class="section level1">
 <h1>Download</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
-<p>You can click <a href="https://github.com/i2bc/SURFMAP/releases/tag/v1.0">here</a> to access the latest source code of the release.</p>
+<p><a href="#table-of-contents">Go to the top</a></p>
+<p>You can click <a href="https://github.com/i2bc/SURFMAP/releases/latest">here</a> to access the latest source code of the release.</p>
 <p>After downloading, you’ll need to unarchive the project. If you downloaded: - the .zip file: type on a terminal (Unix and macOS): <code>unzip SURFMAP-x.x.zip</code> - the .tar.gz file: type on a terminal (Unix and macOS): <code>tar xzvf SURFMAP-x.x.tar.gz</code></p>
 <p>Alternatively, you can also clone the whole project:</p>
 <pre><code>git clone https://github.com/i2bc/SURFMAP.git</code></pre>
@@ -215,9 +251,9 @@ pre code {
 </div>
 <div id="use-of-the-pre-built-docker-image-of-surfmap" class="section level1">
 <h1>Use of the pre-built docker image of SURFMAP</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <p><strong>The easiest and recommended way to run SURFMAP is to take profit of its pre-built docker image.</strong> This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS &amp; APBS) to run SURFMAP so that the user don’t need to install anything on its machine (except docker).</p>
-<p>Yet if you want/need to install SURFMAP on your machine, please refer to the <a href="#Manual-installation-of-SURFMAP">Manual installation of SURFMAP</a> section.</p>
+<p>Yet if you want/need to install SURFMAP on your machine, please refer to the <a href="#manual-installation-of-surfmap">Manual installation of SURFMAP</a> section.</p>
 <div id="get-docker-on-your-machine" class="section level3">
 <h3>1. Get docker on your machine</h3>
 <p>You’ll first need to create an account on <a href="https://hub.docker.com/">docker hub</a> and <a href="https://docs.docker.com/get-docker/">install docker</a> on your machine.</p>
@@ -247,7 +283,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 </div>
 <div id="usage-of-surfmap" class="section level1">
 <h1>Usage of SURFMAP</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <p>In the following section, we will assume that the SURFMAP program is called through the <code>surfmap</code> command that is either an alias of <code>run_surfmap.py</code> as shown <a href="#surfmap-alias">here</a> or directly an alias <code>SURFMAP_launcher.py</code> if you have installed SURFMAP locally on your machine.</p>
 <p>To guide the user on how to use SURFMAP, we will use files in the <code>example/</code> directory that can be found in the downloaded SURFMAP project:</p>
 <pre><font color="#3465A4"><b>example/</b></font>
@@ -342,7 +378,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 </div>
 <div id="manual-installation-of-surfmap" class="section level1">
 <h1>Manual installation of SURFMAP</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <div id="requirements" class="section level3">
 <h3>Requirements</h3>
 <ul>
@@ -449,7 +485,7 @@ On my machine, it tells me that <code>libreadline.so.8</code> is present in <cod
 </div>
 <div id="how-to-cite-surfmap" class="section level1">
 <h1>How to cite SURFMAP</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <p>If SURFMAP has been useful to your research, please cite us as well as the original MSMS paper:</p>
 <blockquote>
 <p>Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier, Simon Gosset, Anne Lopes (2021) SURFMAP: a software for mapping in two dimensions protein surface features. bioRxiv 2021.10.15.464543; doi: <a href="https://doi.org/10.1101/2021.10.15.464543" class="uri">https://doi.org/10.1101/2021.10.15.464543</a></p>
@@ -462,7 +498,7 @@ On my machine, it tells me that <code>libreadline.so.8</code> is present in <cod
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p><a href="#Table-of-contents">Go to the top</a></p>
+<p><a href="#table-of-contents">Go to the top</a></p>
 <ol style="list-style-type: decimal">
 <li><p>Michel Sanner, Arthur J. Olson, Jean Claude Spehner (1996). Reduced Surface: an Efficient Way to Compute Molecular Surfaces. Biopolymers, Vol 38, (3), 305-320.</p></li>
 <li><p>Jurrus E, Engel D, Star K, Monson K, Brandi J, Felberg LE, Brookes DH, Wilson L, Chen J, Liles K, Chun M, Li P, Gohara DW, Dolinsky T, Konecny R, Koes DR, Nielsen JE, Head-Gordon T, Geng W, Krasny R, Wei GW, Holst MJ, McCammon JA, Baker NA. Improvements to the APBS biomolecular solvation software suite. Protein Science, 27, 112-128, 2018.</p></li>
