@@ -39,7 +39,7 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 # Download
 [Go to the top](#Table-of-contents)
 
-You can click [here](https://github.com/i2bc/SURFMAP/releases/latest) to access the latest source code of the release.
+You can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
 
 
 After downloading, you'll need to unarchive the project. If you downloaded:
