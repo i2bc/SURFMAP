@@ -15,8 +15,8 @@ options(warn=-1)
 # (i.e. average of the values inside a cell, then average with adjacent cells)
 smoother_adj <- function(row, datamat) {
 
-  abs = row[1]/width
-  ord = row[2]/height
+  abs = as.double(row[1])/width
+  ord = as.double(row[2])/height
   if ((ord != 1) & (ord != stepord) & (abs != 1) & (abs != stepabs)) {
     # Selecting adjacent cells in the matrix (rk: does not correspond to adjacent cells in the dataframe)
     adj_cells = c(datamat[(abs-2)*stepord+ord-1,3],datamat[(abs-2)*stepord+ord,3],
@@ -40,8 +40,8 @@ smoother_adj <- function(row, datamat) {
 # Smooth the cell given in argument.
 smoother <- function(row, datamat) {
 
-  abs = row[1]/width
-  ord = row[2]/height
+  abs = as.double(row[1])/width
+  ord = as.double(row[2])/height
   if ((ord != 1) & (ord != stepord) & (abs != 1) & (abs != stepabs)) {
     # Selecting adjacent cells in the matrix (rk: does not correspond to adjacent cells in the dataframe)
     adj_cells = c(datamat[(abs-2)*stepord+ord-1,3],datamat[(abs-2)*stepord+ord,3],
@@ -74,8 +74,8 @@ smoother <- function(row, datamat) {
 # Smooth the cell given in argument. version non smoothed (ie cell value is not averaged with neighbouring cells)
 smoother_raw <- function(row, datamat) {
 
-  abs = row[1]/width
-  ord = row[2]/height
+  abs = as.double(row[1])/width
+  ord = as.double(row[2])/height
   if ((ord != 1) & (ord != stepord) & (abs != 1) & (abs != stepabs)) {
     # Selecting adjacent cells in the matrix (rk: does not correspond to adjacent cells in the dataframe)
     adj_cells = c(datamat[(abs-2)*stepord+ord-1,3],datamat[(abs-2)*stepord+ord,3],
@@ -108,8 +108,8 @@ smoother_raw <- function(row, datamat) {
 
 # Function to find if cell is inside or outside the projection. If cell is outside the projection a value of 100 is assigned to it.
 findproj <- function(row) {
-  xcoord = row[1]
-  ycoord = row[2]
+  xcoord = as.double(row[1])
+  ycoord = as.double(row[2])
 
   # Selecting the "best" couple of coordinates of the cell (ie the closest to the coordinates (0,0)).
   if (xcoord < 180) {
@@ -150,9 +150,9 @@ findproj <- function(row) {
 
 
 # Create an energy matrix.
-comp_val_matrix <- function(data) {
-  data$phi = as.integer(data$absc)
-  data$theta = as.integer(data$ord)
+comp_val_matrix <- function(Data) {
+  Data$absc = as.integer(Data$absc)
+  Data$ord = as.integer(Data$ord)
   
   blankmat <- matrix(nrow = 360/width*180/height, ncol = 2)
   blankmat[,1] <- rep(seq(0+width,360,by=width),each = 180/width) 
@@ -161,8 +161,8 @@ comp_val_matrix <- function(data) {
 
   # Creating matrix with averaged values in each pixels
   # First splitting input dataframe into list of dataframe per abscissa range.
-  absdata = split.data.frame(data, data[,1])
-  
+  absdata = split.data.frame(Data, Data[,1])
+
   # First splitting dataframe of value per abscissa range into list of dataframe per ordinate range.
   # -> list of list of dataframe, each dataframe containing all value of a given cell.
   n = names(absdata)
@@ -179,24 +179,50 @@ comp_val_matrix <- function(data) {
   }
   datameancells = unlist(datameancells, recursive = FALSE)
   datameancells = do.call(rbind, datameancells)
+
+  # Calculating list of residus present in each cell.
+  reslistcells = sapply(datacells, function(x) {
+                           nord = names(x);
+                           lapply(nord, function(y) {
+                                      listres = paste(x[[y]][,5], x[[y]][,4], x[[y]][,6], sep = "_");
+                                      #print("listres nounique:")
+                                      #print(listres);
+                                      listres=unique(listres); 
+                                      #print("listres unique:");
+                                      #print(listres)
+                                      #print(paste(listres, collapse = ", ")); 
+                                      x[[y]][,3]=paste(listres, collapse = ", "); 
+                                      return(x[[y]][1,c(1:3)])})})
+  datalistcells = unlist(reslistcells, recursive = FALSE)
+  datalistcells = do.call(rbind, datalistcells)
+  colnames(datalistcells)[3] = "residues"
+
+  datacells = merge(as.data.frame(datameancells), as.data.frame(datalistcells), by=c("absc", "ord"))
+  print(colnames(datacells))
+  print(datacells[1:5,])
   
   # Creating the matrix.
-  filledmat = merge(as.data.frame(blankmat), as.data.frame(datameancells), by=c("absc", "ord"), all = TRUE)
-
+  filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
+  print(filledmat[510:515,])
+    
   # Finding all pixels outside projection and attributing a value of 100 to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
+  print("after findproj:")
+  print(filledmat[510:515,])
   
   # Smoothe the matrix.
   if (opt$nosmooth | opt$discrete) {
-    filledmat[,4] = apply(filledmat, 1, smoother_raw, datamat = filledmat)
+    filledmat$smoothed = apply(filledmat, 1, smoother_raw, datamat = filledmat)
   } else {
-    filledmat[,4] = apply(filledmat, 1, smoother_adj, datamat = filledmat)
+    filledmat$smoothed = apply(filledmat, 1, smoother_adj, datamat = filledmat)
   }
-
-  filledmat[,3] = round(filledmat[,3],3)
-  filledmat[,4] = round(filledmat[,4],3)
-
-  colnames(filledmat) = c("absc", "ord", "value", "svalue")
+  
+  #print("after smoother:")
+  #print(filledmat$score)
+  filledmat$score = round(as.double(filledmat$score),3)
+  filledmat$smoothed = round(as.double(filledmat$smoothed),3)
+  #print(colnames(filledmat))
+  #print(filledmat)
 
   return(filledmat)
 }
@@ -267,11 +293,11 @@ for (file in (1:length(files))) {
   
   # Call the function that will actually create the energy matrix.
   val_frame = comp_val_matrix(Data)
-  
+  print(colnames(val_frame))
   # write the data frame in a file.
   filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")
   filename2 = paste("../matrices/", name_prefix, "_matrix.txt", sep = "")
   #cat("file name: ", filename, "\n")
-  write.table(val_frame[,c(1,2,4)], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
-  write.table(val_frame[,c(1,2,3)], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
+  write.table(val_frame[,c("absc","ord", "smoothed", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
+  write.table(val_frame[,c("absc","ord", "score", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
 }
