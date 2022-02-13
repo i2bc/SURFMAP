@@ -1,3 +1,0 @@
-A  2  ASP
-A  3  GLN
-A  6  GLU
