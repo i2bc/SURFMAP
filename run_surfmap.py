@@ -4,7 +4,7 @@
 import argparse, os, subprocess
 
 DOCKER_REPOSITORY = 'nchenche/'
-IMAGE_TAG = 'surfmap:v1.1'
+IMAGE_TAG = 'surfmap:v1.2'
 DOCKER_IMAGE = DOCKER_REPOSITORY + IMAGE_TAG
 
 OPTIONAL_ARGUMENTS = {
