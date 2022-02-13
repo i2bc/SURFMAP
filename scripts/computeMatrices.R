@@ -151,13 +151,13 @@ findproj <- function(row) {
 
 # Create an energy matrix.
 comp_val_matrix <- function(data) {
-  data[,1] = as.integer(data[,1])
-  data[,2] = as.integer(data[,2])
+  data$phi = as.integer(data$absc)
+  data$theta = as.integer(data$ord)
   
   blankmat <- matrix(nrow = 360/width*180/height, ncol = 2)
   blankmat[,1] <- rep(seq(0+width,360,by=width),each = 180/width) 
   blankmat[,2] <- rep(seq(0+height,180,by=height),360/width) 
-  colnames(blankmat) = c("abscissa", "ordinate")
+  colnames(blankmat) = c("absc", "ord")
 
   # Creating matrix with averaged values in each pixels
   # First splitting input dataframe into list of dataframe per abscissa range.
@@ -179,9 +179,9 @@ comp_val_matrix <- function(data) {
   }
   datameancells = unlist(datameancells, recursive = FALSE)
   datameancells = do.call(rbind, datameancells)
-    
+  
   # Creating the matrix.
-  filledmat = merge(as.data.frame(blankmat), as.data.frame(datameancells), by=c("abscissa", "ordinate"), all = TRUE)
+  filledmat = merge(as.data.frame(blankmat), as.data.frame(datameancells), by=c("absc", "ord"), all = TRUE)
 
   # Finding all pixels outside projection and attributing a value of 100 to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
@@ -196,7 +196,7 @@ comp_val_matrix <- function(data) {
   filledmat[,3] = round(filledmat[,3],3)
   filledmat[,4] = round(filledmat[,4],3)
 
-  colnames(filledmat) = c("abscissa", "ordinate", "value", "svalue")
+  colnames(filledmat) = c("absc", "ord", "value", "svalue")
 
   return(filledmat)
 }
@@ -263,10 +263,10 @@ dir.create("../smoothed_matrices", showWarnings = FALSE)
 for (file in (1:length(files))) {
   #prot_name = substr(files[file], 1, 6)
   name_prefix = gsub("_coord_list.txt", "", files[file]) 
-  data = read.table(files[file], fill = TRUE, header = TRUE)
+  Data = read.table(files[file], fill = TRUE, header = TRUE)
   
   # Call the function that will actually create the energy matrix.
-  val_frame = comp_val_matrix(data)
+  val_frame = comp_val_matrix(Data)
   
   # write the data frame in a file.
   filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")
