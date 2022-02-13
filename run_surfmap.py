@@ -60,11 +60,13 @@ if args.d:
 for opt_args in OPTIONAL_ARGUMENTS:
     if opt_args in args.__dict__ and args.__dict__.get(opt_args):
         docker_template_cmd.append(OPTIONAL_ARGUMENTS[opt_args])
-        if opt_args not in ['nosmooth', 'png', 'keep']:
+        if opt_args not in ['nosmooth', 'png', 'keep', 'res']:
             docker_template_cmd.append(args.__dict__.get(opt_args))
+
+if args.res:
+    docker_template_cmd.append('/input/' + os.path.basename(args.res))
 
 
 # Run docker container of surfmap
 print('\n' + ' '.join(docker_template_cmd) + '\n')
 subprocess.call(docker_template_cmd)
-
