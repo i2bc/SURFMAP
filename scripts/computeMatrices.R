@@ -23,53 +23,22 @@ smoother_adj <- function(row, datamat) {
                   datamat[(abs-2)*stepord+ord+1,3],datamat[(abs-1)*stepord+ord-1,3],
                   datamat[(abs-1)*stepord+ord+1,3],datamat[abs*stepord+ord-1,3],
                   datamat[abs*stepord+ord,3],datamat[abs*stepord+ord+1,3])
-    if (100 %in% adj_cells) { # test if cell is in the border of the projection.
+    if (Inf %in% adj_cells) { # test if cell is in the border of the projection.
       # If the cell is in the border of the projection it does not have 8 neighbors. We consider the cell as outside value.
-      smoothed_value = 100
+      smoothed_value = Inf
     } else {
       # Actual smoothing of the cell (ignoring NA values. Rk: for energy maps we considered NA as 0 values).
+      #cat("adj_cells: ", typeof(adj_cells), "\n")
+      #cat("row[3]: ", typeof(row[3]), "\n")
       seq_case = c(row[3], adj_cells)
+      #cat("seq_case: ", typeof(seq_case), "\n")
       smoothed_value = mean(seq_case, na.rm=T)
     }  
   } else {
-    smoothed_value = 100
+    smoothed_value = Inf
   }
 }
 
-
-# Smooth the cell given in argument.
-smoother <- function(row, datamat) {
-
-  abs = as.double(row[1])/width
-  ord = as.double(row[2])/height
-  if ((ord != 1) & (ord != stepord) & (abs != 1) & (abs != stepabs)) {
-    # Selecting adjacent cells in the matrix (rk: does not correspond to adjacent cells in the dataframe)
-    adj_cells = c(datamat[(abs-2)*stepord+ord-1,3],datamat[(abs-2)*stepord+ord,3],
-                  datamat[(abs-2)*stepord+ord+1,3],datamat[(abs-1)*stepord+ord-1,3],
-                  datamat[(abs-1)*stepord+ord+1,3],datamat[abs*stepord+ord-1,3],
-                  datamat[abs*stepord+ord,3],datamat[abs*stepord+ord+1,3])
-    if (100 %in% adj_cells) { # test if cell is in the border of the projection.
-      # If the cell is in the border of the projection it does not have 8 neighbors. We consider the cell as outside value.
-      smoothed_value = 100
-    } else if (is.na(row[3]) == TRUE) { # The only case where the value of the cell is modified. We assign the most seen value in the neighbors.
-      # Actual smoothing of the cell (ignoring NA values. Rk: for energy maps we considered NA as 0 values).
-      seq_case = c(row[3], adj_cells)
-      smoothed_value = mean(seq_case, na.rm=T)
-      # First remove the NA from the vect of value
-      x=adj_cells[!is.na(adj_cells)]
-      mostseen = as.numeric(names(sort(summary(as.factor(x)), decreasing=T)[1]))
-      if (length(mostseen) == 0) {
-        smoothed_value = 0
-      } else {
-        smoothed_value = mostseen
-      }
-    } else {
-      smoothed_value = row[3]
-    }
-  } else {
-    smoothed_value = 100
-  }
-}
 
 # Smooth the cell given in argument. version non smoothed (ie cell value is not averaged with neighbouring cells)
 smoother_raw <- function(row, datamat) {
@@ -82,9 +51,9 @@ smoother_raw <- function(row, datamat) {
                   datamat[(abs-2)*stepord+ord+1,3],datamat[(abs-1)*stepord+ord-1,3],
                   datamat[(abs-1)*stepord+ord+1,3],datamat[abs*stepord+ord-1,3],
                   datamat[abs*stepord+ord,3],datamat[abs*stepord+ord+1,3])
-    if (100 %in% adj_cells) { # test if cell is in the border of the projection.
+    if (Inf %in% adj_cells) { # test if cell is in the border of the projection.
       # If the cell is in the border of the projection it does not have 8 neighbors. We consider the cell as outside value.
-      smoothed_value = 100
+      smoothed_value = Inf
     } else if (is.na(row[3]) == TRUE) { # The only case where the value of the cell is modified. We assign the most seen value in the neighbors.
       # Actual smoothing of the cell (ignoring NA values. Rk: for energy maps we considered NA as 0 values).
       seq_case = c(row[3], adj_cells)
@@ -101,12 +70,12 @@ smoother_raw <- function(row, datamat) {
       smoothed_value = row[3]
     }
   } else {
-    smoothed_value = 100
+    smoothed_value = Inf
   }
 }
 
 
-# Function to find if cell is inside or outside the projection. If cell is outside the projection a value of 100 is assigned to it.
+# Function to find if cell is inside or outside the projection. If cell is outside the projection a value of Inf is assigned to it.
 findproj <- function(row) {
   xcoord = as.double(row[1])
   ycoord = as.double(row[2])
@@ -142,10 +111,10 @@ findproj <- function(row) {
   # If phi is not included in (-pi, pi) that means the cell is outside the projection. 
   # (phi E (-pi,pi) and theta E (-pi/2, pi/2) is sufficient to describe all possible coordinate on a sphere). Here theta always belongs to (-pi/2,pi/2) so we only test phi.
   if (findInterval(phi, c(-pi, pi)) != 1){
-    row[3] = 100
+    row[3] = Inf
   }
 
-  return(row[3])
+  return(as.double(row[3]))
 }
 
 
@@ -185,44 +154,32 @@ comp_val_matrix <- function(Data) {
                            nord = names(x);
                            lapply(nord, function(y) {
                                       listres = paste(x[[y]][,5], x[[y]][,4], x[[y]][,6], sep = "_");
-                                      #print("listres nounique:")
-                                      #print(listres);
                                       listres=unique(listres); 
-                                      #print("listres unique:");
-                                      #print(listres)
-                                      #print(paste(listres, collapse = ", ")); 
                                       x[[y]][,3]=paste(listres, collapse = ", "); 
                                       return(x[[y]][1,c(1:3)])})})
   datalistcells = unlist(reslistcells, recursive = FALSE)
   datalistcells = do.call(rbind, datalistcells)
+  datalistcells$absc = as.integer(datalistcells$absc)
+  datalistcells$ord = as.integer(datalistcells$ord)
   colnames(datalistcells)[3] = "residues"
 
   datacells = merge(as.data.frame(datameancells), as.data.frame(datalistcells), by=c("absc", "ord"))
-  print(colnames(datacells))
-  print(datacells[1:5,])
-  
+
   # Creating the matrix.
   filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
-  print(filledmat[510:515,])
     
-  # Finding all pixels outside projection and attributing a value of 100 to differenciate with residues inside projection.
+  # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
-  print("after findproj:")
-  print(filledmat[510:515,])
   
   # Smoothe the matrix.
   if (opt$nosmooth | opt$discrete) {
-    filledmat$smoothed = apply(filledmat, 1, smoother_raw, datamat = filledmat)
+    filledmat$smoothed = apply(filledmat[,c("absc", "ord", "score")], 1, smoother_raw, datamat = filledmat)
   } else {
-    filledmat$smoothed = apply(filledmat, 1, smoother_adj, datamat = filledmat)
+    filledmat$smoothed = apply(filledmat[,c("absc", "ord", "score")], 1, smoother_adj, datamat = filledmat)
   }
   
-  #print("after smoother:")
-  #print(filledmat$score)
   filledmat$score = round(as.double(filledmat$score),3)
   filledmat$smoothed = round(as.double(filledmat$smoothed),3)
-  #print(colnames(filledmat))
-  #print(filledmat)
 
   return(filledmat)
 }
@@ -294,10 +251,10 @@ for (file in (1:length(files))) {
   # Call the function that will actually create the energy matrix.
   val_frame = comp_val_matrix(Data)
   print(colnames(val_frame))
+
   # write the data frame in a file.
   filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")
   filename2 = paste("../matrices/", name_prefix, "_matrix.txt", sep = "")
-  #cat("file name: ", filename, "\n")
   write.table(val_frame[,c("absc","ord", "smoothed", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
   write.table(val_frame[,c("absc","ord", "score", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
 }
