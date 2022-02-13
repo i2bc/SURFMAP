@@ -43,6 +43,7 @@ energy_matrix <- function(Data, nb_file) {
   dataf = do.call(rbind,datasp4)
   
   datafinal = dataf[order(dataf[,1], dataf[,2]),]
+  colnames(datafinal) = c("absc", "ord", "score", "resnb", "restype", "chain", "index_sol")
   print(datafinal[1:3,])
   return(datafinal)
 }
