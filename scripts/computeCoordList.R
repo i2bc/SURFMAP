@@ -21,19 +21,19 @@ library(data.table)
 # - theta/phi coordinates of the square
 # - normalized (compared to lowest energy in the data frame) mean energy
 
-energy_matrix <- function(data, nb_file) {
+energy_matrix <- function(Data, nb_file) {
   # Determine number of squares ie number of element of the vector which will 
   # serve for the energy matrix. 
   # It is necessary that : 360 % quadrillage1 = 0 & 180 % quadrillage2 = 0
-  data[,6] <- seq(1, nrow(data), by = 1)
-  corres = data[,c(4,5,6)]
-  data <- data[,-c(4,5)]
+  Data$index_sol <- seq(1, nrow(Data), by = 1)
+  corres = Data[,c("resnb", "restype", "chain", "index_sol")]
+  Data[!(colnames(Data) %in% c("resnb", "restype", "chain"))]
   seqcol = seq(-180,180,by=width)
   seqrow = seq(-90,90,by=height)
   
   # First using sapply to gather all coordinate belonging to a same pixel. Result is a list of list of dataframe/
   # First level list contain list of dataframe of elem belonging to a same column (for ex. all pixel of abscissa coords belonging to (80,90)). These element are grouped into dataframes.
-  datasp1 = split(data,findInterval(data[,1], seqcol))
+  datasp1 = split(Data,findInterval(Data[,1], seqcol))
   nabs <- names(datasp1)
   datasp1 = lapply(nabs, function(x) {datasp1[[x]][,1] = as.integer(x)*width; return(datasp1[[x]])})
   datasp2 = lapply(datasp1, function(x) split(x, findInterval(x[,2], seqrow)))
@@ -41,20 +41,9 @@ energy_matrix <- function(data, nb_file) {
                    lapply(nord, function(y) {x[[y]][,2] = as.integer(y)*height; return(x[[y]])})})
   datasp4 = unlist(datasp3, recursive = FALSE)
   dataf = do.call(rbind,datasp4)
-
-  colnames(dataf)[1] = "abscissa"
-  colnames(dataf)[2] = "ordinate"
-  colnames(dataf)[3] = "score"
-  colnames(dataf)[4] = "index_sol"
-
-  colnames(corres)[1] = "resnb"
-  colnames(corres)[2] = "restype"
-  colnames(corres)[3] = "index_sol"
-
-  dataf = merge(dataf, corres, "index_sol")
-  datafinal = dataf[,c(2,3,4,5,6,1)]
-  datafinal = datafinal[order(datafinal[,1], datafinal[,2]),]
-
+  
+  datafinal = dataf[order(dataf[,1], dataf[,2]),]
+  print(datafinal[1:3,])
   return(datafinal)
 }
 
@@ -109,23 +98,25 @@ dir.create("coord_lists", showWarnings = FALSE)
 for (file in (1:length(files))) {
   name_prefix = gsub("_partlist.out", "", files[file]) 
   #cat(name_prefix, "\n")
-  data = read.table(files[file], fill = TRUE, header = FALSE)
+  Data = read.table(files[file], fill = TRUE, header = TRUE)
+  #colnames(Data)
+  #print(Data[1:3,])
   
-  data[,1] = (data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
-  data[,1] = data[,1]-pi # Now phi values are included in [-pi, pi]
+  Data[,1] = (Data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
+  Data[,1] = Data[,1]-pi # Now phi values are included in [-pi, pi]
 
   # sinusoidal projection
   # If theta belongs to [0, pi], phiproj=phi*sin(theta),
   # If theta belongs to [-pi/2, pi/2], phiproj=phi*cos(theta)
-  data[,1] = data[,1]*sin(data[,2]) 
-  data[,1] = data[,1]*180/pi
-  data[,2] = data[,2]*180/pi
-  data[,2] = 90 - data[,2]
-  data[,1] = round(data[,1], 3)
-  data[,2] = round(data[,2], 3)
+  Data[,1] = Data[,1]*sin(Data[,2]) 
+  Data[,1] = Data[,1]*180/pi
+  Data[,2] = Data[,2]*180/pi
+  Data[,2] = 90 - Data[,2]
+  Data[,1] = round(Data[,1], 3)
+  Data[,2] = round(Data[,2], 3)
   
   # Call the function that will actually create the energy matrix.
-  energy_frame = energy_matrix(data, file)
+  energy_frame = energy_matrix(Data, file)
   
   # write the data frame in a file.
   #filename = paste0("coord_lists/", name_prefix, "_s", width, "_coord_list.txt")
