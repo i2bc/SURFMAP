@@ -91,6 +91,7 @@ def main():
     #------------------------------------------------------
 
     out = open(outdir + "%s_%s_partlist.out"%(pdbName.split(".")[0],tomap),"w")
+    out.write("phi\ttheta\tvalue\tresnb\trestype\tchain\n")
 
     if tomap == "bfactor":
         dPDB = Structure.parsePDBMultiChains(pdb, bfactor = True)
