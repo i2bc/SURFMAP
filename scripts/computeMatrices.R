@@ -170,16 +170,18 @@ comp_val_matrix <- function(Data) {
     
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
+  cat("\ntype filledmat:\n")
+  print(colnames(filledmat))
   
   # Smoothe the matrix.
   if (opt$nosmooth | opt$discrete) {
-    filledmat$smoothed = apply(filledmat[,c("absc", "ord", "score")], 1, smoother_raw, datamat = filledmat)
+    filledmat$svalue = apply(filledmat[,c("absc", "ord", "value")], 1, smoother_raw, datamat = filledmat)
   } else {
-    filledmat$smoothed = apply(filledmat[,c("absc", "ord", "score")], 1, smoother_adj, datamat = filledmat)
+    filledmat$svalue = apply(filledmat[,c("absc", "ord", "value")], 1, smoother_adj, datamat = filledmat)
   }
   
-  filledmat$score = round(as.double(filledmat$score),3)
-  filledmat$smoothed = round(as.double(filledmat$smoothed),3)
+  filledmat$value = round(as.double(filledmat$value),3)
+  filledmat$svalue = round(as.double(filledmat$svalue),3)
 
   return(filledmat)
 }
@@ -255,6 +257,6 @@ for (file in (1:length(files))) {
   # write the data frame in a file.
   filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")
   filename2 = paste("../matrices/", name_prefix, "_matrix.txt", sep = "")
-  write.table(val_frame[,c("absc","ord", "smoothed", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
-  write.table(val_frame[,c("absc","ord", "score", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
+  write.table(val_frame[,c("absc","ord", "svalue", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
+  write.table(val_frame[,c("absc","ord", "value", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
 }
