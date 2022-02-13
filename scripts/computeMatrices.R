@@ -28,10 +28,7 @@ smoother_adj <- function(row, datamat) {
       smoothed_value = Inf
     } else {
       # Actual smoothing of the cell (ignoring NA values. Rk: for energy maps we considered NA as 0 values).
-      #cat("adj_cells: ", typeof(adj_cells), "\n")
-      #cat("row[3]: ", typeof(row[3]), "\n")
       seq_case = c(row[3], adj_cells)
-      #cat("seq_case: ", typeof(seq_case), "\n")
       smoothed_value = mean(seq_case, na.rm=T)
     }  
   } else {
@@ -170,8 +167,6 @@ comp_val_matrix <- function(Data) {
     
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
   filledmat[,3] = apply(filledmat, 1, findproj)
-  cat("\ntype filledmat:\n")
-  print(colnames(filledmat))
   
   # Smoothe the matrix.
   if (opt$nosmooth | opt$discrete) {
@@ -252,7 +247,6 @@ for (file in (1:length(files))) {
   
   # Call the function that will actually create the energy matrix.
   val_frame = comp_val_matrix(Data)
-  print(colnames(val_frame))
 
   # write the data frame in a file.
   filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")

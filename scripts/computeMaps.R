@@ -221,11 +221,7 @@ for (file in (1:length(files))) {
   # Read the current global file.
   data_matrix = read.table(files[file], fill = TRUE, header = TRUE, sep = "\t")
   data_matrix[is.na(data_matrix)] <- 0
-  print(colnames(data_matrix))
-
-  print(sapply(data_matrix, class))
   val_matrix = matrix(as.double(data_matrix[,3]),ncol = stepabs, nrow = stepord, byrow=FALSE)
-  #print(data_matrix[,3])
 
   # The min value of the matrix correspond to the lowest energy value. Used for the scale
   # in the plot, which correspond to (0,-minE).
