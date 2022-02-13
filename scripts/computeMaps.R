@@ -229,7 +229,7 @@ for (file in (1:length(files))) {
 
   # The min value of the matrix correspond to the lowest energy value. Used for the scale
   # in the plot, which correspond to (0,-minE).
-  proj=which(val_matrix!=100)
+  proj=which(val_matrix!=Inf)
 
   if (opt$electrostatics == TRUE) { # electrostatics scale
     main_scale = "electrostatic potential distribution scale"
