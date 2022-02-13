@@ -168,7 +168,7 @@ def main():
         elif tomap == "wimley_white" :
             scalevalue = Structure.returnPropensity(dPDB[chainid][resid]["resname"], distmini, scale = "wimley_white")
      
-        out.write("{:8f} {:8f} {:3f} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"]))
+        out.write("{:8f} {:8f} {:3f} {:8} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"], chainid))
     out.close()
 
 
