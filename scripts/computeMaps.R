@@ -262,7 +262,9 @@ for (file in (1:length(files))) {
     range=abs(minval-maxval)
     scale_main = paste0("hydrophobicity","\n","Kyte-Doolittle")
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    colorScale <- colorRampPalette(c("dodgerblue2", "white", "sienna"))(1000)
+    # colorScale <- colorRampPalette(c("steelblue2", "white", "sienna"))(1000)
+    
     scale_at = c(-4.5,-3,-1.5,0,1.5,3,4.5)
     val_matrix = round(val_matrix,digits=2)
 
@@ -274,7 +276,7 @@ for (file in (1:length(files))) {
     range=abs(minval-maxval)
     scale_main = paste0("hydrophobicity","\n","Wimley-White")
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    colorScale <- colorRampPalette(c("dodgerblue2", "white", "sienna"))(1000)
     scale_at = c(2.23,2.85,3.5,4.15,4.8,5.45,6.1)
 
   } else if (opt$circular_variance == TRUE) { # circular variance scale
