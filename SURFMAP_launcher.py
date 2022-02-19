@@ -59,6 +59,17 @@ def main():
     resfile = args.res
     ppttomap = args.tomap
     
+    pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
+    pdbname = os.path.basename(pdbarg)
+    curdir = os.getcwd()
+    absdir = os.path.dirname(os.path.abspath(__file__))
+    surftool = absdir+"/tools/SurfmapTools.py"
+    shelltool = absdir+"/scripts/compute_shell.sh"
+    coordtool = absdir+"/scripts/computeCoordList.R"
+    mattool = absdir+"/scripts/computeMatrices.R"
+    maptool = absdir+"/scripts/computeMaps.R"
+
+    
     if not os.path.isfile(pdbarg):
         print("pdb file not found. It seems that the input pdb file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
         exit()
@@ -122,16 +133,6 @@ def main():
     except:
         pass
    
-    pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
-    pdbname = os.path.basename(pdbarg)
-    curdir = os.getcwd()
-    absdir = os.path.dirname(os.path.abspath(__file__))
-    surftool = absdir+"/tools/SurfmapTools.py"
-    shelltool = absdir+"/scripts/compute_shell.sh"
-    coordtool = absdir+"/scripts/computeCoordList.R"
-    mattool = absdir+"/scripts/computeMatrices.R"
-    maptool = absdir+"/scripts/computeMaps.R"
-
 
     #============================================================
     # Part 1: Generation of shell around protein surface.
