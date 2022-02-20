@@ -251,8 +251,9 @@ for (file in (1:length(files))) {
     scale_main = "stickiness"
     main_title = paste0("stickiness map\n", pdb_id)
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("#015c52", "#faf4e0", "#633906"))(1000)
     # colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    colorScale <- colorRampPalette(c("royalblue3", "white", "darkgreen"))(1000)
+    
     scale_at = c(-1.273,-0.85,-0.43,0,0.43,0.85,1.273)
 
   } else if (opt$kyte_doolittle == TRUE) { # hydrophobicity scale
@@ -263,9 +264,10 @@ for (file in (1:length(files))) {
     range=abs(minval-maxval)
     scale_main = paste0("hydrophobicity","\n","Kyte-Doolittle")
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("#015c52", "#faf4e0", "#633906"))(1000)
-    # colorScale <- colorRampPalette(c("#248981", "#faf4e0", "#7e4809"))(1000)
     # colorScale <- colorRampPalette(c("dodgerblue2", "white", "sienna"))(1000)
+    colorScale <- colorRampPalette(c("cadetblue", "cadetblue3", "#faf4e0", "orange3", "sienna4"))(1000)
+    # colorScale <- colorRampPalette(c("darkslategray3", "white", "chocolate4"))(1000)
+    
     # colorScale <- colorRampPalette(c("steelblue2", "white", "sienna"))(1000)
     
     scale_at = c(-4.5,-3,-1.5,0,1.5,3,4.5)
@@ -279,8 +281,7 @@ for (file in (1:length(files))) {
     range=abs(minval-maxval)
     scale_main = paste0("hydrophobicity","\n","Wimley-White")
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("#015c52", "#faf4e0", "#633906"))(1000)
-    # colorScale <- colorRampPalette(c("dodgerblue2", "white", "sienna"))(1000)
+    colorScale <- colorRampPalette(c("cadetblue", "cadetblue3", "#faf4e0", "orange3", "sienna4"))(1000)
     scale_at = c(2.23,2.85,3.5,4.15,4.8,5.45,6.1)
 
   } else if (opt$circular_variance == TRUE) { # circular variance scale
@@ -291,8 +292,9 @@ for (file in (1:length(files))) {
     range=abs(minval-maxval)
     scale_main = paste0("circular","\n","variance")
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    colorScale <- colorRampPalette(c("#be28c9", "white", "#384543"))(1000)
     # colorScale <- colorRampPalette(c("red", "white", "blue"))(1000)
+    colorScale <- colorRampPalette(c("black", "white", "blue"))(1000)
+    
     scale_at = c(0,1/6,2/6,3/6,4/6,5/6,1)
 
   } else if (opt$bfactor == TRUE) { # b-factor scale
@@ -305,8 +307,10 @@ for (file in (1:length(files))) {
 
     scale_main = "b-factor"
     colors = c(seq(minval,minval+range*1/3,length=334),seq(minval+range*1/3,minval+range*2/3,length=333),seq(minval+range*2/3,maxval,length=334))
-    #colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
-    colorScale <- colorRampPalette(c("red", "white", "blue"))(1000)
+    # colorScale <- colorRampPalette(c("blue", "white", "red"))(1000)
+    colorScale <- colorRampPalette(c("chocolate3", "white", "darkblue"))(1000)
+    
+    # colorScale <- colorRampPalette(c("white", "red3"))(1000)
     scale_at = c(ceiling(minval*100000)/100000, round(maxval-range*5/6,5), round(maxval-range*4/6,5), round(maxval-range*3/6,5), round(maxval-range*2/6,5), round(maxval-range*1/6,5), floor(maxval*100000)/100000)
   
   } else if (!is.na(opt$discrete)) { # b-factor scale
