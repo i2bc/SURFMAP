@@ -9,7 +9,7 @@ def show_copyrights():
 SURFMAP:    Projection of protein surface features on 2D map
 Authors:    Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier,
             Simon Gosset, Anne Lopes
-Version:    1.1
+Version:    1.3 (latest)
 Copyright (c) 2021, H. Schweke
 
 
