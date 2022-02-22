@@ -1,0 +1,17 @@
+body > h1:nth-child(1) {
+    text-align: center;
+}
+
+#svg-container {
+    text-align: center;
+}
+
+svg {
+    /* border: 1px solid black; */
+}
+
+#tooltip {
+    width: 200px;
+    font-size: 14px;
+    text-align: center;
+}

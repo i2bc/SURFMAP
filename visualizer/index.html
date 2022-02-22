@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surfmap Interctive</title>
+
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="static/js/package/dist/d3.min.js"></script>
+    <script src="static/node_modules/ngl/dist/ngl.js"></script>
+   
+    
+</head>
+<body>
+    
+    <h1>Surfmap with d3js</h1>
+
+    <form enctype="multipart/form-data">
+        <input id="upload" type=file accept="*" name="files[]" size=30>
+    </form>
+
+
+    <div id='svg-container'></div>
+    <div id="viewport" style="width:400px; height:300px;"></div>
+
+
+    <script src="static/js/scripts_d3.js"></script>
+    <!-- <script src="static/js/jq.js"></script> -->
+    <!-- <script src="static/js/script_ngl.js"></script> -->
+        
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+
+$('input[type=file]').change(function () {
+    file = this.files[0];
+
+	if(file){
+		var reader = new FileReader();
+        var dataset;
+		reader.onload = function(e) {
+            surfmap(reader.result)
+		}
+		reader.readAsText(file);
+	}
+
+});
+
+var _surfmap = function(data) {
+    console.log(data);
+}
+
+
+var surfmap = function(data) {
+
+    // url_data = "./data/1g3n_A_stickiness_smoothed_matrix.txt"
+    // url_data = "output_SURFMAP_1g3n_A_stickiness/coord_lists/1g3n_A_stickiness_coord_list.txt"
+    var dataset = d3.tsvParse(data);
+
+    var scale_factor = 2;
+    var width = 360*scale_factor;
+    var height = 180*scale_factor;
+    var pixel_size = 5; 
+
+    //Create SVG element
+    var svg = d3.select("#svg-container ")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    promise.then(function(data) {
+        console.log(data)
+        var minVal = d3.min(data.map(e => parseFloat(e.svalue)))
+        var maxVal = d3.max(data.map(function(ele) {
+            if (ele.svalue != "100") {
+                return parseFloat(ele.svalue)
+            }
+        }));
+
+        var palette_color = ["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]
+
+        // var colors = d3.scaleQuantize()
+        //     .domain([minVal ,maxVal])
+        //     .range(palette_color);
+
+        var colors = d3.scaleLinear()
+            .domain([minVal, 0, maxVal])
+            .range(["blue", "white", "red"]);
+
+
+        var rects = svg.selectAll(".rects")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("y", d => (d.ord-pixel_size)*scale_factor)
+            .attr("x", d => (d.absc-pixel_size)*scale_factor)
+            .attr("height", pixel_size*scale_factor)
+            .attr("width", pixel_size*scale_factor)
+            .attr("fill", function(d) {
+                if (d.svalue != '100') return colors(d.svalue)
+                else return 'white';
+            })
+            .attr("stroke", "gray");
+
+
+        rects.on('click', function() {
+            console.log(this.__data__);
+        })
+        // console.log(minVal, maxVal)
+    });
+};
