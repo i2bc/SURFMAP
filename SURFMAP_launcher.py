@@ -45,6 +45,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
+    parser.add_argument("-proj", type = str, required = False, choices = set(("sinusoidal", "mollweide")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; hammer")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
@@ -69,6 +70,10 @@ def main():
     mattool = absdir+"/scripts/computeMatrices.R"
     maptool = absdir+"/scripts/computeMaps.R"
 
+    if args.proj:
+        proj = args.proj
+    else:
+        proj = "sinusoidal"
     
     if not os.path.isfile(pdbarg):
         print("pdb file not found. It seems that the input pdb file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
@@ -208,7 +213,7 @@ def main():
         # Part 3: computing phi theta list
 
         mapfile = "%s_%s_partlist.out"%(pdbname.split(".")[0], tomap)
-        cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize)]
+        cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize), "-P", proj]
         subprocess.call(cmdlist)
 
         #=============================================================
@@ -217,14 +222,14 @@ def main():
         coordfile = "%s_%s_coord_list.txt"%(pdbname.split(".")[0], tomap)
         if args.nosmooth:
             if BS:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete"]
+                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
             else:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--nosmooth"]
+                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--nosmooth", "-P", proj]
         else:
             if BS:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete"]
+                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
             else:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize)]
+                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
         subprocess.call(cmdmat)
         
 
@@ -242,25 +247,25 @@ def main():
         if args.png:
             if args.coords:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
             else:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", pdb_id, "-P", proj]
         else:
             if args.coords:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
             else:
                 if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id]
+                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
         subprocess.call(cmdmap)
     
         if not args.keep: # Deleting all intermediate files and directories
