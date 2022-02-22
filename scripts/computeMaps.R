@@ -124,7 +124,9 @@ option_list = list(
   make_option(c("--whiteblue"), action="store_true", default = "FALSE",
               help="use white to blue scale", metavar="character"),
   make_option(c("--discrete"), action="store_true", default = "FALSE",
-              help="use discrete scale (up to 10 colors)", metavar="character")
+              help="use discrete scale (up to 10 colors)", metavar="character"),
+  make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
+              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
