@@ -3,6 +3,7 @@ rm(list=ls())
 
 ###################  LIBRARIES   ##########################
 
+library(mapproj)
 library(optparse)
 library(data.table)
 
@@ -69,6 +70,8 @@ option_list = list(
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
+projection <<- opt$projection
+cat("opt$P: ", opt$projection, "\n")
 
 
 if (!is.na(opt$file)) {
@@ -100,45 +103,39 @@ dir.create("coord_lists", showWarnings = FALSE)
 
 for (file in (1:length(files))) {
   name_prefix = gsub("_partlist.out", "", files[file]) 
-  #cat(name_prefix, "\n")
   Data = read.table(files[file], fill = TRUE, header = TRUE)
-  #colnames(Data)
-  #print(Data[1:3,])
   
   Data[,1] = (Data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
   Data[,1] = Data[,1]-pi # Now phi values are included in [-pi, pi]
   print(dim(Data))
   
-  ## sinusoidal projection
-  ## If theta belongs to [0, pi], phiproj=phi*sin(theta),
-  ## If theta belongs to [-pi/2, pi/2], phiproj=phi*cos(theta)
-  Dataproj = Data
-  Dataproj[,1] = Dataproj[,1]*sin(Data[,2])
-  Dataproj[,1] = Dataproj[,1]*180/pi
-  Dataproj[,2] = Dataproj[,2]*180/pi
-  Dataproj[,2] = 90 - Dataproj[,2]
-  Dataproj[,1] = round(Dataproj[,1], 3)
-  Dataproj[,2] = round(Dataproj[,2], 3)
-  
-  
-  # # cylindrical projection
-  # Dataproj = Data
-  # Dataproj[,1] = Dataproj[,1]*sin(Data[,2])
-  # Dataproj[,1] = Dataproj[,1]*180/pi
-  # Dataproj[,2] = Dataproj[,2]*180/pi
-  # Dataproj[,2] = 90 - Dataproj[,2]
-  # Dataproj[,1] = round(Dataproj[,1], 3)
-  # Dataproj[,2] = round(Dataproj[,2], 3)
-  
-  # library(mapproj)
-  # test = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, projection="sinusoidal", parameters=NULL, orientation=NULL)
-  # test = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, projection="mollweide", parameters=NULL, orientation=NULL)
-  # test = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, projection="cylindrical", parameters=NULL, orientation=NULL)
-  
-  # If proj = Mollweide we multiply to be in the same reference frame [-180, 180] and [-90, 90]
-  # Dataproj = Data
-  # Dataproj[,1] = test$x*180/pi*1.57
-  # Dataproj[,2] = -test$y*180/pi*1.57
+
+  if (projection == "sinusoidal"){
+    ## sinusoidal projection
+    ## If theta belongs to [0, pi], phiproj=phi*sin(theta),
+    ## If theta belongs to [-pi/2, pi/2], phiproj=phi*cos(theta)
+    Dataproj = Data
+    Dataproj[,1] = Dataproj[,1]*sin(Data[,2])
+    Dataproj[,1] = Dataproj[,1]*180/pi
+    Dataproj[,2] = Dataproj[,2]*180/pi
+    Dataproj[,2] = 90 - Dataproj[,2]
+    Dataproj[,1] = round(Dataproj[,1], 3)
+    Dataproj[,2] = round(Dataproj[,2], 3)
+  } else {
+    proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
+                      projection=projection, parameters=NULL, orientation=NULL)
+    Dataproj = Data
+    Dataproj[,1] = proj$x*180/pi
+    Dataproj[,2] = proj$y*180/pi
+    
+    print(max(Dataproj$phi))
+    print(max(Data[,1]*180/pi))
+    proportion1 = max(Dataproj$phi) / max(Data[,1]*180/pi)
+    proportion2 = max(Dataproj$theta) / max(Data[,2]*180/pi-90)
+    
+    Dataproj[,1] = Dataproj[,1]/proportion1
+    Dataproj[,2] = Dataproj[,2]/proportion2
+  }
 
   # Call the function that will actually create the energy matrix.
   energy_frame = energy_matrix(Dataproj, file)

@@ -138,7 +138,7 @@ findborders <- function(Data) {
   
   # dummy projection
   blankproj = mapproject(blankmat[,1], blankmat[,2],
-                        projection="sinusoidal", parameters=NULL, orientation=NULL)
+                        projection=projection, parameters=NULL, orientation=NULL)
   blankproj = data.frame(absc = blankproj$x*180/pi,
                          ord = blankproj$y*180/pi,
                          val = blankmat[,3])
@@ -231,8 +231,11 @@ comp_val_matrix <- function(Data) {
   filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
     
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
-  # filledmat[,3] = apply(filledmat, 1, findproj)
-  filledmat[,3] = findborders(filledmat)
+  if (projection == "sinusoidal"){
+    filledmat[,3] = apply(filledmat, 1, findproj)
+  } else {
+    filledmat[,3] = findborders(filledmat)
+  }
   
   
   # Smoothe the matrix.
@@ -273,7 +276,9 @@ option_list = list(
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
-projection <<- opt$p
+projection <<- opt$projection
+
+print(projection)
 
 # Testing if input is a file, a directory, or neither.
 if (file_test("-f", opt$input)) {
