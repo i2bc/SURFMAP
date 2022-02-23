@@ -128,13 +128,6 @@ findborders <- function(Data) {
   blankmat[,2] <- rep(seq(-90+step,90,by=step),360/step) 
   blankmat[,3] = 1
   colnames(blankmat) = c("absc", "ord", "val")
-  # plot(blankmat[,1], blankmat[,2], pch = 19, cex = 0.1)
-  
-  # blankmat <- matrix(nrow = 361/step*181/step, ncol = 3)
-  # blankmat[,1] <- rep(seq(-180,180,by=step),each = 181/step) 
-  # blankmat[,2] <- rep(seq(-90,90,by=step),361/step) 
-  # blankmat[,3] = 1
-  # colnames(blankmat) = c("absc", "ord", "val")
   
   # dummy projection
   blankproj = mapproject(blankmat[,1], blankmat[,2],
@@ -142,38 +135,19 @@ findborders <- function(Data) {
   blankproj = data.frame(absc = blankproj$x*180/pi,
                          ord = blankproj$y*180/pi,
                          val = blankmat[,3])
-  
-  # plot(testsin$absc, testsin$ord, pch = 19, cex = 0.1)
-  # summary(blankmat)
-  
+
   # If scaling is not good
   proportion1 = summary(blankproj$absc)[6] / summary(blankmat[,1])[6]
   proportion2 = summary(blankproj$ord)[6] / summary(blankmat[,2])[6]
   
-  # sinproj = blankproj
-  # blankproj[,1] = blankproj[,1] / proportion1
-  # blankproj[,2] = blankproj[,2] / proportion2
-  # summary(blankproj)
-  # plot(sinproj$absc, sinproj$ord, col = "royalblue", pch = 19, cex = 0.1)
-  
-  blankproj[,1] = ceiling(blankproj[,1] / (proportion1*5))*5+180
-  blankproj[,2] = ceiling(blankproj[,2] / (proportion2*5))*5+90
-  
-  # blankproj[,1] = round(blankproj[,1] / (proportion1*5),0)*5+180
-  # blankproj[,2] = round(blankproj[,2] / (proportion2*5),0)*5+90
-  
-  # blankproj[,1] = floor(blankproj[,1] / (proportion1*5))*5+180
-  # blankproj[,2] = floor(blankproj[,2] / (proportion2*5))*5+90
+  blankproj[,1] = ceiling(blankproj[,1] / (proportion1*width))*width+180
+  blankproj[,2] = ceiling(blankproj[,2] / (proportion2*height))*height+90
   
   summary(blankproj)
   plot(blankproj$absc, blankproj$ord, col = "red", pch = 19, cex = 0.1)
   
   inside_vals = paste(Data[,1], Data[,2]) %in% paste(blankproj[,1], blankproj[,2])
   Data$value[!inside_vals] = Inf
-
-  # print(inside_vals)
-  # print(paste(Data[,1], Data[,2])[1:5])
-  # print(paste(blankproj[,1], blankproj[,2])[1:5])
   
   return(Data$value)
 }
