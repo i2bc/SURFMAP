@@ -45,7 +45,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
-    parser.add_argument("-proj", type = str, required = False, choices = set(("sinusoidal", "mollweide")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; hammer")
+    parser.add_argument("-proj", type = str, required = False, choices = set(("sinusoidal", "mollweide", "aitoff")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; hammer")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
@@ -214,6 +214,7 @@ def main():
 
         mapfile = "%s_%s_partlist.out"%(pdbname.split(".")[0], tomap)
         cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize), "-P", proj]
+        print(cmdlist)
         subprocess.call(cmdlist)
 
         #=============================================================
@@ -230,6 +231,7 @@ def main():
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
             else:
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
+        print(cmdmat)
         subprocess.call(cmdmat)
         
 
@@ -297,6 +299,7 @@ def main():
     outlog.write("grid resolution: " + str(int(360/cellsize)) + "*" + str(int(180/cellsize)) + "\n")
     outlog.write("MSMS radius: " + rad + "\n")
     outlog.write("property(ies) mapped: " + str(listtomap).strip('[]')+ "\n")
+    outlog.write("projection used: " + proj + "\n")
     if args.nosmooth:
         outlog.write("smoothing: off")
     else:
