@@ -116,12 +116,11 @@ findproj <- function(row) {
 }
 
 
-
 findborders <- function(Data) {
   
   # First create blank matrix -> creates dummy projection -> find borders
   # step = 2
-  step = 1
+  step = 0.5
   
   blankmat <- matrix(nrow = 360/step*180/step, ncol = 3)
   blankmat[,1] <- rep(seq(-180+step,180,by=step),each = 180/step) 
@@ -129,9 +128,24 @@ findborders <- function(Data) {
   blankmat[,3] = 1
   colnames(blankmat) = c("absc", "ord", "val")
   
+  projlist <- c("aitoff", "albers", "azequalarea", "azequidist", "bicentric",
+                "bonne", "conic", "cylequalarea", "cylindrical", "eisenlohr", "elliptic",
+                "fisheye", "gall", "gilbert", "guyou", "harrison", "hex", "homing",
+                "lagrange", "lambert", "laue", "lune", "mercator", "mollweide", "newyorker",
+                "orthographic", "perspective", "polyconic", "rectangular", "simpleconic",
+                "sinusoidal", "tetra", "trapezoidal")
+  pf <- c(0, 2, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 2, 0, 1, 0, 2, 0, 2,
+          0, 0, 1, 0, 1, 0, 1, 2, 0, 0, 2)
+  
   # dummy projection
-  blankproj = mapproject(blankmat[,1], blankmat[,2],
-                        projection=projection, parameters=NULL, orientation=NULL)
+  if (pf[projlist == projection] == 0){
+    blankproj = mapproject(blankmat[,1], blankmat[,2], projection=projection)
+  } else if (pf[projlist == projection] == 1) {
+    blankproj = mapproject(blankmat[,1], blankmat[,2], projection=projection, 0)
+  } else {
+    blankproj = mapproject(blankmat[,1], blankmat[,2], projection=projection, c(0,0))
+  }
+  
   blankproj = data.frame(absc = blankproj$x*180/pi,
                          ord = blankproj$y*180/pi,
                          val = blankmat[,3])

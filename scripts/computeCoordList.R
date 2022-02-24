@@ -71,8 +71,6 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 projection <<- opt$projection
-cat("opt$P: ", opt$projection, "\n")
-
 
 if (!is.na(opt$file)) {
   path = dirname(opt$file)
@@ -107,9 +105,17 @@ for (file in (1:length(files))) {
   
   Data[,1] = (Data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
   Data[,1] = Data[,1]-pi # Now phi values are included in [-pi, pi]
-  print(dim(Data))
-  
 
+  projlist <- c("aitoff", "albers", "azequalarea", "azequidist", "bicentric",
+                "bonne", "conic", "cylequalarea", "cylindrical", "eisenlohr", "elliptic",
+                "fisheye", "gall", "gilbert", "guyou", "harrison", "hex", "homing",
+                "lagrange", "lambert", "laue", "lune", "mercator", "mollweide", "newyorker",
+                "orthographic", "perspective", "polyconic", "rectangular", "simpleconic",
+                "sinusoidal", "tetra", "trapezoidal")
+  pf <- c(0, 2, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 2, 0, 1, 0, 2, 0, 2,
+          0, 0, 1, 0, 1, 0, 1, 2, 0, 0, 2)
+  
+  
   if (projection == "sinusoidal"){
     ## sinusoidal projection
     ## If theta belongs to [0, pi], phiproj=phi*sin(theta),
@@ -122,11 +128,18 @@ for (file in (1:length(files))) {
     Dataproj[,1] = round(Dataproj[,1], 3)
     Dataproj[,2] = round(Dataproj[,2], 3)
   } else {
-    proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
-                      projection=projection, parameters=NULL, orientation=NULL)
+    if (pf[projlist == projection] == 0 & projection != "sinusoidal") {
+      proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
+                        projection=projection, parameters=NULL, orientation=NULL)
+      
+    } else if (pf[projlist == projection] == 1) {
+      proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
+                        projection=projection, 0)
+    }
+    
     Dataproj = Data
     Dataproj[,1] = proj$x*180/pi
-    Dataproj[,2] = proj$y*180/pi
+    Dataproj[,2] = -proj$y*180/pi
     
     print(max(Dataproj$phi))
     print(max(Data[,1]*180/pi))
@@ -136,7 +149,7 @@ for (file in (1:length(files))) {
     Dataproj[,1] = Dataproj[,1]/proportion1
     Dataproj[,2] = Dataproj[,2]/proportion2
   }
-
+  
   # Call the function that will actually create the energy matrix.
   energy_frame = energy_matrix(Dataproj, file)
   
