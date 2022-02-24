@@ -149,18 +149,32 @@ findborders <- function(Data) {
   blankproj = data.frame(absc = blankproj$x*180/pi,
                          ord = blankproj$y*180/pi,
                          val = blankmat[,3])
-
   # If scaling is not good
   proportion1 = summary(blankproj$absc)[6] / summary(blankmat[,1])[6]
   proportion2 = summary(blankproj$ord)[6] / summary(blankmat[,2])[6]
+  blankproj[,1] = blankproj[,1] / proportion1
+  blankproj[,2] = blankproj[,2] / proportion2
+
+  seqcol = seq(-180,180,by=width)
+  seqrow = seq(-90,90,by=height)
   
-  blankproj[,1] = ceiling(blankproj[,1] / (proportion1*width))*width+180
-  blankproj[,2] = ceiling(blankproj[,2] / (proportion2*height))*height+90
+  # First using sapply to gather all coordinate belonging to a same pixel. Result is a list of list of dataframe/
+  # First level list contain list of dataframe of elem belonging to a same column (for ex. all pixel of abscissa coords belonging to (80,90)). These element are grouped into dataframes.
+  datasp1 = split(blankproj,findInterval(blankproj[,1], seqcol))
+  nabs <- names(datasp1)
+  datasp1 = lapply(nabs, function(x) {datasp1[[x]][,1] = as.integer(x)*width; return(datasp1[[x]])})
+  datasp2 = lapply(datasp1, function(x) split(x, findInterval(x[,2], seqrow)))
+  datasp3 = sapply(datasp2, function(x) {nord = names(x); 
+                lapply(nord, function(y) {x[[y]][,2] = as.integer(y)*height; return(x[[y]])})})
+  datasp4 = lapply(datasp3, function(x) {do.call(rbind,x)})
+
+  dataf = do.call(rbind,datasp4)
+  dataf = dataf[!duplicated(dataf),]
+
+  datafinal = dataf[order(dataf[,1], dataf[,2]),]
+
+  inside_vals = paste(Data[,1], Data[,2]) %in% paste(datafinal[,1], datafinal[,2])
   
-  summary(blankproj)
-  plot(blankproj$absc, blankproj$ord, col = "red", pch = 19, cex = 0.1)
-  
-  inside_vals = paste(Data[,1], Data[,2]) %in% paste(blankproj[,1], blankproj[,2])
   Data$value[!inside_vals] = Inf
   
   return(Data$value)
@@ -219,13 +233,14 @@ comp_val_matrix <- function(Data) {
   filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
     
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
-  if (projection == "sinusoidal"){
-    filledmat[,3] = apply(filledmat, 1, findproj)
-  } else {
-    filledmat[,3] = findborders(filledmat)
+  if (projection != "cylequalarea") {
+    if (projection == "sinusoidal"){
+      filledmat[,3] = apply(filledmat, 1, findproj)
+    } else {
+      filledmat[,3] = findborders(filledmat)
+    }
   }
-  
-  
+
   # Smoothe the matrix.
   if (opt$nosmooth | opt$discrete) {
     filledmat$svalue = apply(filledmat[,c("absc", "ord", "value")], 1, smoother_raw, datamat = filledmat)
