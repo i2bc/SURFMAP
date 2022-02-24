@@ -132,6 +132,7 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 pdb_id = opt$pdb
+projection = opt$projection
 
 if (file_test("-f", opt$input)) {
   path = dirname(normalizePath(opt$input))
@@ -184,7 +185,9 @@ for (file in (1:length(files))) {
     png(paste("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.png", 
         sep = ""), res = 300, width = 17.78, height = 17.78, units = "cm")
   } else {
-    pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
+    pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]), "_", projection, "_map.pdf"))
+    # pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
+    
   }
   prot_name = gsub("_smoothed_matrix.txt", "", files[file])
   
