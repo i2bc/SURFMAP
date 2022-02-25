@@ -141,8 +141,6 @@ for (file in (1:length(files))) {
     Dataproj[,1] = proj$x*180/pi
     Dataproj[,2] = -proj$y*180/pi
     
-    print(max(Dataproj$phi))
-    print(max(Data[,1]*180/pi))
     proportion1 = max(Dataproj$phi) / max(Data[,1]*180/pi)
     proportion2 = max(Dataproj$theta) / max(Data[,2]*180/pi-90)
     

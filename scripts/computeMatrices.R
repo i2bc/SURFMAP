@@ -281,8 +281,6 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 projection <<- opt$projection
 
-print(projection)
-
 # Testing if input is a file, a directory, or neither.
 if (file_test("-f", opt$input)) {
   path = dirname(normalizePath(opt$input))
