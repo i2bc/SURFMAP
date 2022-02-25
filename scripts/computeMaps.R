@@ -373,7 +373,15 @@ for (file in (1:length(files))) {
       axis_scale = seq(0,maxval,1)
   } else { 
       axis_scale = c(ceiling(minval*100000)/100000, round(maxval-range*5/6,5), round(maxval-range*4/6,5), round(maxval-range*3/6,5), round(maxval-range*2/6,5), round(maxval-range*1/6,5), floor(maxval*100000)/100000)}
-
+  
+  if (projection == "sinusoidal") {
+    labx = expression(paste(phi, " sin(", theta, ")"))
+    laby = expression(paste("90 - ", theta))
+  } else {
+    labx = "x"
+    laby = "y"
+  }
+  
   # Creation of the image.
   image.nan.better(t(val_matrix),col=colorScale,
                    zlim=c(minval,maxval),
@@ -382,8 +390,8 @@ for (file in (1:length(files))) {
                    na.color='white',
                    frame.plot = TRUE,
                    axes = FALSE,
-                   xlab = expression(paste(phi, " sin(", theta, ")")), 
-                   ylab = expression(paste("90 - ", theta)),
+                   xlab = labx, 
+                   ylab = laby,
                    cex.lab = 1.5)
   axis(1, at=c(0,0.25,0.5,0.75,1), labels=c(-180,-90,0,90,180), cex.axis=1.2)
   axis(2, at=c(0,0.25,0.5,0.75,1), labels=c(-90,-45,0,45,90), cex.axis=1.2, las=2)
