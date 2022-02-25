@@ -215,7 +215,6 @@ def main():
 
         mapfile = "%s_%s_partlist.out"%(pdbname.split(".")[0], tomap)
         cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize), "-P", proj]
-        print(cmdlist)
         subprocess.call(cmdlist)
 
         #=============================================================
@@ -232,7 +231,6 @@ def main():
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
             else:
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
-        #print(cmdmat)
         subprocess.call(cmdmat)
         
 
@@ -269,7 +267,6 @@ def main():
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-        print(cmdmap)
         subprocess.call(cmdmap)
     
         if not args.keep: # Deleting all intermediate files and directories
