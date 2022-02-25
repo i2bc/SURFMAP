@@ -45,7 +45,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
-    parser.add_argument("-proj", type = str, required = False, choices = set(("sinusoidal", "mollweide", "aitoff")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; hammer")
+    parser.add_argument("-proj", type = str, required = False, choices = set(("sin", "moll", "aitoff", "cyl")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
@@ -70,8 +70,9 @@ def main():
     mattool = absdir+"/scripts/computeMatrices.R"
     maptool = absdir+"/scripts/computeMaps.R"
 
+    dictproj = {'sin': 'sinusoidal', 'moll': 'mollweide', 'cyl': 'cylequalarea', 'aitoff': 'aitoff'}
     if args.proj:
-        proj = args.proj
+        proj = dictproj[args.proj]
     else:
         proj = "sinusoidal"
     
@@ -231,7 +232,7 @@ def main():
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
             else:
                 cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
-        print(cmdmat)
+        #print(cmdmat)
         subprocess.call(cmdmat)
         
 
@@ -268,6 +269,7 @@ def main():
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                 else:
                     cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+        print(cmdmap)
         subprocess.call(cmdmap)
     
         if not args.keep: # Deleting all intermediate files and directories
