@@ -15,6 +15,10 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 #Set Script Name variable
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 
+# Set MSMS path
+MSMS=$(dirname ${DIR})/MSMS
+
+
 #Set fonts for Help.
 NORM=`tput sgr0`
 BOLD=`tput bold`
@@ -91,7 +95,7 @@ awk -v s=$rad '{print $1, $2, $3, $4+s}' ${xyzrfile}-tmp | sed 's/,/./g' > ${xyz
 rm ${xyzrfile}-tmp
 
 # Invoking MSMS to compute Connolly surface.
-msms -if $xyzrfile -of $dshell/${pdbfile%.pdb} > log
+$MSMS/msms -if $xyzrfile -of $dshell/${pdbfile%.pdb} > log
 
 # Modifying MSMS output file format (the .vert file that contains the coordinates of all the vertices of the surface model created).
 # For this we just need to take the first three columns (x,y,z coordinates) and write them in a csv format file.
