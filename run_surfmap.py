@@ -37,9 +37,10 @@ if update_args.update:
         print('Updating your local SURFMAP docker image with the latest availabe in {}'.format(DOCKER_IMAGE))
         client.images.pull(repository=DOCKER_REPOSITORY, tag=IMAGE_TAG)
         print('Updating process done. You are now using the latest version of SURFMAP\n')
-        exit()
     except:
-        print('Error while trying to pull the latest docker image in {}'.format(DOCKER_IMAGE))
+        print('Error while trying to pull the latest docker image in {}\n'.format(DOCKER_IMAGE))
+    
+    exit()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
