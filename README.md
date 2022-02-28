@@ -3,8 +3,6 @@
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
 </p>
 
-
-
 # Table of contents
 
 - [Aims](#Aims)
@@ -170,6 +168,18 @@ The following table lists the optional parameters that can be used when running 
 | --keep | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
 
 <br>
+
+# Visualize interactively your maps
+
+All maps generated with SURFMAP can be interactively inspected with the help of an `index.html` file located in `SURFMAP/visualizer/`.
+
+To interactively visualize a map:
+- open `index.html` in your favorite browser
+- upload a smoothed matrix file (in the directory `smoothed_matrices` from an output generated with SURFMAP)
+
+Once the map appears, you can click on any pixel to see the corresponding residue(s).
+
+
 
 # Use of the pre-built docker image of SURFMAP
 [Go to the top](#Table-of-contents)

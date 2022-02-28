@@ -4,7 +4,6 @@ $('input[type=file]').change(function () {
 
 	if(file){
 		var reader = new FileReader();
-        var dataset;
 		reader.onload = function(e) {
             surfmap(reader.result)
 		}
