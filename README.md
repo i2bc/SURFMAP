@@ -10,9 +10,9 @@
 - [Aims](#Aims)
 - [Prerequisites](#Prerequisites)
 - [Download](#Download)
-- [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
-- [Manual installation of SURFMAP](#Manual-installation-of-SURFMAP)
+- [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
+- [Installing APBS](#Installing-APBS)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
 
 
