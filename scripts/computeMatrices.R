@@ -1,9 +1,20 @@
 rm(list=ls())
 
 ###################  LIBRARIES   ##########################
+# Package names
+packages <- c("optparse", "mapproj")
 
-library(optparse)
-library(mapproj)
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+
+# library(optparse)
+# library(mapproj)
 options(warn=-1)
 
 ###########################################################
