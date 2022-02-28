@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse, os, subprocess
-import docker
+# import docker
 
 DOCKER_REPOSITORY = 'nchenche/surfmap'
 IMAGE_TAG = 'latest'
@@ -19,28 +19,6 @@ OPTIONAL_ARGUMENTS = {
     'keep': '--keep'
     }
 DATA_VOLUME_PATH = "/home/surfmap/data/"  # volume mount point in docker container
-
-update_parser = argparse.ArgumentParser()
-update_parser.add_argument("--update", required=False, action="store_true", help = "Update your docker image version")
-update_args = update_parser.parse_args()
-
-if update_args.update:
-    try:
-        client = docker.client.from_env()
-    except:
-        print('Error, it seems like the docker daemon service is not running...')
-        print('If you have docker installed on your machine, you can start your docker service as follows:')
-        print(' - on linux system type in  terminal "sudo service docker start"')
-        print(' - on a Windows or macOS system, simply open your docker desktop app GUI')
-
-    try:
-        print('Updating your local SURFMAP docker image with the latest availabe in {}'.format(DOCKER_IMAGE))
-        client.images.pull(repository=DOCKER_REPOSITORY, tag=IMAGE_TAG)
-        print('Updating process done. You are now using the latest version of SURFMAP\n')
-    except:
-        print('Error while trying to pull the latest docker image in {}\n'.format(DOCKER_IMAGE))
-    
-    exit()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
