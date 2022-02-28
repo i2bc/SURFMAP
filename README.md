@@ -118,7 +118,7 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ## SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection by default (other projections are available: mollweide, aitoff and cylindric). Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
 - the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf in `doc/` or the original article for a description):
@@ -135,7 +135,7 @@ SURFMAP allows to compute different protein surface features and to map them on 
 For instance, the following command line will map the stickiness protein surface feature for the chain A of the protein [1G3N](https://www.rcsb.org/structure/1G3N):
 
 ```bash
-surfmap -pdb 1g3n_A.pdb -tomap stickiness
+python3 SURFMAP_launcher.py -pdb 1g3n_A.pdb -tomap stickiness
 ```
 
 The above command will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
@@ -160,7 +160,7 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| -proj | Choice of the projection. Argument must be one of the following: `sin` for sinusoidal, `moll` for mollweide, `aitoff` aitoff or `cyl` for cylequalarea (default: `sin`) |
+| -proj | Choice of the projection. Argument must be one of the following: `sin` for sinusoidal, `moll` for mollweide, `aitoff` aitoff or `cyl` for cylindric equal area (default: `sin`) |
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
