@@ -40,11 +40,21 @@ If you don't want to use the pre-built docker image of SURFMAP, you will need:
 # Download
 [Go to the top](#Table-of-contents)
 
-The recommended way to retrieve the project is to clone the repository with the following command:
+The recommended way to retrieve the project is to clone the repository.
+
+To specifically clone this branch type in a terminal:
+```
+git clone -b feature/new_install https://github.com/i2bc/SURFMAP.git
+```
+
+Otherwise type the following to clone the master branch (by default):
+ with the following command:
 ```
 git clone https://github.com/i2bc/SURFMAP.git
 ```
 It will allow you to easily update SURFMAP with its latest version through the command `git pull`
+
+
 
 
 Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
