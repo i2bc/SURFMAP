@@ -45,7 +45,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
-    parser.add_argument("-proj", type = str, required = False, choices = set(("sin", "moll", "aitoff", "cyl")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
+    parser.add_argument("-proj", type = str, required = False, choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
@@ -70,7 +70,7 @@ def main():
     mattool = absdir+"/scripts/computeMatrices.R"
     maptool = absdir+"/scripts/computeMaps.R"
 
-    dictproj = {'sin': 'sinusoidal', 'moll': 'mollweide', 'cyl': 'cylequalarea', 'aitoff': 'aitoff'}
+    dictproj = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     if args.proj:
         proj = dictproj[args.proj]
     else:
