@@ -198,6 +198,14 @@ The following table lists the optional parameters that can be used when running 
 | --keep | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
 
 
+### Properties of the map projections
+
+SURFMAP can use four different projections:
+- Sinusoidal (also known as Samson-Flamsteed): pseudocylindrical equal-area map projection.
+- Cylindrical: equally spaced straight meridians, equal-area, true scale on the equator.
+- Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
+- Aitoff: equal-area projection onto 2-to-1 ellipse.
+
 
 <br>
 <br>
