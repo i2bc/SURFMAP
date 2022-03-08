@@ -1,11 +1,25 @@
 rm(list=ls())
 
+dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)  # create personal library
+.libPaths(Sys.getenv("R_LIBS_USER"))  # add to the path
 
 ###################  LIBRARIES   ##########################
 
-library(mapproj)
-library(optparse)
-library(data.table)
+# Package names
+packages <- c("optparse", "data.table", "mapproj")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+
+# library(mapproj)
+# library(optparse)
+# library(data.table)
 
 ###########################################################
 

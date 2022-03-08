@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import argparse, os, subprocess
+# import docker
 
-DOCKER_REPOSITORY = 'nchenche/'
-IMAGE_TAG = 'surfmap:latest'
-DOCKER_IMAGE = DOCKER_REPOSITORY + IMAGE_TAG
+DOCKER_REPOSITORY = 'nchenche/surfmap'
+IMAGE_TAG = 'latest'
+DOCKER_IMAGE = DOCKER_REPOSITORY + ':' + IMAGE_TAG
 
 OPTIONAL_ARGUMENTS = {
+    'proj': '-proj',
     'coords': '-coords',
     'res': '-res',
     'rad': '-rad',
@@ -21,6 +23,7 @@ DATA_VOLUME_PATH = "/home/surfmap/data/"  # volume mount point in docker contain
 parser = argparse.ArgumentParser()
 parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
 parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
+parser.add_argument("-proj", type = str, required = False, choices = set(("sin", "moll", "aitoff", "cyl")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
 parser.add_argument("-coords", help = argparse.SUPPRESS)
 parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
 parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
