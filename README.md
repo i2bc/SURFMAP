@@ -222,6 +222,7 @@ Please open an R console and install the following R packages:
 install.packages("optparse")
 install.packages("data.table")
 install.packages("gplots")
+install.packages("mapproj")
 ```
 
 Install the python dependencies with the following command:
