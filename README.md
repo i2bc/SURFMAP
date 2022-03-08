@@ -202,9 +202,9 @@ The following table lists the optional parameters that can be used when running 
 
 SURFMAP can use four different projections:
 - Sinusoidal (also known as Samson-Flamsteed): pseudocylindrical equal-area map projection.
-- Cylindrical: equally spaced straight meridians, equal-area, true scale on the equator.
+- Cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
 - Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
-- Aitoff: equal-area projection onto 2-to-1 ellipse.
+- Aitoff: equal-area map projection onto 2-to-1 ellipse.
 
 
 <br>
