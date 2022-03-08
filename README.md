@@ -146,7 +146,7 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ### SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection. Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. the user has the choice between four projections : Sinusoidal, Mollweide, Miller and Aitoff (default projection: sinusoidal). Two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
 - the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
@@ -188,6 +188,7 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
+| -proj | type of map projection (choices: sin, moll, aitoff, cyl ; default: sin)|
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
@@ -196,6 +197,14 @@ The following table lists the optional parameters that can be used when running 
 | --png | If chosen, a map in png format is computed (default: only pdf format is generated) |
 | --keep | If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept) |
 
+
+### Properties of the map projections
+
+SURFMAP can use four different projections:
+- Sinusoidal (also known as Samson-Flamsteed): pseudocylindrical equal-area map projection.
+- Cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
+- Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
+- Aitoff: equal-area map projection onto 2-to-1 ellipse.
 
 
 <br>
@@ -221,6 +230,7 @@ Please open an R console and install the following R packages:
 install.packages("optparse")
 install.packages("data.table")
 install.packages("gplots")
+install.packages("mapproj")
 ```
 
 Install the python dependencies with the following command:
