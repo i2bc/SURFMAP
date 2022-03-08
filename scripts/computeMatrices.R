@@ -244,7 +244,7 @@ comp_val_matrix <- function(Data) {
   filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
     
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
-  if (projection != "cylequalarea") {
+  if (projection != "lambert") {
     if (projection == "sinusoidal"){
       filledmat[,3] = apply(filledmat, 1, findproj)
     } else {
