@@ -278,7 +278,6 @@ def main():
                         cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
                     else:
                         cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-            print(cmdmap)
             subprocess.call(cmdmap)
         
             if not args.keep: # Deleting all intermediate files and directories
@@ -345,7 +344,6 @@ def main():
         shutil.copyfile(args.mat, outdir+"/matrices/"+os.path.basename(args.mat))
         matname = os.path.basename(args.mat).split(".")[:-1][0]
         matf = outdir+"/matrices/"+os.path.basename(args.mat)
-        print(matf)
         scale_opt = "--" + ppttomap
         
         if args.png:
@@ -362,7 +360,6 @@ def main():
             else:
                 cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", matname, "-P", proj]
                 print("here4\n")
-        print(cmdmap)
         subprocess.call(cmdmap)
         
         outlog = open(outdir+"/log_parameters", "w+")
