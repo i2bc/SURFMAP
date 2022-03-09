@@ -388,9 +388,12 @@ for (file in (1:length(files))) {
   if (projection == "sinusoidal") {
     labx = expression(paste(phi, " sin(", theta, ")"))
     laby = expression(paste("90 - ", theta))
-  } else {
+  } else if (projection == "mollweide") {
     labx = "x"
     laby = "y"
+  } else if (projection == "lambert") {
+    labx = expression(paste(phi))
+    laby = expression(paste(" sin(", theta, ")"))
   }
   
   # Creation of the image.
