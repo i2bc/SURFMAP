@@ -36,25 +36,16 @@ If you don't want to use the pre-built docker image of SURFMAP, you will need:
 - an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
 - python >= 3.7
 - R >= 3.6
+- nawk
 
 # Download
 [Go to the top](#Table-of-contents)
 
 The recommended way to retrieve the project is to clone the repository.
-
-To specifically clone this branch type in a terminal:
-```
-git clone -b feature/new_install https://github.com/i2bc/SURFMAP.git
-```
-
-Otherwise type the following to clone the master branch (by default):
- with the following command:
 ```
 git clone https://github.com/i2bc/SURFMAP.git
 ```
 It will allow you to easily update SURFMAP with its latest version through the command `git pull`
-
-
 
 
 Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
@@ -63,7 +54,12 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 - the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.zip`
 - the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.tar.gz`
 
-Once downloaded, please go to the SURFMAP directory (`cd SURFMAP/` where you should have the following files/directories:
+Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
+
+```
+cd SURFMAP/
+ls -l
+```
 
 <pre><font color="#3465A4"><b>.</b></font>
 ├── <font color="#3465A4"><b>doc</b></font>

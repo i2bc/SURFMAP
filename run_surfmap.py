@@ -64,7 +64,7 @@ for opt_args in OPTIONAL_ARGUMENTS:
         docker_template_cmd.append(OPTIONAL_ARGUMENTS[opt_args])
         if opt_args not in ['nosmooth', 'png', 'keep']:
             if opt_args == 'res':
-                docker_template_cmd.append('/input/' + args.__dict__.get(opt_args))
+                docker_template_cmd.append('/input/' + os.path.basename(args.__dict__.get(opt_args)))
             else:
                 docker_template_cmd.append(args.__dict__.get(opt_args))
 
