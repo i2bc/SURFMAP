@@ -191,7 +191,7 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| -proj | type of map projection (choices: sin, moll, aitoff, cyl ; default: sin)|
+| -proj | type of map projection (choices: sinusoidal, mollweide, lambert ; default: sinusoidal)|
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
