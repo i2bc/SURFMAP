@@ -146,7 +146,7 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ### SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. the user has the choice between four projections : Sinusoidal, Mollweide, Miller and Aitoff (default projection: sinusoidal). Two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. the user has the choice between four projections : Sinusoidal, Mollweide, Miller and Aitoff (default projection: sinusoidal). Typically, the user will employ two arguments as inputs: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
 - the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
@@ -181,6 +181,8 @@ with:
 - `1g3n_A_stickiness_map.pdf`: the generated 2-D map in pdf format
 - `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
 
+
+Alternatively, the user can provide a `-mat` argument instead of `-pdb`. In that case the user provides a matrix, and SURFMAP will compute a map from it. Be careful with this option, as the matrix must be in the correct format used by SURFMAP. The main use of this option is two compute maps from 'customized' matrices. For example the user can create a map with SURFMAP for the same protein in different conformational states, and then create an "averaged" matrix for all the matrices and plot it with the option `-mat`.
 
 ### SURFMAP optional parameters
 
