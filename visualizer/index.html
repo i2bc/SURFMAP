@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surfmap Interctive</title>
+    <title>SURFMAP Visualizer</title>
 
     <link rel="stylesheet" href="static/css/styles.css">
     <script src="static/node_modules/jquery/dist/jquery.min.js"></script>
@@ -15,21 +15,41 @@
 </head>
 <body>
     
-    <h1>Surfmap with d3js</h1>
+    <h1>SURFMAP visualizer</h1>
 
-    <form enctype="multipart/form-data">
-        <label for="avatar">Choose a matrix file:</label>
-        <input id="upload" type=file accept="*" name="files[]" size=30>
-    </form>
+    <div class="container">
+        <div id="surfmap-container">
+            <form enctype="multipart/form-data">
+                <label for="matrix-file">Upload a matrix file</label>
+                <input id="matrix-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+                    
+            <div id='svg-container'></div>
+        </div>
+
+        <div id="ngl-container">
+            <form enctype="multipart/form-data">
+                <label for="pdb-file">Upload a pdb file</label>
+                <input id="pdb-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+                    
+            <div id="viewport"></div>
+            <div id='sequence-container'>
+                <h4>Sequence</h4>
+            </div>
+        </div>
+    </div>
 
 
-    <div id='svg-container'></div>
-    <div id="viewport" style="width:400px; height:300px;"></div>
+
+
+
+
 
 
     <script src="static/js/scripts_d3.js"></script>
     <!-- <script src="static/js/jq.js"></script> -->
-    <!-- <script src="static/js/script_ngl.js"></script> -->
+    <script src="static/js/script_ngl.js"></script>
         
 </body>
 

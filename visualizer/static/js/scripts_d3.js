@@ -1,5 +1,5 @@
 
-$('input[type=file]').change(function () {
+$('#matrix-file').change(function () {
     file = this.files[0];
 
 	if(file){
@@ -17,7 +17,17 @@ var _surfmap = function(data) {
 }
 
 
+mapColors = {
+    'stickiness': {
+        'minVal': -1.273,
+        'maxVal': 1.273,
+        'scale': ["royalblue", "white", "darkgreen"]
+    }
+}
+
 var surfmap = function(data) {
+
+    d3.select("svg").remove()
 
     // create tooltip element and add to document body
     var tooltip = document.createElement("div")
@@ -40,27 +50,30 @@ var surfmap = function(data) {
 
     console.log(dataset)
 
-    var scale_factor = 2;
+    var scale_factor = 1.8;
     var width = 360*scale_factor;
     var height = 180*scale_factor;
     var pixel_size = 5; 
 
     //Create SVG element
-    var svg = d3.select("#svg-container ")
+    var svg = d3.select("#svg-container")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
 
     dataset.then(function(data) {
-        console.log(data)
-        var minVal = d3.min(data.map(e => parseFloat(e.svalue)))
-        var maxVal = d3.max(data.map(function(ele) {
-            if (ele.svalue != "Inf") {
-                return parseFloat(ele.svalue)
-            }
-        }));
+        // console.log(data)
+        // var minVal = d3.min(data.map(e => parseFloat(e.svalue)))
+        // var maxVal = d3.max(data.map(function(ele) {
+        //     if (ele.svalue != "Inf") {
+        //         return parseFloat(ele.svalue)
+        //     }
+        // }));
 
-        var palette_color = ["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]
+        var minVal = mapColors.stickiness.minVal
+        var maxVal = mapColors.stickiness.maxVal
+
+        // var palette_color = ["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]
 
         // var colors = d3.scaleQuantize()
         //     .domain([minVal ,maxVal])
@@ -68,7 +81,8 @@ var surfmap = function(data) {
 
         var colors = d3.scaleLinear()
             .domain([minVal, 0, maxVal])
-            .range(["blue", "white", "red"]);
+            .range(mapColors.stickiness.scale);
+            // .range(["blue", "white", "red"]);
 
 
         var rects = svg.selectAll(".rects")
@@ -83,25 +97,30 @@ var surfmap = function(data) {
                 if (d.svalue != 'Inf') return colors(d.svalue)
                 else return 'white';
             })
-            .attr("stroke", "gray");
+            .attr("stroke", "gray")
+            .attr("stroke-width", 0.25)
+            .attr("class", function(d) {
+                residues = d.residues.split(',')
+                // console.log('res split:', residues)
+                if (residues.length == 1 && residues[0] == 'NA') return
+
+                className = []
+                residues.forEach(function(d) {
+                    d = d.trim();
+                    resname = d.split('_')[0];
+                    resnb = d.split('_')[1];
+                    chain = d.split('_')[2];
+
+                    className.push(`res-${resname}_${resnb}_${chain}`)
+                });
+
+                return className.join(' ')
+                });
 
 
-
-        rects.append("title")
-            .text(function (d) {
-                if (d.residues != "NA") {
-                    resname = d.residues.split('_')[0];
-                    resnb = d.residues.split('_')[1];
-                    chain = d.residues.split('_')[2];
-                    return `${resname} ${resnb} ${chain}`
-                }
-            });
-
-        rects.on('click', function(event) {
-            console.log(this.__data__);
-
+        rects.on('mouseover', function(event) {
             residues = this.__data__.residues.split(',')
-            if (residues.length == 1 && residues[0] == 'NA') { return }
+            if (residues.length == 1 && residues[0] == 'NA') return
 
             tooltip_table = `
             <table id='tooltip'>
@@ -145,9 +164,26 @@ var surfmap = function(data) {
             else {
                 tooltip.style.display = "none" 
             }
+        });
 
+        rects.on('click', function(event) {
+            residues = this.__data__.residues.split(',')
+            if (residues.length == 1 && residues[0] == 'NA') return
+
+            // resIndex = residues.split('_')[1]
+            // console.log(residues)
+            console.log(this)
+
+            this.classList.forEach(function(d) {
+                className = `.${d}`
+                sequenceRes = $(`table td${className}`)
+                // console.log(sequenceRes)
+
+                sequenceRes.toggleClass('hovered')
 
         })
-        // console.log(minVal, maxVal)
+
+        });
+
     });
 };

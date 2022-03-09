@@ -1,13 +1,65 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 body > h1:nth-child(1) {
     text-align: center;
 }
+
+.container {
+    display: flex;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#surfmap-container {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+#ngl-container {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid black;
+}
+
 
 #svg-container {
     text-align: center;
 }
 
 svg {
-    /* border: 1px solid black; */
+    border: 1px solid black;
+}
+
+#viewport {
+    width: 80%;
+    height: 500px;
+    margin: auto;
+    border: 1px solid black;
+}
+
+#sequence-container {
+    font-size: 11px;
+}
+
+#sequence-container .res-index {
+    font-size: 9px;
+    color: darkolivegreen
+}
+
+#sequence-container table {
+    border-collapse: collapse;
+}
+
+
+#sequence-container [class^='res-'] {
+    cursor: pointer;
+}
+
+#sequence-container .hovered {
+    background-color: aqua;
 }
 
 #tooltip {
