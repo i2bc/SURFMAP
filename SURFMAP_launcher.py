@@ -43,9 +43,10 @@ https://apbs.readthedocs.io/en/latest/supporting.html
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-pdb",required = True, help = "Input pdb file (path + file name)")
+    parser.add_argument("-pdb",required = False, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
     parser.add_argument("-proj", type = str, required = False, choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
+    parser.add_argument("-mat", type = str, required = False, help = "Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it.")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
     parser.add_argument("-rad", required = False, help = "Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)")
@@ -55,13 +56,7 @@ def main():
     parser.add_argument("--png", action = "store_true", help = "If chosen, a map in png format is computed (default: only pdf format is generated)")
     parser.add_argument("--keep", action = "store_true", help = "If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept)")
     args = parser.parse_args()
-
-    pdbarg = args.pdb
-    resfile = args.res
-    ppttomap = args.tomap
     
-    pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
-    pdbname = os.path.basename(pdbarg)
     curdir = os.getcwd()
     absdir = os.path.dirname(os.path.abspath(__file__))
     surftool = absdir+"/tools/SurfmapTools.py"
@@ -75,14 +70,23 @@ def main():
         proj = dictproj[args.proj]
     else:
         proj = "sinusoidal"
-    
-    if not os.path.isfile(pdbarg):
-        print("pdb file not found. It seems that the input pdb file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
+
+    if not args.pdb and not args.mat:
+        print("You need to provide either a pdb file or a matrix file in input.\nExitting now.")
+        exit()
+    elif args.pdb and args.mat:
+        print("You need to provide either a pdb file or a matrix file in input. you cannot provide both.\nExitting now.")
         exit()
 
-    if not pdbarg.endswith(".pdb"):
-        print("The file provided in input seems to not be a pdb file. Please provide a file with a '.pdb' extension.")
-        exit()
+    if args.pdb:
+        pdbarg = args.pdb
+        pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
+        pdbname = os.path.basename(pdbarg)
+   
+    resfile = args.res
+    ppttomap = args.tomap
+    
+    
 
     if args.res:
         if not os.path.isfile(args.res):
@@ -139,193 +143,236 @@ def main():
     except:
         pass
    
-
-    #============================================================
-    # Part 1: Generation of shell around protein surface.
-    
-    if ppttomap == "electrostatics":
-        elecval = "1"
-    else:
-        elecval = "0"
-
-    if args.rad:
-        rad = args.rad
-        try:
-            float(args.rad)
-        except:
-            print("The radius given in input (arg -rad) could not be converted to float.\nWhat you provided in input is probably not a number. Please provide a number between 0.5 and 10.\nExiting now.")
-            exit()
-        if not (float(args.rad) < 10.0 and float(args.rad) > 0.5):
-            print("The radius given in input (arg -rad) is either too large or too small. Please provide a number between 0.5 and 10.\nExiting now.")
-            exit()
-    else:
-        rad = "3.0"
-
-    if args.tomap == "all":
-        listtomap = ("kyte_doolittle", "stickiness", "wimley_white", "circular_variance")
-    else:
-        listtomap = []
-        listtomap.append(ppttomap)
-
-    # Create shell. 2 options: simple shell or shell with elec potential computed by APBS.
-    outputsubp = subprocess.call(["bash", shelltool, "-p", pdbarg, "-e", elecval, "-r", rad])
-    shell = curdir + "/shells/" + pdb_id + "_shell.pdb"
-
-    if outputsubp != 0:
-        print("the script compute_shell.sh failed. It can be because MSMS could not compute the Connolly surface of the protein.\nYou need to provide a pdb file that MSMS can handle.\nPlease check that there is no problem with your input pdb file.\nExiting now.")
-        exit()
-
-    for tomap in listtomap:
-        
-        print("surface property mapping:",tomap)
-        
-        BS = False
-        
-        if tomap == "binding_sites":
-            BS = True # keep info of binding site mapping
-            tomap = "bfactor"
-            scale_opt = "--discrete"
-        elif tomap == "circular_variance_atom":
-            scale_opt = "--circular_variance"
-        else:
-            scale_opt = "--" + tomap
-
-        #=============================================================
-        # Part 2: convert cartesian coordinates of each particule into spherical coordinates and associates the value of interest (electrostatics, hydrophobicity, stickiness...)
-
-        if not os.path.isfile(shell):
-            print("Shell not found. This is probably because MSMS did not manage to compute the surface of the protein.\nExiting now.")
+    if args.pdb:
+        if not os.path.isfile(pdbarg):
+            print("pdb file not found. It seems that the input pdb file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
             exit()
 
-        if args.res:
-            cmd_surfmap = ["python3", surftool, "-pdb", pdbarg, "-shell", shell, "-tomap", tomap, "-res", resfile, "-d", outdir]
-            reslist = os.path.splitext(resfile)[0] + "_sph_coords.out"
-        else:
-            cmd_surfmap = ["python3", surftool, "-pdb", pdbarg, "-shell", shell, "-tomap", tomap, "-d", outdir]
-
-        outsubres = subprocess.call(cmd_surfmap)
-        
-        if outsubres != 0:
-            print("\nMapping of the residues given in input failed. This can be due to a malformed residue file or a mistake in the reisdue numbering, type or chain.\n\nFormat should be the following:\nchain residuenumber residuetype\nexample: A\t5 LEU\n\nExiting now.")
+        if not pdbarg.endswith(".pdb"):
+            print("The file provided in input seems to not be a pdb file. Please provide a file with a '.pdb' extension.")
             exit()
-
-
-        #=============================================================
-        # Part 3: computing phi theta list
-
-        mapfile = "%s_%s_partlist.out"%(pdbname.split(".")[0], tomap)
-        cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize), "-P", proj]
-        subprocess.call(cmdlist)
-
-        #=============================================================
-        # Part 4: computing matrix
+        #============================================================
+        # Part 1: Generation of shell around protein surface.
         
-        coordfile = "%s_%s_coord_list.txt"%(pdbname.split(".")[0], tomap)
-        if args.nosmooth:
-            if BS:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
-            else:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--nosmooth", "-P", proj]
+        if ppttomap == "electrostatics":
+            elecval = "1"
         else:
-            if BS:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
-            else:
-                cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
-        subprocess.call(cmdmat)
-        
+            elecval = "0"
 
-        #=============================================================
-        # Part 5: computing map
-
-        matfile = "%s_%s_smoothed_matrix.txt"%(pdbname.split(".")[0], tomap)
-        matdir = outdir + "/smoothed_matrices/"
-        matf = matdir + matfile
-        
-        matfile2 = "%s_%s_matrix.txt"%(pdbname.split(".")[0], tomap)
-        matdir2 = outdir + "/matrices/"
-        matf2 = matdir2 + matfile2
-        
-        if args.png:
-            if args.coords:
-                if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-                else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-            else:
-                if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-                else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-        else:
-            if args.coords:
-                if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-                else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-            else:
-                if args.res:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-                else:
-                    cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
-        subprocess.call(cmdmap)
-    
-        if not args.keep: # Deleting all intermediate files and directories
-            os.remove(outdir + "/" + mapfile)
-            os.remove(outdir + "/coord_lists/" + coordfile)
-            os.remove(outdir + "/matrices/" + matfile2)
-            
+        if args.rad:
+            rad = args.rad
             try:
-                os.remove(outdir + "/" + pdb_id + "_CV.pdb")
+                float(args.rad)
+            except:
+                print("The radius given in input (arg -rad) could not be converted to float.\nWhat you provided in input is probably not a number. Please provide a number between 0.5 and 10.\nExiting now.")
+                exit()
+            if not (float(args.rad) < 10.0 and float(args.rad) > 0.5):
+                print("The radius given in input (arg -rad) is either too large or too small. Please provide a number between 0.5 and 10.\nExiting now.")
+                exit()
+        else:
+            rad = "3.0"
+
+        if args.tomap == "all":
+            listtomap = ("kyte_doolittle", "stickiness", "wimley_white", "circular_variance")
+        else:
+            listtomap = []
+            listtomap.append(ppttomap)
+
+        # Create shell. 2 options: simple shell or shell with elec potential computed by APBS.
+        outputsubp = subprocess.call(["bash", shelltool, "-p", pdbarg, "-e", elecval, "-r", rad])
+        shell = curdir + "/shells/" + pdb_id + "_shell.pdb"
+
+        if outputsubp != 0:
+            print("the script compute_shell.sh failed. It can be because MSMS could not compute the Connolly surface of the protein.\nYou need to provide a pdb file that MSMS can handle.\nPlease check that there is no problem with your input pdb file.\nExiting now.")
+            exit()
+
+        for tomap in listtomap:
+            
+            print("surface property mapping:",tomap)
+            
+            BS = False
+            
+            if tomap == "binding_sites":
+                BS = True # keep info of binding site mapping
+                tomap = "bfactor"
+                scale_opt = "--discrete"
+            elif tomap == "circular_variance_atom":
+                scale_opt = "--circular_variance"
+            else:
+                scale_opt = "--" + tomap
+
+            #=============================================================
+            # Part 2: convert cartesian coordinates of each particule into spherical coordinates and associates the value of interest (electrostatics, hydrophobicity, stickiness...)
+
+            if not os.path.isfile(shell):
+                print("Shell not found. This is probably because MSMS did not manage to compute the surface of the protein.\nExiting now.")
+                exit()
+
+            if args.res:
+                cmd_surfmap = ["python3", surftool, "-pdb", pdbarg, "-shell", shell, "-tomap", tomap, "-res", resfile, "-d", outdir]
+                reslist = os.path.splitext(resfile)[0] + "_sph_coords.out"
+            else:
+                cmd_surfmap = ["python3", surftool, "-pdb", pdbarg, "-shell", shell, "-tomap", tomap, "-d", outdir]
+
+            outsubres = subprocess.call(cmd_surfmap)
+            
+            if outsubres != 0:
+                print("\nMapping of the residues given in input failed. This can be due to a malformed residue file or a mistake in the reisdue numbering, type or chain.\n\nFormat should be the following:\nchain residuenumber residuetype\nexample: A\t5 LEU\n\nExiting now.")
+                exit()
+
+
+            #=============================================================
+            # Part 3: computing phi theta list
+
+            mapfile = "%s_%s_partlist.out"%(pdbname.split(".")[0], tomap)
+            cmdlist = ["Rscript", coordtool, "-f", outdir+"/"+mapfile, "-s", str(cellsize), "-P", proj]
+            subprocess.call(cmdlist)
+
+            #=============================================================
+            # Part 4: computing matrix
+            
+            coordfile = "%s_%s_coord_list.txt"%(pdbname.split(".")[0], tomap)
+            if args.nosmooth:
+                if BS:
+                    cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
+                else:
+                    cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--nosmooth", "-P", proj]
+            else:
+                if BS:
+                    cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "--discrete", "-P", proj]
+                else:
+                    cmdmat = ["Rscript", mattool, "-i", outdir+"/coord_lists/"+coordfile, "-s", str(cellsize), "-P", proj]
+            subprocess.call(cmdmat)
+            
+
+            #=============================================================
+            # Part 5: computing map
+
+            matfile = "%s_%s_smoothed_matrix.txt"%(pdbname.split(".")[0], tomap)
+            matdir = outdir + "/smoothed_matrices/"
+            matf = matdir + matfile
+            
+            matfile2 = "%s_%s_matrix.txt"%(pdbname.split(".")[0], tomap)
+            matdir2 = outdir + "/matrices/"
+            matf2 = matdir2 + matfile2
+            
+            if args.png:
+                if args.coords:
+                    if args.res:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                    else:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                else:
+                    if args.res:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                    else:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+            else:
+                if args.coords:
+                    if args.res:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                    else:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                else:
+                    if args.res:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-l", reslist, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+                    else:
+                        cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", pdb_id, "-P", proj]
+            print(cmdmap)
+            subprocess.call(cmdmap)
+        
+            if not args.keep: # Deleting all intermediate files and directories
+                os.remove(outdir + "/" + mapfile)
+                os.remove(outdir + "/coord_lists/" + coordfile)
+                os.remove(outdir + "/matrices/" + matfile2)
+                
+                try:
+                    os.remove(outdir + "/" + pdb_id + "_CV.pdb")
+                except OSError:
+                    pass
+                
+                if not os.listdir(outdir + "/coord_lists/"): # removing directory if empty
+                    try:
+                        shutil.rmtree(outdir + "/coord_lists/")
+                    except OSError:
+                        pass
+                
+                if not os.listdir(outdir + "/matrices/"): # removing directory if empty
+                    try:
+                        shutil.rmtree(outdir + "/matrices/")
+                    except OSError:
+                        pass
+
+
+            # Creating log in output directory. Contains the parameters used to compute the maps.
+            outlog = open(outdir+"/log_parameters", "w+")
+            outlog.write("parameters used to compute the maps:\n")
+            outlog.write("grid resolution: " + str(int(360/cellsize)) + "*" + str(int(180/cellsize)) + "\n")
+            outlog.write("MSMS radius: " + rad + "\n")
+            outlog.write("property(ies) mapped: " + str(listtomap).strip('[]')+ "\n")
+            outlog.write("projection: " + proj + "\n")
+            if args.nosmooth:
+                outlog.write("smoothing: off")
+            else:
+                outlog.write("smoothing: on")
+
+            # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
+            try:
+                shutil.rmtree("shells")
             except OSError:
                 pass
             
-            if not os.listdir(outdir + "/coord_lists/"): # removing directory if empty
-                try:
-                    shutil.rmtree(outdir + "/coord_lists/")
-                except OSError:
-                    pass
+            try:
+                shutil.rmtree("tmp-elec")
+            except OSError:
+                pass
             
-            if not os.listdir(outdir + "/matrices/"): # removing directory if empty
+            if args.res:
                 try:
-                    shutil.rmtree(outdir + "/matrices/")
+                    os.remove(reslist)
                 except OSError:
                     pass
 
+            # Moving the pdb file with CV mapped in bfactor to the output directory
+            try:
+                shutil.move(os.path.dirname(pdbarg) + "/" + pdb_id + "_CV.pdb", outdir)
+            except OSError:
+                pass
 
-    # Creating log in output directory. Contains the parameters used to compute the maps.
-    outlog = open(outdir+"/log_parameters", "w+")
-    outlog.write("parameters used to compute the maps:\n")
-    outlog.write("grid resolution: " + str(int(360/cellsize)) + "*" + str(int(180/cellsize)) + "\n")
-    outlog.write("MSMS radius: " + rad + "\n")
-    outlog.write("property(ies) mapped: " + str(listtomap).strip('[]')+ "\n")
-    outlog.write("projection: " + proj + "\n")
-    if args.nosmooth:
-        outlog.write("smoothing: off")
+    elif args.mat:
+        if os.path.isdir(outdir+"/matrices/") == False:
+            os.makedirs(outdir+"/matrices/")
+        shutil.copyfile(args.mat, outdir+"/matrices/"+os.path.basename(args.mat))
+        matname = os.path.basename(args.mat).split(".")[:-1][0]
+        matf = outdir+"/matrices/"+os.path.basename(args.mat)
+        print(matf)
+        scale_opt = "--" + ppttomap
+        
+        if args.png:
+            if args.coords:
+                cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", matname, "-P", proj]
+                print("here1\n")
+            else:
+                cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", matname, "-P", proj]
+                print("here2\n")
+        else:
+            if args.coords:
+                cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", matname, "-P", proj]
+                print("here3\n")
+            else:
+                cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", matname, "-P", proj]
+                print("here4\n")
+        print(cmdmap)
+        subprocess.call(cmdmap)
+        
+        outlog = open(outdir+"/log_parameters", "w+")
+        outlog.write("parameters used to compute the maps:\n")
+        outlog.write("property(ies) mapped: " + ppttomap + "\n")
+
     else:
-        outlog.write("smoothing: on")
+        print("You need to provide either a pdb file or a matrix file in input.\nExitting now.")
+        exit()
 
-    # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
-    try:
-        shutil.rmtree("shells")
-    except OSError:
-        pass
-    
-    try:
-        shutil.rmtree("tmp-elec")
-    except OSError:
-        pass
-    
-    if args.res:
-        try:
-            os.remove(reslist)
-        except OSError:
-            pass
-
-    # Moving the pdb file with CV mapped in bfactor to the output directory
-    try:
-        shutil.move(os.path.dirname(pdbarg) + "/" + pdb_id + "_CV.pdb", outdir)
-    except OSError:
-        pass
 
 
 
