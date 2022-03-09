@@ -146,7 +146,7 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ### SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. the user has the choice between three projections : Sinusoidal (Sanson-Flamsteed), Mollweider and Lambert cylindrical (default projection: sinusoidal). Typically, the user will employ two arguments as inputs: `-pdb` and `-tomap`:
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. the user has the choice between three projections : Sinusoidal (also known as Sanson-Flamsteed), Mollweide and Lambert cylindrical (default projection: sinusoidal). Typically, the user will employ two arguments as inputs: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
 - the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf or the original article for a description):
@@ -191,7 +191,7 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| -proj | type of map projection (choices: sin, moll, aitoff, cyl ; default: sin)|
+| -proj | type of map projection (choices: sinusoidal, mollweide, lambert ; default: sinusoidal)|
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
