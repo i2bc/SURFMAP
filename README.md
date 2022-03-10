@@ -87,7 +87,7 @@ Yet if you want/need to install SURFMAP on your machine, please refer to the [Ma
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-### 2. Make the script `run_surfmap.py` callable from anywhere
+### 2. Make the script `run_surfmap_image.py` callable from anywhere
 
 `run_surfmap_image.py` is a python script that acts as a proxy to call the script `surfmap.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
 
