@@ -58,9 +58,9 @@ Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SUR
 ├── <font color="#3465A4"><b>example/</b></font>
 ├── README.md
 ├── requirements.txt
-├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
+├── <font color="#4E9A06"><b>run_surfmap_image.py</b></font>
 ├── <font color="#3465A4"><b>scripts/</b></font>
-├── <font color="#4E9A06"><b>SURFMAP_launcher.py</b></font>
+├── <font color="#4E9A06"><b>surfmap.py</b></font>
 ├── SURFMAP_manual.pdf
 ├── SURFMAP_manual.Rmd
 └── <font color="#3465A4"><b>tools/</b></font>
@@ -87,15 +87,15 @@ Yet if you want/need to install SURFMAP on your machine, please refer to the [Ma
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-### 2. Make the script `run_surfmap.py` callable from anywhere
+### 2. Make the script `run_surfmap_image.py` callable from anywhere
 
-`run_surfmap.py` is a python script that acts as a proxy to call the script `SURFMAP_launcher.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
+`run_surfmap_image.py` is a python script that acts as a proxy to call the script `surfmap.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
 
-Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
+Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap_image.py`.
 
 First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
 ```bash
-chmod +x run_surfmap.py
+chmod +x run_surfmap_image.py
 ```
 
 <a id="surfmap-alias"></a>
@@ -103,7 +103,7 @@ Additionally you can create an alias of this python script to make it accessible
 
 ```bash
 # Alias to run surfmap from its docker image"
-alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
+alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
 ```
 
 Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the alias effective.
@@ -114,11 +114,11 @@ Once the SURFMAP image has been successfully downloaded on your machine, you sho
 
 <pre>
 <font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ surfmap
-usage: run_surfmap.py [-h] -pdb PDB -tomap
-                      {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
-                      [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
-                      [--png] [--keep]
-run_surfmap.py: error: the following arguments are required: -pdb, -tomap
+usage: run_surfmap_image.py [-h] -pdb PDB -tomap
+                            {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
+                            [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
+                            [--png] [--keep]
+run_surfmap_image.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
 <br>
@@ -127,7 +127,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `SURFMAP_launcher.py` if you have installed SURFMAP locally on your machine. 
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap_image.py` as shown [here](#surfmap-alias) or directly an alias `surfmap.py` if you have installed SURFMAP locally on your machine. 
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
@@ -205,9 +205,8 @@ The following table lists the optional parameters that can be used when running 
 
 SURFMAP can use four different projections:
 - Sinusoidal (also known as Samson-Flamsteed): pseudocylindrical equal-area map projection.
-- Cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
+- Lambert cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
 - Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
-- Aitoff: equal-area map projection onto 2-to-1 ellipse.
 
 
 <br>
