@@ -349,17 +349,13 @@ def main():
         if args.png:
             if args.coords:
                 cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-c", coordstomap, "-s", str(cellsize), "-p", matname, "-P", proj]
-                print("here1\n")
             else:
                 cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "--png", "-s", str(cellsize), "-p", matname, "-P", proj]
-                print("here2\n")
         else:
             if args.coords:
                 cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-c", coordstomap, "-s", str(cellsize), "-p", matname, "-P", proj]
-                print("here3\n")
             else:
                 cmdmap = ["Rscript", maptool, "-i", matf, scale_opt, "-s", str(cellsize), "-p", matname, "-P", proj]
-                print("here4\n")
         subprocess.call(cmdmap)
         
         outlog = open(outdir+"/log_parameters", "w+")
