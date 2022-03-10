@@ -89,13 +89,13 @@ You’ll first need to create an account on [docker hub](https://hub.docker.com/
 
 ### 2. Make the script `run_surfmap.py` callable from anywhere
 
-`run_surfmap.py` is a python script that acts as a proxy to call the script `surfmap.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
+`run_surfmap_image.py` is a python script that acts as a proxy to call the script `surfmap.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
 
-Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
+Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap_image.py`.
 
 First make sure this script is executable (the following command should also work on a Windows 10 machine through WSL2):
 ```bash
-chmod +x run_surfmap.py
+chmod +x run_surfmap_image.py
 ```
 
 <a id="surfmap-alias"></a>
@@ -103,7 +103,7 @@ Additionally you can create an alias of this python script to make it accessible
 
 ```bash
 # Alias to run surfmap from its docker image"
-alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
+alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
 ```
 
 Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the alias effective.
@@ -114,11 +114,11 @@ Once the SURFMAP image has been successfully downloaded on your machine, you sho
 
 <pre>
 <font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ surfmap
-usage: run_surfmap.py [-h] -pdb PDB -tomap
-                      {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
-                      [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
-                      [--png] [--keep]
-run_surfmap.py: error: the following arguments are required: -pdb, -tomap
+usage: run_surfmap_image.py [-h] -pdb PDB -tomap
+                            {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
+                            [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
+                            [--png] [--keep]
+run_surfmap_image.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
 <br>
