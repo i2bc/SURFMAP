@@ -9,13 +9,14 @@ body > h1:nth-child(1) {
 .container {
     display: flex;
     padding: 10px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    justify-content: center;
 }
 
 #surfmap-container {
     width: 50%;
     padding: 8px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 #ngl-container {
@@ -26,11 +27,13 @@ body > h1:nth-child(1) {
 
 
 #svg-container {
+    margin-top: 50px;
     text-align: center;
 }
 
+
 svg {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 #viewport {

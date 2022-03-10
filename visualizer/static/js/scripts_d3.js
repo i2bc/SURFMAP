@@ -48,12 +48,14 @@ var surfmap = function(data) {
         resolve(d3.tsvParse(data));
     });
 
-    console.log(dataset)
+    // console.log(dataset)
 
     var scale_factor = 1.8;
-    var width = 360*scale_factor;
+    var width = 360*scale_factor + 80;
     var height = 180*scale_factor;
-    var pixel_size = 5; 
+    var pixel_size = 5;
+
+    console.log(width);
 
     //Create SVG element
     var svg = d3.select("#svg-container")
@@ -61,29 +63,15 @@ var surfmap = function(data) {
         .attr("width", width)
         .attr("height", height);
 
+    var minVal = mapColors.stickiness.minVal
+    var maxVal = mapColors.stickiness.maxVal
+
+    var colors = d3.scaleLinear()
+        .domain([minVal, 0, maxVal])
+        .range(mapColors.stickiness.scale);
+
+
     dataset.then(function(data) {
-        // console.log(data)
-        // var minVal = d3.min(data.map(e => parseFloat(e.svalue)))
-        // var maxVal = d3.max(data.map(function(ele) {
-        //     if (ele.svalue != "Inf") {
-        //         return parseFloat(ele.svalue)
-        //     }
-        // }));
-
-        var minVal = mapColors.stickiness.minVal
-        var maxVal = mapColors.stickiness.maxVal
-
-        // var palette_color = ["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]
-
-        // var colors = d3.scaleQuantize()
-        //     .domain([minVal ,maxVal])
-        //     .range(palette_color);
-
-        var colors = d3.scaleLinear()
-            .domain([minVal, 0, maxVal])
-            .range(mapColors.stickiness.scale);
-            // .range(["blue", "white", "red"]);
-
 
         var rects = svg.selectAll(".rects")
             .data(data)
@@ -101,7 +89,6 @@ var surfmap = function(data) {
             .attr("stroke-width", 0.25)
             .attr("class", function(d) {
                 residues = d.residues.split(',')
-                // console.log('res split:', residues)
                 if (residues.length == 1 && residues[0] == 'NA') return
 
                 className = []
@@ -117,6 +104,73 @@ var surfmap = function(data) {
                 return className.join(' ')
                 });
 
+        // add the legend now
+        var legendFullHeight = height;
+        var legendFullWidth = 50;
+
+        var legendMargin = { top: 20, bottom: 20, left: 5, right: 20 };
+
+        // use same margins as main plot
+        var legendWidth = legendFullWidth - legendMargin.left - legendMargin.right;
+        var legendHeight = legendFullHeight - legendMargin.top - legendMargin.bottom;
+
+        var legendSvg = svg.append("g")
+            .attr("transform", "translate(" + 670 + "," + 0 + ")")
+
+        // append gradient bar
+        var gradient = legendSvg.append('defs')
+            .append('linearGradient')
+            .attr('id', 'gradient')
+            .attr('x1', '0%') // bottom
+            .attr('y1', '100%')
+            .attr('x2', '0%') // to top
+            .attr('y2', '0%')
+
+
+        gradient.append('stop')
+            .attr('offset', '0%')
+            .attr('stop-color', mapColors.stickiness.scale[0])
+            .attr('stop-opacity', 1)
+        gradient.append('stop')
+            .attr('offset', '50%')
+            .attr('stop-color', mapColors.stickiness.scale[1])
+            .attr('stop-opacity', 1)
+        gradient.append('stop')
+            .attr('offset', '100%')
+            .attr('stop-color', mapColors.stickiness.scale[2])
+            .attr('stop-opacity', 1)
+
+        legendSvg.append('rect')
+            .attr('x1', 0)
+            .attr('y1', 0)
+            .attr('width', legendWidth)
+            .attr('height', height)
+            .style('fill', 'url(#gradient)')
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.15)
+
+        // create a scale and axis for the legend
+        var legendScale = d3.scaleLinear()
+            .domain([mapColors.stickiness.minVal, mapColors.stickiness.maxVal])
+            .range([height, 0]);
+
+        // var colors = d3.scaleLinear()
+        //     .domain([minVal, 0, maxVal])
+        //     .range(mapColors.stickiness.scale);
+
+        var legendAxis = d3.axisRight(legendScale)
+                
+
+        // var legendAxis = d3.svg.axis()
+        //     .scale(legendScale)
+        //     .orient("right")
+        //     .tickValues(d3.range(mapColors.stickiness.minVal, mapColors.stickiness.maxVal))
+        //     .tickFormat(d3.format("d"));
+
+        legendSvg.append("g")
+            .attr("class", "legend axis")
+            .attr("transform", "translate(" + legendWidth + ", 0)")
+            .call(legendAxis);            
 
         rects.on('mouseover', function(event) {
             residues = this.__data__.residues.split(',')
