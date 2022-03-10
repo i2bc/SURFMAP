@@ -60,7 +60,7 @@ Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SUR
 ├── requirements.txt
 ├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
 ├── <font color="#3465A4"><b>scripts/</b></font>
-├── <font color="#4E9A06"><b>SURFMAP_launcher.py</b></font>
+├── <font color="#4E9A06"><b>surfmap.py</b></font>
 ├── SURFMAP_manual.pdf
 ├── SURFMAP_manual.Rmd
 └── <font color="#3465A4"><b>tools/</b></font>
@@ -89,7 +89,7 @@ You’ll first need to create an account on [docker hub](https://hub.docker.com/
 
 ### 2. Make the script `run_surfmap.py` callable from anywhere
 
-`run_surfmap.py` is a python script that acts as a proxy to call the script `SURFMAP_launcher.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
+`run_surfmap.py` is a python script that acts as a proxy to call the script `surfmap.py` through the SURFMAP docker image. It makes invisible to the user complex command lines required to create a bridge between the host filesystem and the container filesystem that are isolated by default.
 
 Once you’ve successfully registered to the hub and installed docker on your machine, you should be ready to use the docker image of SURFMAP through the script `run_surfmap.py`.
 
@@ -127,7 +127,7 @@ run_surfmap.py: error: the following arguments are required: -pdb, -tomap
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `SURFMAP_launcher.py` if you have installed SURFMAP locally on your machine. 
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `surfmap.py` if you have installed SURFMAP locally on your machine. 
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
