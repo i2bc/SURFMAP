@@ -58,7 +58,7 @@ Once downloaded (and/or unarchived), please go to the SURFMAP directory (`cd SUR
 ├── <font color="#3465A4"><b>example/</b></font>
 ├── README.md
 ├── requirements.txt
-├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
+├── <font color="#4E9A06"><b>run_surfmap_image.py</b></font>
 ├── <font color="#3465A4"><b>scripts/</b></font>
 ├── <font color="#4E9A06"><b>surfmap.py</b></font>
 ├── SURFMAP_manual.pdf
@@ -127,7 +127,7 @@ run_surfmap_image.py: error: the following arguments are required: -pdb, -tomap
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap.py` as shown [here](#surfmap-alias) or directly an alias `surfmap.py` if you have installed SURFMAP locally on your machine. 
+In the following section, we will assume that the SURFMAP program is called through the `surfmap` command that is either an alias of `run_surfmap_image.py` as shown [here](#surfmap-alias) or directly an alias `surfmap.py` if you have installed SURFMAP locally on your machine. 
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
