@@ -79,13 +79,17 @@ def main():
         exit()
 
     if args.pdb:
+        if not os.path.exists(args.pdb):
+            print("Error: the pdb file {} does not exist".format(args.pdb))
+            exit()
         pdbarg = args.pdb
         pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
         pdbname = os.path.basename(pdbarg)
+    elif args.mat:
+        pdb_id = os.path.basename(args.mat).split(".")[0]
    
     resfile = args.res
-    ppttomap = args.tomap
-    
+    ppttomap = args.tomap    
     
 
     if args.res:
@@ -339,6 +343,10 @@ def main():
                 pass
 
     elif args.mat:
+        if not os.path.exists(args.mat):
+            print("Error: the matrix file {} does not exist".format(args.mat))
+            exit()
+
         if os.path.isdir(outdir+"/matrices/") == False:
             os.makedirs(outdir+"/matrices/")
         shutil.copyfile(args.mat, outdir+"/matrices/"+os.path.basename(args.mat))
