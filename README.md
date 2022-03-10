@@ -172,6 +172,17 @@ As an example, the following command will generate a 2D graphic map correspondin
 python3 surfmap.py -mat averaged_matrix.txt -tomap stickiness
 ```
 
+The above command will generate an output directory named `output_SURFMAP_averaged_matrix_stickiness/` with the following content:
+
+<pre><font color="#3465A4"><b>output_SURFMAP_averaged_matrix_stickiness/</b></font>
+├── log_parameters
+├── <font color="#3465A4"><b>maps/</b></font>
+│   └── averaged_matrix_stickiness_map.pdf
+└── <font color="#3465A4"><b>smoothed_matrices/</b></font>
+    └── averaged_matrix_stickiness_smoothed_matrix.txt
+</pre>
+
+
 
 ## SURFMAP optional parameters
 
