@@ -1,20 +1,21 @@
 
+var fileName = null;
+
 $('#matrix-file').change(function () {
     file = this.files[0];
 
 	if(file){
+        fileName = file.name
+
 		var reader = new FileReader();
 		reader.onload = function(e) {
-            surfmap(reader.result)
+            initSurfmap(reader.result)
 		}
 		reader.readAsText(file);
 	}
 
 });
 
-var _surfmap = function(data) {
-    console.log(data);
-}
 
 
 mapColors = {
@@ -22,12 +23,113 @@ mapColors = {
         'minVal': -1.273,
         'maxVal': 1.273,
         'scale': ["royalblue", "white", "darkgreen"]
+    },
+    'electrostatics': {
+        'minVal': null,
+        'maxVal': null,
+        'scale': ["red", "white", "blue"]
+    },
+    'kyte_doolittle': {
+        'minVal': -4.5,
+        'maxVal': 4.5,
+        'scale': ["#5F9EA0", "#7AC5CD", "#faf4e0", "#CD8500", "#8B4726"]
+    },
+    'wimley_white': {
+        'minVal': 2.23,
+        'maxVal': 6.1,
+        'scale': ["#5F9EA0", "#7AC5CD", "#faf4e0", "#CD8500", "#8B4726"]
+    },
+    'circular_variance': {
+        'minVal': 0,
+        'maxVal': 1,
+        'scale': ["black", "white", "blue"]
+    },
+    'bfactor': {
+        'minVal': null,
+        'maxVal': null,
+        'scale': ["#CD661D", "white", "#00008B"]
+    },
+    'discreteBfactor': {
+        'minVal': null,
+        'maxVal': null,
+        'scale': [
+            "#FFFFFF", "#EE2C2C", "#6495ED", "#FFB90F",
+            "#7A378B", "#00CD00", "#87CEFF", "#CD853F",
+            "#EE82EE", "#006400", "#FF7F24", "#4D4D4D",
+            "#FA8072", "#CD6889", "#27408B"
+        ]
+    },
+}
+  
+var scaleColorMap;
+
+
+initSurfmap = function(data) {
+    $("#scale-controller").empty()
+    $("svg").remove()
+    
+    var mapProp = null;
+    Object.keys(mapColors).forEach(function(el) {
+        if (fileName.indexOf(el) != -1) {
+            mapProp = el
+        }
+    });
+
+    if (mapProp != null) {
+        scaleColorMap = mapProp;
+        surfmap(data);
+    }
+    else {
+        var labelSel = $("<label>").appendTo("#scale-controller");
+        labelSel.attr('for', 'scale-select').text('Please select the property corresponding to your matrix file:')
+        labelSel.attr('class', 'label-select-scale')
+    
+        var sel = $('<select>').appendTo("#scale-controller");
+        sel.attr('id', 'scale-select')
+        sel.append($("<option>").attr('value', 'empty').text('-- Select a property --'));
+
+        Object.keys(mapColors).forEach(function(d) {
+            sel.append($("<option>").attr('value',d).text(d));
+        });
+
+        // attach event listener to control
+        $('#scale-select').on('change', function(e) {
+            if (this.value != 'empty') {
+                scaleColorMap = this.value;
+                surfmap(data);
+            }
+        });
+
+
     }
 }
 
-var surfmap = function(data) {
 
-    d3.select("svg").remove()
+var surfmap = function(data) {
+    $("#scale-controller").empty()
+    $("svg").remove()
+
+    // else {
+    //     var labelSel = $("<label>").appendTo("#scale-controller");
+    //     labelSel.attr('for', 'scale-select').text('Please select the property corresponding to your matrix file:')
+    //     labelSel.attr('class', 'label-select-scale')
+    
+    //     var sel = $('<select>').appendTo("#scale-controller");
+    //     sel.attr('id', 'scale-select')
+    //     Object.keys(mapColors).forEach(function(d) {
+    //         sel.append($("<option>").attr('value',d).text(d));
+    //     });
+    //     scaleColorMap = $('#scale-select').val()    
+    // }
+
+      
+
+
+    // attach event listener to control
+    // $('#scale-select').on('change', function(e) {
+    //     scaleColorMap = this.value;
+    // });  
+
 
     // create tooltip element and add to document body
     var tooltip = document.createElement("div")
@@ -43,32 +145,31 @@ var surfmap = function(data) {
     })
     document.body.appendChild(tooltip)
 
-
+    
     dataset = new Promise(( resolve, reject ) => {
         resolve(d3.tsvParse(data));
     });
-
-    // console.log(dataset)
 
     var scale_factor = 1.8;
     var width = 360*scale_factor + 80;
     var height = 180*scale_factor;
     var pixel_size = 5;
 
-    console.log(width);
 
     //Create SVG element
     var svg = d3.select("#svg-container")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
+        
+    var mapColorProp = mapColors[`${scaleColorMap}`];
 
-    var minVal = mapColors.stickiness.minVal
-    var maxVal = mapColors.stickiness.maxVal
+    var minVal = mapColorProp.minVal
+    var maxVal = mapColorProp.maxVal
 
     var colors = d3.scaleLinear()
         .domain([minVal, 0, maxVal])
-        .range(mapColors.stickiness.scale);
+        .range(mapColorProp.scale);
 
 
     dataset.then(function(data) {
@@ -129,15 +230,15 @@ var surfmap = function(data) {
 
         gradient.append('stop')
             .attr('offset', '0%')
-            .attr('stop-color', mapColors.stickiness.scale[0])
+            .attr('stop-color', mapColorProp.scale[0])
             .attr('stop-opacity', 1)
         gradient.append('stop')
             .attr('offset', '50%')
-            .attr('stop-color', mapColors.stickiness.scale[1])
+            .attr('stop-color', mapColorProp.scale[1])
             .attr('stop-opacity', 1)
         gradient.append('stop')
             .attr('offset', '100%')
-            .attr('stop-color', mapColors.stickiness.scale[2])
+            .attr('stop-color', mapColorProp.scale[2])
             .attr('stop-opacity', 1)
 
         legendSvg.append('rect')
@@ -151,21 +252,12 @@ var surfmap = function(data) {
 
         // create a scale and axis for the legend
         var legendScale = d3.scaleLinear()
-            .domain([mapColors.stickiness.minVal, mapColors.stickiness.maxVal])
+            .domain([mapColorProp.minVal, mapColorProp.maxVal])
             .range([height, 0]);
 
-        // var colors = d3.scaleLinear()
-        //     .domain([minVal, 0, maxVal])
-        //     .range(mapColors.stickiness.scale);
 
         var legendAxis = d3.axisRight(legendScale)
                 
-
-        // var legendAxis = d3.svg.axis()
-        //     .scale(legendScale)
-        //     .orient("right")
-        //     .tickValues(d3.range(mapColors.stickiness.minVal, mapColors.stickiness.maxVal))
-        //     .tickFormat(d3.format("d"));
 
         legendSvg.append("g")
             .attr("class", "legend axis")
