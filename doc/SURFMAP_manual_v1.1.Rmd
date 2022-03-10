@@ -146,7 +146,8 @@ Rk: The user must either use the `-pdb` option or `-mat` option (see below).
 <br>
 
 ### -mat
-Input file. In that case the user needs to provide a matrix file, in the same format as SURFMAP matrices files (see format in the examples).
+Input file. In that case the user needs to provide a matrix file, in the same format as SURFMAP matrices files (see format in the examples):
+| phi | theta | score |
 
 Rk: The user must either use the `-pdb` option or `-mat` option (see above). 
 
@@ -215,14 +216,15 @@ computes coord_list files from partlist.out files
 
 a coord_list file is is a 6 columns file listing, for each cell grid of the map, all the residues included. the format is the following:
 
-| phi | theta | score | resnb | restype | index_sol
+| absc | ord | score | resnb | restype | chain | index_sol
 
 with:  
--phi: abscissa coordinate on the map  
--theta: odinate coordinate on the map  
+-absc: abscissa coordinate on the map  
+-ord: odinate coordinate on the map  
 -score: score of the property tested  
 -resnb: residue number in the input pdb  
 -restype: residue type  
+-chain: residue chain  
 -index_sol: index of the generated particle  
 <br>
 
@@ -234,12 +236,13 @@ script that computes a pdf map from a smoothed matrix file
 <br>
 script that computes a smoothed matrix from a coordlist file. The format is the following:
 
-| phi | theta | value
+| absc | ord | value | residues
 
 with:  
--phi: abscissa coordinate on the map  
--theta: ordinate coordinate on the map  
+-absc: abscissa coordinate on the map  
+-ord: ordinate coordinate on the map  
 -value: the value of the property tested. A value of 100 means that the grid cell is outside the projection. A value of 'NA' means that there is no particles in the grid cell.  
+-residues: list of residues "belonging" to the couple of coordinates (= to the grid cell). The format is RESTYPE_RESNB_CHAINID. If several residues are present, they are separated by a comma.
 <br>
 
 **- compute_shell.sh**  
