@@ -89,8 +89,8 @@ svg {
     background-color: aqua;
 }
 
-#tooltip {
-    width: 200px;
+#tooltip-table {
+    width: 240px;
     font-size: 14px;
     text-align: center;
 }

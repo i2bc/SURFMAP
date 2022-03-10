@@ -22,22 +22,24 @@ mapColors = {
     'stickiness': {
         'minVal': -1.273,
         'maxVal': 1.273,
-        'scale': ["royalblue", "white", "darkgreen"]
+        'scale': ["royalblue", "white", "darkgreen"],
     },
     'electrostatics': {
         'minVal': null,
         'maxVal': null,
-        'scale': ["red", "white", "blue"]
+        'scale': ["red", "white", "blue"],
     },
     'kyte_doolittle': {
         'minVal': -4.5,
         'maxVal': 4.5,
-        'scale': ["#5F9EA0", "#7AC5CD", "#faf4e0", "#CD8500", "#8B4726"]
+        'scale': ["#5f9ea0", "#faf4e0", "#8b4726"],
+        // 'scale': ["#5f9ea0", "#7ac5cd", "#faf4e0", "#cd8500", "#8b4726"],
     },
     'wimley_white': {
         'minVal': 2.23,
         'maxVal': 6.1,
-        'scale': ["#5F9EA0", "#7AC5CD", "#faf4e0", "#CD8500", "#8B4726"]
+        'scale': ["#5F9EA0", "#faf4e0", "#8B4726"]
+        // 'scale': ["#5F9EA0", "#7AC5CD", "#faf4e0", "#CD8500", "#8B4726"]
     },
     'circular_variance': {
         'minVal': 0,
@@ -67,6 +69,8 @@ var scaleColorMap;
 initSurfmap = function(data) {
     $("#scale-controller").empty()
     $("svg").remove()
+    $("#tooltip-table").remove()
+    $("#tooltip").remove()
     
     var mapProp = null;
     Object.keys(mapColors).forEach(function(el) {
@@ -104,35 +108,16 @@ initSurfmap = function(data) {
     }
 }
 
+var mapColorProp;
 
 var surfmap = function(data) {
     $("#scale-controller").empty()
     $("svg").remove()
-
-    // else {
-    //     var labelSel = $("<label>").appendTo("#scale-controller");
-    //     labelSel.attr('for', 'scale-select').text('Please select the property corresponding to your matrix file:')
-    //     labelSel.attr('class', 'label-select-scale')
-    
-    //     var sel = $('<select>').appendTo("#scale-controller");
-    //     sel.attr('id', 'scale-select')
-    //     Object.keys(mapColors).forEach(function(d) {
-    //         sel.append($("<option>").attr('value',d).text(d));
-    //     });
-    //     scaleColorMap = $('#scale-select').val()    
-    // }
-
-      
-
-
-    // attach event listener to control
-    // $('#scale-select').on('change', function(e) {
-    //     scaleColorMap = this.value;
-    // });  
-
+    $("#tooltip-table").remove()
 
     // create tooltip element and add to document body
     var tooltip = document.createElement("div")
+    tooltip.id = 'tooltip'
     Object.assign(tooltip.style, {
         display: "none",
         position: "fixed",
@@ -162,23 +147,34 @@ var surfmap = function(data) {
         .attr("width", width)
         .attr("height", height);
         
-    var mapColorProp = mapColors[`${scaleColorMap}`];
-
-    var minVal = mapColorProp.minVal
-    var maxVal = mapColorProp.maxVal
-
-    var colors = d3.scaleLinear()
-        .domain([minVal, 0, maxVal])
-        .range(mapColorProp.scale);
-
+    mapColorProp = mapColors[`${scaleColorMap}`];
 
     dataset.then(function(data) {
+        if (mapColorProp.minVal != null) {
+            var minVal = mapColorProp.minVal
+            var maxVal = mapColorProp.maxVal
+        }
+        else {
+            var minVal = d3.min(data.map(e => parseFloat(e.svalue)))
+            var maxVal = d3.max(data.map(function(ele) {
+                if (ele.svalue != "Inf") {
+                    return parseFloat(ele.svalue)
+                }
+            }));
+            mapColorProp.minVal = minVal;
+            mapColorProp.maxVal = maxVal;
+        }
+    
+        var colors = d3.scaleLinear()
+            .domain([minVal, (minVal+maxVal)/2, maxVal])
+            .range(mapColorProp.scale);
+            
 
         var rects = svg.selectAll(".rects")
             .data(data)
             .enter()
             .append("rect")
-            .attr("y", d => (d.ord-pixel_size)*scale_factor)
+            .attr("y", d => (180-d.ord-pixel_size)*scale_factor)
             .attr("x", d => (d.absc-pixel_size)*scale_factor)
             .attr("height", pixel_size*scale_factor)
             .attr("width", pixel_size*scale_factor)
@@ -209,7 +205,7 @@ var surfmap = function(data) {
         var legendFullHeight = height;
         var legendFullWidth = 50;
 
-        var legendMargin = { top: 20, bottom: 20, left: 5, right: 20 };
+        var legendMargin = { top: 5, bottom: 5, left: 5, right: 20 };
 
         // use same margins as main plot
         var legendWidth = legendFullWidth - legendMargin.left - legendMargin.right;
@@ -255,9 +251,7 @@ var surfmap = function(data) {
             .domain([mapColorProp.minVal, mapColorProp.maxVal])
             .range([height, 0]);
 
-
-        var legendAxis = d3.axisRight(legendScale)
-                
+        var legendAxis = d3.axisRight(legendScale)                
 
         legendSvg.append("g")
             .attr("class", "legend axis")
@@ -268,13 +262,16 @@ var surfmap = function(data) {
             residues = this.__data__.residues.split(',')
             if (residues.length == 1 && residues[0] == 'NA') return
 
+            value = this.__data__.svalue
+
             tooltip_table = `
-            <table id='tooltip'>
+            <table id='tooltip-table'>
                 <thead>
                     <tr>
                         <th>resname</th>
                         <th>resnb</th>
                         <th>chain</th>
+                        <th>value</th>
                     </tr>                    
                 </thead>
                 <tbody>
@@ -291,6 +288,7 @@ var surfmap = function(data) {
                     <td>${resname}</td>
                     <td>${resnb}</td>
                     <td>${chain}</td>
+                    <td>${value}</td>
                 </tr>
                 `
             });
@@ -316,9 +314,6 @@ var surfmap = function(data) {
             residues = this.__data__.residues.split(',')
             if (residues.length == 1 && residues[0] == 'NA') return
 
-            // resIndex = residues.split('_')[1]
-            // console.log(residues)
-            console.log(this)
 
             this.classList.forEach(function(d) {
                 className = `.${d}`
