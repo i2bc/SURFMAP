@@ -145,7 +145,7 @@ The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity,
 For instance, the following command line will map the stickiness protein surface feature for the chain A of the protein [1G3N](https://www.rcsb.org/structure/1G3N):
 
 ```bash
-python3 SURFMAP_launcher.py -pdb 1g3n_A.pdb -tomap stickiness
+python3 surfmap.py -pdb 1g3n_A.pdb -tomap stickiness
 ```
 
 The above command will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
@@ -211,37 +211,37 @@ This image will work on any system that can run docker (Unix, MacOS, or Windows 
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
-## 2. Run SURFMAP with `run_surfmap.py`
+## 2. Run SURFMAP with `run_surfmap_image.py`
 
 Once you have docker installed on your machine, you are ready to use SURFMAP. Simply type in a terminal:
 ```bash
-python3 run_surfmap.py
+python3 run_surfmap_image.py
 ```  
 
-The first time you’ll type it you may have to also type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing the `python3 run_surfmap.py` command in a terminal the following message:
+The first time you’ll type it you may have to also type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing the `python3 run_surfmap_image.py` command in a terminal the following message:
 
 <pre>
-<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ python3 run_surfmap.py
-usage: run_surfmap.py [-h] -pdb PDB -tomap
+<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ python3 run_surfmap_image.py
+usage: run_surfmap_image.py [-h] -pdb PDB -tomap
                       {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
                       [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
                       [--png] [--keep]
-run_surfmap.py: error: the following arguments are required: -pdb, -tomap
+run_surfmap_image.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
 
 # Tip
 
 <a id="surfmap-alias"></a>
-Wether you call SURFMAP through `SURFMAP_launcher.py` or `run_surfmap.py`, you can make those scripts callable from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
+Wether you call SURFMAP through `surfmap.py` or `run_surfmap_image.py`, you can make those scripts callable from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
 
 ```bash
 # Alias to run surfmap from its docker image"
-alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap.py'
+alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
 ```
 or 
 ```bash
-alias surfmap='python3 PATH/TO/SURFMAP/SURFMAP_launcher.py'
+alias surfmap='python3 PATH/TO/SURFMAP/surfmap.py'
 ```
 
 Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the change effective.
