@@ -134,7 +134,7 @@ surfmap -pdb 1gv3_A_binding_sites.pdb -tomap binding_sites
 
 \vspace{1cm}
 
-# III - Complete list of arguments of run_surfmap.py / SURFMAP_launcher.py
+# III - Complete list of arguments of run_surfmap.py / surfmap.py
 
 run_surfmap_image.py / surfmap.py can take the following arguments:  
 <br>
