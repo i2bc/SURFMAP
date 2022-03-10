@@ -196,8 +196,8 @@ for (file in (1:length(files))) {
     png(paste("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.png", 
         sep = ""), res = 300, width = 17.78, height = 17.78, units = "cm")
   } else {
-    pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]), "_", projection, "_map.pdf"))
-    # pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
+    #pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]), "_", projection, "_map.pdf"))
+    pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
     
   }
   prot_name = gsub("_smoothed_matrix.txt", "", files[file])
@@ -388,9 +388,12 @@ for (file in (1:length(files))) {
   if (projection == "sinusoidal") {
     labx = expression(paste(phi, " sin(", theta, ")"))
     laby = expression(paste("90 - ", theta))
-  } else {
+  } else if (projection == "mollweide") {
     labx = "x"
     laby = "y"
+  } else if (projection == "lambert") {
+    labx = expression(paste(phi))
+    laby = expression(paste(" sin(", theta, ")"))
   }
   
   # Creation of the image.

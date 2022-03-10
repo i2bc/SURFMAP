@@ -142,24 +142,37 @@ for (file in (1:length(files))) {
     Dataproj[,1] = round(Dataproj[,1], 3)
     Dataproj[,2] = round(Dataproj[,2], 3)
   } else {
-    if (pf[projlist == projection] == 0 & projection != "sinusoidal") {
+    if (projection == "mollweide") {
       proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
                         projection=projection, parameters=NULL, orientation=NULL)
+      Dataproj = Data
+      Dataproj[,1] = proj$x*180/pi
+      Dataproj[,2] = -proj$y*180/pi
       
-    } else if (pf[projlist == projection] == 1) {
-      proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
-                        projection=projection, 0)
+      proportion1 = max(Dataproj$phi) / max(Data[,1]*180/pi)
+      proportion2 = max(Dataproj$theta) / max(Data[,2]*180/pi-90)
+      
+      Dataproj[,1] = Dataproj[,1]/proportion1
+      Dataproj[,2] = Dataproj[,2]/proportion2
+      
+    } else if (projection == "lambert") {
+      # proj = mapproject(Data[,1]*180/pi, Data[,2]*180/pi-90, 
+      #                   projection=projection, 0)
+      Dataproj = Data
+      # print(summary(Data[,1]))
+      # print(summary(Data[,2]))
+      Dataproj[,2] = -sin(Data[,2]-pi/2)
+      Dataproj[,1] = Dataproj[,1]*180/pi
+      Dataproj[,2] = Dataproj[,2]*(180/pi)*(pi/2)
+      print(summary(Dataproj[,2]))
+      
+      # Dataproj[,2] = 90 - Dataproj[,2]
+      Dataproj[,1] = round(Dataproj[,1], 3)
+      Dataproj[,2] = round(Dataproj[,2], 3)
+      # print(summary(Dataproj[,1]))
+      print(summary(Dataproj[,2]))
+      
     }
-    
-    Dataproj = Data
-    Dataproj[,1] = proj$x*180/pi
-    Dataproj[,2] = -proj$y*180/pi
-    
-    proportion1 = max(Dataproj$phi) / max(Data[,1]*180/pi)
-    proportion2 = max(Dataproj$theta) / max(Data[,2]*180/pi-90)
-    
-    Dataproj[,1] = Dataproj[,1]/proportion1
-    Dataproj[,2] = Dataproj[,2]/proportion2
   }
   
   # Call the function that will actually create the energy matrix.

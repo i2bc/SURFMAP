@@ -69,11 +69,11 @@ ls -l
 ├── <font color="#3465A4"><b>MSMS</b></font>
 ├── README.md
 ├── requirements.txt
-├── <font color="#4E9A06"><b>run_surfmap.py</b></font>
+├── <font color="#4E9A06"><b>run_surfmap_image.py</b></font>
 ├── <font color="#3465A4"><b>scripts</b></font>
-├── <font color="#4E9A06"><b>SURFMAP_launcher.py</b></font>
+├── <font color="#4E9A06"><b>surfmap.py</b></font>
 ├── <font color="#3465A4"><b>tools</b></font>
-└── <font color="#3465A4"><b>visualizer</b></font>
+└── <font color="#3465A4"><b>viewer</b></font>
 </pre>
 
 ## Install required python libraries
@@ -85,9 +85,9 @@ pip3 install -r requirements.txt
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-If you followed the steps above, SURFMAP should be ready to use through the script `SURFMAP_launcher.py`. To make it sure, type in a terminal the following command:
+If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py`. To make it sure, type in a terminal the following command:
 ```
-python3 SURFMAP_launcher.py
+python3 surfmap.py
 ```
 This command should display:
 
@@ -99,11 +99,11 @@ Copyright (c) 2021, H. Schweke
 
 ...
     
-usage: SURFMAP_launcher.py [-h] -pdb PDB -tomap
+usage: surfmap.py [-h] -pdb PDB -tomap
                            {bfactor,kyte_doolittle,binding_sites,all,circular_variance_atom,stickiness,wimley_white,electrostatics,circular_variance}
                            [-proj {sin,aitoff,moll,cyl}] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png]
                            [--keep]
-SURFMAP_launcher.py: error: the following arguments are required: -pdb, -tomap
+surfmap.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
@@ -122,10 +122,16 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ## SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a sinusoidal projection by default (other projections are available: mollweide, aitoff and cylindric). Thus two mandatory arguments must be given as inputs by the user: `-pdb` and `-tomap`:
+SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. The user has the choice between three different projections:
+- Sinusoidal, also known as Samson-Flamsteed (the default projection): pseudocylindrical equal-area map projection.
+- Lambert cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
+- Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
+
+Typically, the user will employ two arguments as inputs: `-pdb` and `-tomap`:
 
 - the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
-- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map. The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf in `doc/` or the original article for a description):
+- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map.
+The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf in `doc/` or the original article for a description):
   - wimley_white
   - kyte_doolittle
   - stickiness
@@ -157,6 +163,15 @@ with:
 - `1g3n_A_stickiness_sinusoidal_map.pdf`: the generated 2-D map in pdf format
 - `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
 
+### SURFMAP `-mat` option
+
+Alternatively, the user can provide a `-mat` argument instead of `-pdb`. In that case the user provides a matrix file computed for a property that must be given with the `-tomap` argument. SURFMAP will then generate the corresponding 2D map graphic in pdf format (by default) from it. Be careful with this option, as the matrix must be in the correct format used by SURFMAP. The main use of this option is two compute maps from 'customized' matrices. For example the user can create a map with SURFMAP for the same protein in different conformational states, and then create an "averaged" matrix for all the matrices and plot it with the option `-mat`.
+
+As an example, the following command will generate a 2D graphic map corresponding to the averaged_matrix.txt file: 
+```
+python3 surfmap.py -mat averaged_matrix.txt -tomap stickiness
+```
+
 
 ## SURFMAP optional parameters
 
@@ -164,7 +179,8 @@ The following table lists the optional parameters that can be used when running 
 
 | Optional parameters | Description |
 | --- | --- |
-| -proj | Choice of the projection. Argument must be one of the following: `sin` for sinusoidal, `moll` for mollweide, `aitoff` aitoff or `cyl` for cylindric equal area (default: `sin`) |
+| -proj | Type of map projection (choices: `flamsteed`, `mollweide`, `lambert` - default: sinusoidal) |
+| -mat | Input matrix. If the user gives an input matrix, SURFMAP will directly compute a map from it. |
 | -res | File containing a list of residues to map on the projection |
 | -rad | Radius added to the usual atomic radius used to calculate the solvent excluded surface. The higher the radius the smoother the surface (default: 3.0 Angström) |
 | -d | Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to `-pdb` and `-tomap` arguments, respectiveley) |
@@ -175,17 +191,15 @@ The following table lists the optional parameters that can be used when running 
 
 <br>
 
-# Visualize interactively your maps
+# Interactive viewer
 
-All maps generated with SURFMAP can be interactively inspected with the help of an `index.html` file located in `SURFMAP/visualizer/`.
+All maps generated with SURFMAP can be interactively inspected with the help of an `index.html` file located in `SURFMAP/viewer/`.
 
 To interactively visualize a map:
 - open `index.html` in your favorite browser
 - upload a smoothed matrix file (in the directory `smoothed_matrices` from an output generated with SURFMAP)
 
-Once the map appears, you can click on any pixel to see the corresponding residue(s).
-
-
+Once the map appears, you can hover over a pixel to see the corresponding residue(s) and its property value.
 
 # Use of the pre-built docker image of SURFMAP
 [Go to the top](#Table-of-contents)
