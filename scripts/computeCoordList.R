@@ -1,6 +1,6 @@
 rm(list=ls())
 
-dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)  # create personal library
+suppressWarnings(dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE))  # create personal library
 .libPaths(Sys.getenv("R_LIBS_USER"))  # add to the path
 
 ###################  LIBRARIES   ##########################
@@ -15,8 +15,7 @@ if (any(installed_packages == FALSE)) {
 }
 
 # Packages loading
-invisible(lapply(packages, library, character.only = TRUE))
-
+suppressMessages(invisible(lapply(packages, library, character.only = TRUE)))
 # library(mapproj)
 # library(optparse)
 # library(data.table)
