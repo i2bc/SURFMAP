@@ -319,22 +319,22 @@ def main():
             else:
                 outlog.write("smoothing: on")
 
-            # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
-            try:
-                shutil.rmtree("shells")
-            except OSError:
-                pass
+            # # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
+            # try:
+            #     shutil.rmtree("shells")
+            # except OSError:
+            #     pass
             
-            try:
-                shutil.rmtree("tmp-elec")
-            except OSError:
-                pass
+            # try:
+            #     shutil.rmtree("tmp-elec")
+            # except OSError:
+            #     pass
             
-            if args.res:
-                try:
-                    os.remove(reslist)
-                except OSError:
-                    pass
+            # if args.res:
+            #     try:
+            #         os.remove(reslist)
+            #     except OSError:
+            #         pass
 
             # Moving the pdb file with CV mapped in bfactor to the output directory
             try:
@@ -374,6 +374,24 @@ def main():
         print("You need to provide either a pdb file or a matrix file in input.\nExitting now.")
         exit()
 
+
+
+    # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
+    try:
+        shutil.rmtree("shells")
+    except OSError:
+        pass
+    
+    try:
+        shutil.rmtree("tmp-elec")
+    except OSError:
+        pass
+    
+    if args.res:
+        try:
+            os.remove(reslist)
+        except OSError:
+            pass
 
 
 
