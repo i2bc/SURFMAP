@@ -60,6 +60,7 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
 
 ```
+# cd SURFMAP-x-x/ if you downloaded an archived project
 cd SURFMAP/
 ls -l
 ```
