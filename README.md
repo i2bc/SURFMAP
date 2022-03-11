@@ -153,7 +153,7 @@ SURFMAP allows to compute different protein surface features and to map them on 
 The user can provide two different inputs (a pdb file or a matrix file) through the two exclusive arguments `-pdb` and `-tomap` respectively. 
 
 
-<img src="./doc/images/workflow_Surfmap.png" width="60%" align="right"/>
+<img src="./doc/images/workflow_Surfmap.png" width="60%" />
 
 
 
