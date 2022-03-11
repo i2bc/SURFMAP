@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse, os, shutil, subprocess
+from pathlib import Path
 
 
 def show_copyrights():
@@ -86,8 +87,9 @@ def main():
         pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
         pdbname = os.path.basename(pdbarg)
     elif args.mat:
-        pdb_id = os.path.basename(args.mat).split(".")[0]
-   
+        # pdb_id = os.path.basename(args.mat).split(".")[:-1][0]
+        pdb_id = str(Path(args.mat).stem)
+
     resfile = args.res
     ppttomap = args.tomap    
     
@@ -345,6 +347,10 @@ def main():
     elif args.mat:
         if not os.path.exists(args.mat):
             print("Error: the matrix file {} does not exist".format(args.mat))
+            exit()
+
+        if args.tomap == 'all':
+            print("\nError: the property to map cannot be set to 'all' when computing a map from a matrix file.\n".format(args.mat))
             exit()
 
         if os.path.isdir(outdir+"/matrices/") == False:

@@ -46,6 +46,10 @@ def main():
             print(log + '\n')
             exit()
 
+        if args.tomap == 'all':
+            print("\nError: the property to map cannot be set to 'all' when computing a map from a matrix file.\n".format(args.mat))
+            exit()
+
         if not os.path.exists(args.mat):
             log = "Error: the matrix file {} does not exist\n".format(args.mat)
             print("\n" + '*'*len(log))
