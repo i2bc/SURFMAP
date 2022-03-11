@@ -32,13 +32,14 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 
 **Please take note that we strongly advise to use the docker image, especially if you want to compute electrostatics potential. Indeed the installation process of APBS can be tricky. By using the pre-built docker image of SURFMAP, you will not have to install anything except docker itself.**
 
+# Manual Installation
 If you don't want to use the pre-built docker image of SURFMAP, you will need:
 - an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
 - python >= 3.7
 - R >= 3.6
 - nawk
 
-# Download
+## Download
 [Go to the top](#Table-of-contents)
 
 The recommended way to retrieve the project is to clone the repository.
@@ -81,11 +82,7 @@ Simply type in a terminal:
 ```bash
 pip3 install -r requirements.txt
 ```
-
-# Usage of SURFMAP
-[Go to the top](#Table-of-contents)
-
-If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py`. To make it sure, type in a terminal the following command:
+SURFMAP is now ready to use. To make it sure, type in a terminal the following command:
 ```
 python3 surfmap.py
 ```
@@ -106,6 +103,32 @@ usage: surfmap.py [-h] -pdb PDB -tomap
 surfmap.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
+
+# Tip
+
+<a id="surfmap-alias"></a>
+Wether you call SURFMAP through `surfmap.py` or `run_surfmap_image.py`, you can make those scripts callable from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
+
+```bash
+# Alias to run surfmap from its docker image"
+alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
+```
+or 
+```bash
+alias surfmap='python3 PATH/TO/SURFMAP/surfmap.py'
+```
+
+Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the change effective.
+
+From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`.
+
+
+
+# Usage of SURFMAP
+[Go to the top](#Table-of-contents)
+
+If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py` (manual installation) or `run_surmap_image.py` (docker installation). 
+
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
 <pre><font color="#3465A4"><b>example/</b></font>
@@ -122,15 +145,25 @@ To guide the user on how to use SURFMAP, we will use files in the `example/` dir
 
 ## SURFMAP inputs and outputs
 
-SURFMAP allows to compute different protein surface features and to map them on a 2-D plan through a projection. The user has the choice between three different projections:
+SURFMAP allows to compute different protein surface features and to map them on a 2D plan through a projection. The user has the choice between three different projections:
 - Sinusoidal, also known as Samson-Flamsteed (the default projection): pseudocylindrical equal-area map projection.
 - Lambert cylindrical: cylindrical equal-area map projection; equally spaced straight meridians; true scale on the equator.
 - Mollweide: equal-area, pseudocylindrical map projection onto 2-to-1 ellipse.
 
-Typically, the user will employ two arguments as inputs: `-pdb` and `-tomap`:
+The user can provide two different inputs (a pdb file or a matrix file) through the two exclusive arguments `-pdb` and `-tomap` respectively. 
 
-- the `-pdb` argument must be followed by the protein structure in PDB format the user wants to analyse
-- the `-tomap` argument must be given a keyword representing the protein surface feature the user wants to map.
+
+<div>
+<img src="./doc/images/TOC_Schweke_manuscript_revisions_forGitHub.png" width="60%" align="right"/>
+
+SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
+</div>
+
+
+### SURFMAP `-pdb` option
+
+- the `-pdb` argument must be followed by the protein structure whose surface is to be analyzed in a PDB format. 
+- the `-tomap` argument must be followed by a keyword representing the protein surface feature the user wants to map.
 The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity, the Wimley-White hydrophobicity, the stickiness and the circular variance per residue at the same time. The available keywords are listed below (see SURFMAP_manual.pdf in `doc/` or the original article for a description):
   - wimley_white
   - kyte_doolittle
@@ -145,10 +178,10 @@ The user can also use the option `all` to map the Kyte-Doolittle hydrophobicity,
 For instance, the following command line will map the stickiness protein surface feature for the chain A of the protein [1G3N](https://www.rcsb.org/structure/1G3N):
 
 ```bash
-python3 surfmap.py -pdb 1g3n_A.pdb -tomap stickiness
+surfmap -pdb 1g3n_A.pdb -tomap stickiness
 ```
 
-The above command will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
+The above command will calculate the stickiness of the surface of 1g3n, project the resulting value in two dimensions and will generate an output directory named `output_SURFMAP_1g3n_A_stickiness/` with the following content:
 
 <pre><font color="#3465A4"><b>output_SURFMAP_1g3n_A_stickiness/</b></font>
 ├── log_parameters
@@ -160,8 +193,8 @@ The above command will generate an output directory named `output_SURFMAP_1g3n_A
 
 with:
 - `log_parameters`: a summary of the basic parameters used to compute the map
-- `1g3n_A_stickiness_sinusoidal_map.pdf`: the generated 2-D map in pdf format
-- `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file used to generate the 2-D map
+- `1g3n_A_stickiness_sinusoidal_map.pdf`: the generated 2D map in pdf format
+- `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file (txt file) used to generate the 2D map
 
 ### SURFMAP `-mat` option
 
@@ -169,7 +202,7 @@ Alternatively, the user can provide a `-mat` argument instead of `-pdb`. In that
 
 As an example, the following command will generate a 2D graphic map corresponding to the averaged_matrix.txt file: 
 ```
-python3 surfmap.py -mat averaged_matrix.txt -tomap stickiness
+surfmap -mat averaged_matrix.txt -tomap stickiness
 ```
 
 The above command will generate an output directory named `output_SURFMAP_averaged_matrix_stickiness/` with the following content:
@@ -240,24 +273,6 @@ usage: run_surfmap_image.py [-h] -pdb PDB -tomap
 run_surfmap_image.py: error: the following arguments are required: -pdb, -tomap
 </pre>
 
-
-# Tip
-
-<a id="surfmap-alias"></a>
-Wether you call SURFMAP through `surfmap.py` or `run_surfmap_image.py`, you can make those scripts callable from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
-
-```bash
-# Alias to run surfmap from its docker image"
-alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
-```
-or 
-```bash
-alias surfmap='python3 PATH/TO/SURFMAP/surfmap.py'
-```
-
-Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the change effective.
-
-From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`.
 
 
 # Installing APBS
