@@ -88,7 +88,7 @@ def compute_map_from_pdb(args):
         '/output/' + 'output_SURFMAP_' + os.path.basename(args.pdb).split('.pdb')[:-1][0] + '_' + args.tomap
     ]
 
-    if args.d:
+    if args.d and os.path.basename(args.d) not in ['.', './']:
         docker_template_cmd[7] = os.path.dirname(os.path.abspath(args.d)) + ':' + '/output/' + ':rw'
         docker_template_cmd[14] = '/output/' + os.path.basename(args.d)
 
