@@ -24,7 +24,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 </div>
 
 
-# Prerequisites
+# Preamble
 [Go to the top](#Table-of-contents)
 
 SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software (1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
@@ -127,7 +127,7 @@ From now on, you should be able to use SURFMAP by simply typing in a terminal `s
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py` (manual installation) or `run_surmap_image.py` (docker installation). 
+If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py` (manual installation) or `run_surmap_image.py` (docker installation). In the following section, we assume SURFMAP is callable as `surfmap`, an alias of either `run_surfmap_image.py` or `surfmap.py`.
 
 To guide the user on how to use SURFMAP, we will use files in the `example/` directory that can be found in the downloaded SURFMAP project:
 
