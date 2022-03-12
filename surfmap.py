@@ -315,7 +315,7 @@ def main():
             outlog.write("grid resolution: " + str(int(360/cellsize)) + "*" + str(int(180/cellsize)) + "\n")
             outlog.write("MSMS radius: " + rad + "\n")
             outlog.write("property(ies) mapped: " + str(listtomap).strip('[]')+ "\n")
-            outlog.write("projection: " + proj + "\n")
+            outlog.write("projection: " + args.proj + "\n")
             if args.nosmooth:
                 outlog.write("smoothing: off")
             else:
