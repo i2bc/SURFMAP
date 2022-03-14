@@ -34,14 +34,7 @@ All these requirements (including the APBS software) are fullfilled in a [pre-bu
 
 **Please take note that we strongly advise to use the docker image, especially if you want to compute electrostatics potential. Indeed the installation process of APBS can be tricky. By using the pre-built docker image of SURFMAP, you will not have to install anything except docker itself.**
 
-# Manual Installation
-## Requirements:
-- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
-- python >= 3.7
-- R >= 3.6
-- nawk
-
-## Download
+# Download
 [Go to the top](#Table-of-contents)
 
 The recommended way to retrieve the project is to clone the repository.
@@ -56,6 +49,15 @@ Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/l
 After downloading, you'll need to unarchive the project. If you downloaded:
 - the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.zip`
 - the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.tar.gz`
+
+
+# Manual Installation
+## Requirements:
+- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
+- python >= 3.7
+- R >= 3.6
+- nawk
+
 
 Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
 
@@ -118,7 +120,16 @@ This image will work on any system that can run docker (Unix, MacOS, or Windows 
 You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
 
 
+
+
 ## Run SURFMAP with `run_surfmap_image.py`
+
+Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
+
+```
+# cd SURFMAP-x-x/ if you downloaded an archived project
+cd SURFMAP/
+```
 
 Once you have docker installed on your machine, you are ready to use SURFMAP. Simply type in a terminal:
 ```bash
