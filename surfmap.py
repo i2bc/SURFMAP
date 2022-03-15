@@ -46,7 +46,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = False, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
-    parser.add_argument("-proj", type = str, required = False, choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: flamsteed; mollweide; lambert (default: flamsteed)")
+    parser.add_argument("-proj", type = str, required = False, default="flamsteed", choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: flamsteed; mollweide; lambert (default: flamsteed)")
     parser.add_argument("-mat", type = str, required = False, help = "Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it.")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
