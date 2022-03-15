@@ -7,6 +7,7 @@
 
 - [Aims](#Aims)
 - [Preamble](#Preamble)
+- [Download](#Download)
 - [Manual Installation](#Manual-Installation)
 - [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
@@ -45,7 +46,6 @@ It will allow you to easily update SURFMAP with its latest version through the c
 
 
 Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
-
 After downloading, you'll need to unarchive the project. If you downloaded:
 - the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.zip`
 - the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.tar.gz`
