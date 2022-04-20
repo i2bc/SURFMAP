@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SURFMAP Visualizer</title>
+
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="static/js/package/dist/d3.min.js"></script>
+    <script src="static/node_modules/ngl/dist/ngl.js"></script>
+   
+    
+</head>
+<body>
+    
+    <h1>SURFMAP viewer</h1>
+
+    <div class="container">
+
+        <div id="surfmap-container">
+            <form enctype="multipart/form-data">
+                <label class="label-matrix-file" for="matrix-file">Upload a matrix file</label>
+                <input id="matrix-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+
+            <div id="scale-controller"></div>
+
+            <div id='svg-container'></div>
+            <!-- <div id='legend-svg'></div> -->
+            <!-- <svg width="800" height="600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="royalblue"/>
+                      <stop offset="50%" stop-color="white"/>
+                      <stop offset="100%" stop-color="darkgreen"/>
+                    </linearGradient>
+                </defs>
+          
+                <rect x="10" y="120"  width="30" height="400" fill="url(#Gradient2)"/>
+                
+              </svg> -->
+            </div>
+        <!-- <div id="ngl-container">
+            <form enctype="multipart/form-data">
+                <label for="pdb-file">Upload a pdb file</label>
+                <input id="pdb-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+                    
+            <div id="viewport"></div>
+            <div id='sequence-container'>
+                <h4>Sequence</h4>
+            </div>
+        </div> -->
+    </div>
+
+
+
+
+
+
+
+
+    <script src="static/js/scripts_d3.js"></script>
+    <!-- <script src="static/js/jq.js"></script> -->
+    <!-- <script src="static/js/script_ngl.js"></script> -->
+        
+</body>
+
+</html>

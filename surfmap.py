@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse, os, shutil, subprocess
+from pathlib import Path
 
 
 def show_copyrights():
@@ -9,7 +10,7 @@ def show_copyrights():
 SURFMAP:    Projection of protein surface features on 2D map
 Authors:    Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier,
             Simon Gosset, Anne Lopes
-Version:    1.3 (latest)
+Version:    1.4
 Copyright (c) 2021, H. Schweke
 
 
@@ -45,7 +46,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb",required = False, help = "Input pdb file (path + file name)")
     parser.add_argument("-tomap", type = str, required = True, choices = set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")), help = "Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all")
-    parser.add_argument("-proj", type = str, required = False, choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: sinusoidal; mollweide; aitoff; cylequalarea")
+    parser.add_argument("-proj", type = str, required = False, default="flamsteed", choices = set(("flamsteed", "mollweide", "lambert")), help = "Choice of the projection. Argument must be one of the following: flamsteed; mollweide; lambert (default: flamsteed)")
     parser.add_argument("-mat", type = str, required = False, help = "Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it.")
     parser.add_argument("-coords", help = argparse.SUPPRESS)
     parser.add_argument("-res", help = "File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type")
@@ -79,13 +80,18 @@ def main():
         exit()
 
     if args.pdb:
+        if not os.path.exists(args.pdb):
+            print("Error: the pdb file {} does not exist".format(args.pdb))
+            exit()
         pdbarg = args.pdb
         pdb_id = os.path.basename(pdbarg).split(".pdb")[:-1][0]
         pdbname = os.path.basename(pdbarg)
-   
+    elif args.mat:
+        # pdb_id = os.path.basename(args.mat).split(".")[:-1][0]
+        pdb_id = str(Path(args.mat).stem)
+
     resfile = args.res
-    ppttomap = args.tomap
-    
+    ppttomap = args.tomap    
     
 
     if args.res:
@@ -309,28 +315,28 @@ def main():
             outlog.write("grid resolution: " + str(int(360/cellsize)) + "*" + str(int(180/cellsize)) + "\n")
             outlog.write("MSMS radius: " + rad + "\n")
             outlog.write("property(ies) mapped: " + str(listtomap).strip('[]')+ "\n")
-            outlog.write("projection: " + proj + "\n")
+            outlog.write("projection: " + args.proj + "\n")
             if args.nosmooth:
                 outlog.write("smoothing: off")
             else:
                 outlog.write("smoothing: on")
 
-            # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
-            try:
-                shutil.rmtree("shells")
-            except OSError:
-                pass
+            # # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
+            # try:
+            #     shutil.rmtree("shells")
+            # except OSError:
+            #     pass
             
-            try:
-                shutil.rmtree("tmp-elec")
-            except OSError:
-                pass
+            # try:
+            #     shutil.rmtree("tmp-elec")
+            # except OSError:
+            #     pass
             
-            if args.res:
-                try:
-                    os.remove(reslist)
-                except OSError:
-                    pass
+            # if args.res:
+            #     try:
+            #         os.remove(reslist)
+            #     except OSError:
+            #         pass
 
             # Moving the pdb file with CV mapped in bfactor to the output directory
             try:
@@ -339,6 +345,14 @@ def main():
                 pass
 
     elif args.mat:
+        if not os.path.exists(args.mat):
+            print("Error: the matrix file {} does not exist".format(args.mat))
+            exit()
+
+        if args.tomap == 'all':
+            print("\nError: the property to map cannot be set to 'all' when computing a map from a matrix file.\n".format(args.mat))
+            exit()
+
         if os.path.isdir(outdir+"/matrices/") == False:
             os.makedirs(outdir+"/matrices/")
         shutil.copyfile(args.mat, outdir+"/matrices/"+os.path.basename(args.mat))
@@ -366,6 +380,24 @@ def main():
         print("You need to provide either a pdb file or a matrix file in input.\nExitting now.")
         exit()
 
+
+
+    # Removing shell and electrostatics directories after use. rm residue file in spherical coordinates if exists.
+    try:
+        shutil.rmtree("shells")
+    except OSError:
+        pass
+    
+    try:
+        shutil.rmtree("tmp-elec")
+    except OSError:
+        pass
+    
+    if args.res:
+        try:
+            os.remove(reslist)
+        except OSError:
+            pass
 
 
 
