@@ -423,6 +423,7 @@ def compute_CV(pdb, perres = True) :
             z = float(line[46:54])
             res = line[17:20]
             numres = int(line[22:26])
+            print(numres)
             chain = line[21]
             atomlist.append((x, y, z, numres, res, chain))
 
@@ -451,7 +452,7 @@ def compute_CV(pdb, perres = True) :
         cpt = 0
         for line in pdblines:
             if line.startswith("ATOM") == True:
-                resid = line[17:20].strip(" ")+"_"+ line[21]+ "_" +line[23:26].strip(" ")
+                resid = line[17:20].strip(" ")+"_"+ line[21]+ "_" +line[22:26].strip(" ")
                 toadd = 61-len(line)
                 if toadd > 0:
                     white_spaces = " " * toadd
