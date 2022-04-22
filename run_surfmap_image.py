@@ -5,7 +5,7 @@ import argparse, os, subprocess
 # import docker
 
 DOCKER_REPOSITORY = 'nchenche/surfmap'
-IMAGE_TAG = 'v1.4'
+IMAGE_TAG = 'v1.5'
 DOCKER_IMAGE = DOCKER_REPOSITORY + ':' + IMAGE_TAG
 
 
