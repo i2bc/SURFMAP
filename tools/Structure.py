@@ -423,7 +423,6 @@ def compute_CV(pdb, perres = True) :
             z = float(line[46:54])
             res = line[17:20]
             numres = int(line[22:26])
-            print(numres)
             chain = line[21]
             atomlist.append((x, y, z, numres, res, chain))
 
