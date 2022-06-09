@@ -5,6 +5,16 @@
 https://www.mkdocs.org/getting-started/
 
 
+## Install
+
+Note that it is advised to use a virtual environment.
+
+To install mkdocs, simply type the command:
+```
+pip install mkdocs
+```
+
+
 ## How it works
 
 [Writing your docs](https://www.mkdocs.org/user-guide/writing-your-docs/)
