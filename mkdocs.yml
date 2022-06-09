@@ -1,0 +1,43 @@
+site_name: ORFmine Documentation
+nav:
+    - Home: index.md
+    - ORFmine:
+      - Installation: orfmine_installation.md
+      - Quick start: orfmine_quickstart.md
+      - Citations: orfmine_citations.md
+    - ORFtrack:
+      - ORFtrack presentation:
+        - Aims and general description: orftrack_description.md
+        - ORF definition: orftrack_orfdef.md
+        - ORF annotation: orftrack_annotation.md
+        - Overlap definition: orftrack_overlap.md
+        - ORF extraction: orftrack_orf_extraction.md
+      - Usage:
+        - Inputs: orftrack_input.md
+        - ORF annotation with ORFtrack: orftrack_run.md
+        - ORF extraction with ORFget: orfget_run.md
+      - Parameters:
+        - ORFtrack parameters: orftrack_param.md
+        - ORFget parameters: orfget_param.md
+    - ORFold:
+      - ORFold presentation:
+        - Objective: Objective_orfold.md
+        - How it works?: How_it_works_orfold.md
+      - Usage:
+        - Basic run ORFold: Run_orfold.md
+        - Plots with ORFplot: Plot_orfold.md
+        - Advanced run ORFold: Run_orfold_advanced.md
+      - Parameters:
+        - ORFold parameters: parameters_orfold.md
+        - ORFplot parameters: parameters_orfplot.md
+theme: readthedocs
+markdown_extensions:
+    - footnotes
+    - attr_list
+    - toc:
+        permalink: "#"
+use_directory_urls: false
+extra_css:
+    - css/extra.css
+extra_javascript:
+    - js/extra.js
