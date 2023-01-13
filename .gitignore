@@ -8,3 +8,5 @@ example/output**
 **.Rmd
 .vscode
 .env
+.Rhistory
+**.egg-info

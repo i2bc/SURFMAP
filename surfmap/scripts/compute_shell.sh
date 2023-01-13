@@ -16,13 +16,13 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 
 # Set MSMS path
-MSMS=$(dirname ${DIR})/MSMS
-
+MSMS=$(dirname ${DIR})/utils/MSMS
 
 #Set fonts for Help.
 NORM=`tput sgr0`
 BOLD=`tput bold`
 REV=`tput smso`
+
 
 function HELP {
     echo -e "\n**************************************************"
@@ -32,16 +32,18 @@ function HELP {
     echo "${NORM}${BOLD}-p --path input pdb file (file + path)"
     echo "-e --elec if 1 invoke APBS to calculate electrostatic potential, if 0 create simple shell."
     echo "-r --radius radius added to the standard radius of residues (the higher the radius, the smoother the surface, r=0 being the excluded surface area)."
+    echo "-o --out main output directory."
     echo -e "-h --help${NORM}\n"
     exit 1
 }
 
-while getopts p:e:r: option
+while getopts p:e:r:o: option
 do
     case "${option}" in
         p) pdb=${OPTARG};;
         e) elec=${OPTARG};;
         r) rad=${OPTARG};;
+        o) outdir=${OPTARG};;
         h) HELP;;
         \?) # unrecognized option
         echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
@@ -61,8 +63,8 @@ fi
 
 
 # pqr and apbs files are pdb file name with extension modified (respectively .pqr and .in files)
-dshell=./shells/
-delec=./tmp-elec/
+dshell=${outdir}/shells/
+delec=${outdir}/tmp-elec/
 pdbfile=$(basename $pdb)
 xyzrfile=$dshell${pdbfile%.pdb}.xyzr # input needed for MSMS
 vertfile=$dshell${pdbfile%.pdb}.vert # output of MSMS
@@ -75,12 +77,18 @@ potfile=${pqrfile}.dx # output of APBS (OpenDX scalar format)
 multfile=$delec/${pdbfile%.pdb}.mult # output of multivalue (electrostatic potential calculated at the coordinates given in input).
 
 
+# echo $outdir
+# echo ${OPTARG}
+
+# exit 0
+
+
 #============================= Shell creation =================================
 
 # Create directory containing shells and other files
 if [ ! -d "$dshell" ]
 then
-    mkdir $dshell
+    mkdir -p $dshell
 fi
 
 
@@ -108,7 +116,7 @@ then
 
     if [ ! -d "$delec" ]
     then
-        mkdir $delec
+        mkdir -p $delec
     fi
 
     #======================= Electrostatic calculation ============================

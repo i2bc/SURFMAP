@@ -12,9 +12,6 @@ if (any(installed_packages == FALSE)) {
 
 # Packages loading
 suppressMessages(invisible(lapply(packages, library, character.only = TRUE)))
-
-# library(optparse)
-# library(mapproj)
 options(warn=-1)
 
 ###########################################################

@@ -278,13 +278,16 @@ def parsePDBParticule(filin, charge = 1, infile = False) :
 
     
 
-def writePDB(dPDB, filout = "out.pdb", bfactor = False, charge = False, CG = False) :
+def writePDB(dPDB, filout="out.pdb", bfactor=False, charge=False, CG=False, chains_to_rm: list = []):
     """according to the coordinates in dPDB, writes the corresponding PDB file."""
 
     fout = open(filout, "w")
     #print dPDB["reslist"][1], dPDB[dPDB["reslist"][1]]["C"]["id"]
 
     for chain in dPDB["chains"]:
+        if chain in chains_to_rm:
+            continue
+        
         for res in dPDB[chain]["reslist"] :
             
             if CG :

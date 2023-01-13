@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse, sys, os
-import Structure
+from surfmap.tools import Structure
 import numpy
 
 
@@ -171,6 +171,7 @@ def main():
      
         out.write("{:8f} {:8f} {:3f} {:8} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"], chainid))
     out.close()
+
 
 
 

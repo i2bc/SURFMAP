@@ -152,7 +152,7 @@ if (file_test("-f", opt$input)) {
   path = opt$input
   files = list.files(path, pattern = "\\matrix.txt$")
 } else {
-  cat("input arg -i is not a directory nor a file:\nexiting now\n\n")
+  cat("Error from computeMaps.R: input arg -i is not a directory nor a file:\nexiting now\n\n")
   stop()
 }
 
