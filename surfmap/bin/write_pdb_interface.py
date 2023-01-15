@@ -53,21 +53,6 @@ def set_bfactor_from_res(structure: dict, bs_residues: dict):
     for chain in structure["chains"]:
         for resid in structure[chain]["reslist"]:
 
-            # try:
-            #     residues_ids, bfactors = zip(*bs_residues[chain])
-            # except:
-            #     print(f"Error: chain {chain} not found in the PDB structure. Process stopped.")
-            #     exit()
-
-            # for atom in structure[chain][resid]["atomlist"]:
-            #     if chain in bs_residues and resid in residues_ids:
-            #         bfactor = int(bfactors[residues_ids.index(resid)])
-            #         print(f"Setting bfactor to {bfactor} for atom {atom} of residue {resid} from chain {chain}")
-            #     else:
-            #         bfactor = 0
-
-            #     structure[chain][resid][atom]["bfactor"] = bfactor
-
             if chain in bs_residues:
                 residues_ids, bfactors = zip(*bs_residues[chain])
 
