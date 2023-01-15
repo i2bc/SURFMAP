@@ -10,8 +10,8 @@ def get_license():
 
 
 packages = [
-    'bin',
     'surfmap',
+    'surfmap.bin',
     'surfmap.tools',
     'surfmap.lib',
     ]
@@ -30,9 +30,10 @@ setuptools.setup(
         ],
         entry_points={
             'console_scripts': [
-                'surfmap=bin.surfmap:main',
-                'extract_interface=bin.extract_interface:main',
-                '_surfmap_tool=surfmap.tools.SurfmapTools:main'
+                'surfmap=surfmap.bin.surfmap:main',
+                '_surfmap_tool=surfmap.tools.SurfmapTools:main',
+                'extract_interface=surfmap.bin.extract_interface:main',
+                'write_pdb_bs=surfmap.bin.write_pdb_interface:main',
                 ]
             }
     )

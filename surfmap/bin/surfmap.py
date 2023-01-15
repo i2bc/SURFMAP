@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import subprocess
+
 from surfmap.lib.parameters import Parameters
 from surfmap.lib.computing import surfmap_from_pdb, surfmap_from_matrix
+from surfmap.lib.docker import cli_adapter
 
 
 def show_copyrights():
@@ -37,18 +40,47 @@ https://apbs.readthedocs.io/en/latest/supporting.html
 
     """
     print(msg)
-       
-    
-def main():
-    params = Parameters()
-    show_copyrights()
 
+
+
+def surfmap_local(params: Parameters):
+    """Execute SURFMAP from a local install
+
+    Args:
+        params (Parameters): Set of useful parameters.
+    """
     if params.pdbarg:
         surfmap_from_pdb(params=params)
     elif params.mat:
         surfmap_from_matrix(params=params)
 
 
+def surfmap_container(params: Parameters):
+    """Execute SURFMAP from a docker container.
+
+    This requires to convert the command arguments in order to:
+        1. map required input/output mount point between local and container file systems
+        2. run the container as sa subprocess
+
+    Args:
+        params (Parameters): Set of useful parameters.
+    """
+    docker_cli = cli_adapter(params)
+    print(" ".join(docker_cli))
+    subprocess.call(docker_cli)
+
+
+
+    
+def main():
+    show_copyrights()
+    params = Parameters()
+
+    if params.docker:
+        surfmap_container(params=params)
+    else:
+        surfmap_local(params=params)
+
+
 if __name__ == "__main__":
     main()
-

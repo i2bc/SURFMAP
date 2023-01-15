@@ -11,8 +11,6 @@ As freesasa uses PDB file as input, a PDB file must be created for:
 - the other chain(s)
 
 """
-
-import os
 import argparse
 from itertools import combinations
 from pathlib import Path
@@ -20,6 +18,9 @@ import tempfile
 from typing import Union
 
 from surfmap.tools import Structure
+from surfmap.bin.write_pdb_interface import run as write_pdb_interface
+from surfmap.lib.utils import JunkFilePath
+
 import freesasa
 
 
@@ -72,7 +73,7 @@ def write_interRes_inBfactor(dPDBrec, chainrec, all_rec_inter,monodir,rootname):
     Structure.writePDB(dPDBrec, filout="%s/%s_r_inter_bf.pdb"%(monodir, rootname+"_"+chainrec), bfactor=True)
     
 
-def write_interface_residues(interface_map: list[list], chain: str, outfile: Union[str, Path]) -> None:
+def write_interface_residues(interface_map: list, chain: str, outfile: Union[str, Path]) -> None:
     """
     Write a text file listing interface residues of a chain.
     
@@ -91,7 +92,7 @@ def write_interface_residues(interface_map: list[list], chain: str, outfile: Uni
                 _f.write(f"{chain}\t{resid}\t{i}\n")
 
 
-def generate_dimers(structure: dict, chain_main: str, outdir: str=".") -> list[str]:
+def generate_dimers(structure: dict, chain_main: str, outdir: str=".") -> list:
     """Generate a set of dimers from a given structure, a chain of interest that will be present in all dimers
     and the other chains to be used.
 
@@ -158,15 +159,18 @@ def main():
     parser.add_argument("-pdb", required=True, help="path to the pdbfile of the protein complex")
     parser.add_argument("-chain", required=True, help="the chain for which this function extract the residues that are found in the interface with all the other chains of a protein complex")
     parser.add_argument("-out", help="path of the output", type=str, default=Path("."))
-    parser.add_argument("--bfactor", help="add this argument to create a pdb with the bfactor corresponding to the interfaces", action="store_true")
+    parser.add_argument("--write", help="add this argument to create a pdb with the bfactor corresponding to the interfaces", action="store_true")
     args = parser.parse_args()
 
 
+    junk = JunkFilePath()
+
     FILES_TO_REMOVE = []
 
+
     cplxfile: Union[str, Path] = args.pdb
-    chain_to_map: str = args.chain    
-    outpath: Path = args.out
+    chain_to_map: str = args.chain
+    outpath: Path = Path(args.out)
     outpath.mkdir(parents=True, exist_ok=True)
     rootname = outpath / Path(cplxfile).stem
 
@@ -174,7 +178,7 @@ def main():
     pdb_filename_template = "{}_chain-{}.pdb"
     pdb_chain_filename = pdb_filename_template.format(str(rootname), chain_to_map)
 
-    # get pdb structure
+    # get the full pdb structure
     dCPLX = Structure.parsePDBMultiChains(infile=cplxfile)
 
     # exit program if given chain is absent from pdb file
@@ -187,12 +191,11 @@ def main():
 
     # write the pdb file for the given chain
     Structure.writePDB(dPDB=dCPLX, filout=pdb_chain_filename, bfactor=False, chains_to_rm=chains_not_rec)
-    FILES_TO_REMOVE.append(pdb_chain_filename)
+    junk.add(pdb_chain_filename)
 
-    # generate all combinations of possible heterodimers
+    # generate all combinations of possible dimers
     dimer_filenames = generate_dimers(structure=dCPLX, chain_main=chain_to_map, outdir=outpath)
-    FILES_TO_REMOVE += dimer_filenames
-
+    junk.add(dimer_filenames)
 
     # compute SASA for the studied chain
     residues_area_chain = getResiduesArea(pdbfile=pdb_chain_filename)
@@ -215,8 +218,13 @@ def main():
     interface_filename = f"{str(rootname)}_chain-{chain_to_map}_interface.txt"
     write_interface_residues(interface_map=interfaces_chain, chain=chain_to_map, outfile=interface_filename)
 
-    for _file in FILES_TO_REMOVE:
-        Path(_file).unlink()
+
+    if args.write:  # write a new PDB file with interface residues information on bfactor column
+        out_filename = outpath / f"{Path(pdb_chain_filename).stem}_bs.pdb"
+        write_pdb_interface(pdb_filename=pdb_chain_filename, res_filename=interface_filename, out_filename=out_filename)
+
+    # remove intermediray files
+    junk.empty()
 
     
 if __name__ == "__main__":

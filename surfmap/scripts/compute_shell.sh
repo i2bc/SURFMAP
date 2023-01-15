@@ -72,17 +72,9 @@ csvfile=$dshell/${pdbfile%.pdb}.csv # input needed for multivalue
 shellfile=$dshell/${pdbfile%.pdb}_shell.pdb # shell file with electrostatic values.
 pqrfile=$delec/${pdbfile%.pdb}.pqr # pqr format is needed for APBS
 #apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS
-apbsfile=$delec/${pdbfile%.pdb}.pqr.in # input needed for APBS
+apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS (in v2.0, changed pqr.in to .in)
 potfile=${pqrfile}.dx # output of APBS (OpenDX scalar format)
 multfile=$delec/${pdbfile%.pdb}.mult # output of multivalue (electrostatic potential calculated at the coordinates given in input).
-
-
-# echo $outdir
-# echo ${OPTARG}
-
-# exit 0
-
-
 #============================= Shell creation =================================
 
 # Create directory containing shells and other files
@@ -125,7 +117,7 @@ then
     pdb2pqr30 --ff CHARMM --whitespace $pdb $pqrfile >> log
 
     # Create apbs input file
-    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile #APBS 3.0
+    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile #APBS 3.4.1
     sed -i "s|${pdbfile%.pdb}.pqr|${pqrfile}|g" $apbsfile
     sed -i "s|pot dx pot|pot dx $pqrfile|g" $apbsfile
 
@@ -146,5 +138,10 @@ else
     python3 $DIR/multival_csv_to_pdb.py -i $csvfile -o $shellfile
 fi
 
-# Remove MSMS log file
-rm log
+# Remove MSMS and APBS log files
+if [ -f "log" ]; then
+    rm log
+fi
+if [ -f "log" ]; then
+    rm io.mc
+fi

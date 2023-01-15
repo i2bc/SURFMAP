@@ -92,6 +92,12 @@ def get_args():
         action="store_true",
         help="If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept)"
     )
+
+    parser.add_argument(
+        "--docker",
+        action="store_true",
+        help="If chosen, SURFMAP will be run on a docker container (requires docker installed)."
+    )
     
     return parser.parse_args()
 
@@ -126,7 +132,7 @@ class Parameters:
     PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
     DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
-
+    
     def __init__(self, args: argparse.Namespace=get_args(), path_to_scripts: Union[str, Path]=PATH_TO_SCRIPTS) -> None:
 
         self.curdir: Union[str, Path] = Path.cwd()
@@ -151,6 +157,7 @@ class Parameters:
             self.pdbarg: str = None
             self.pdb_id: str = Path(args.mat).stem
             self.mat: str = args.mat
+            self.pdbname: str = Path(self.mat).name
 
         # define projection type
         self.proj: str = self.PROJECTION_MAP[args.proj]
@@ -178,6 +185,7 @@ class Parameters:
         self.nosmooth: bool = args.nosmooth
         self.png: bool = args.png
         self.keep: bool = args.keep
+        self.docker = args.docker
         
         # define and create output directory if not exists
         self._set_outdir(args=args)
@@ -213,8 +221,11 @@ class Parameters:
             exit()
 
     def _set_outdir(self, args):
+        self._is_outdir_default = True
+
         if args.d != self.DEFAULT_OUTDIR_BASENAME:
             self.outdir: Union[str, Path] = args.d
+            self._is_outdir_default = False
         else:
             names = [self.pdb_id, 'all_properties'] if self.ppttomap == "all" else [self.pdb_id, self.ppttomap]
             self.outdir: Union[str, Path] = args.d.format(*names)
