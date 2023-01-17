@@ -58,8 +58,8 @@ def getSurfRes(structure_complex: dict, structure_receptor: dict):
 
     Returns:
         tuple[list, list]: 
-            - surface_receptor (list): surface residues of the receptor and a list of interface residues of receptor
-            - interface_receptor (list): interface residues of receptor 
+            - surface_receptor (list): surface residues of the receptor. Each element of the list is a freesasa structure residue with an additional 'chain" attribute.
+            - interface_receptor (list): interface residues of receptor. Each element of the list is a freesasa structure residue with an additional 'chain" attribute.
     """
     
         
@@ -67,27 +67,28 @@ def getSurfRes(structure_complex: dict, structure_receptor: dict):
     surface_receptor = []
     interface_receptor = []
 
-    chain_receptor = list(structure_receptor.keys())[0]
-    
-    # loop over cplx chains
-    for chain_complex in structure_complex :
-        if chain_complex != chain_receptor:
-            continue
+    for chain_receptor in list(structure_receptor.keys()):
 
-        # loop over residues                 
-        for residue_complex in structure_complex[chain_complex] :
-            freesasa_residue_receptor = structure_receptor[chain_complex][str(residue_complex)]
-            freesasa_residue_complex = structure_complex[chain_complex][str(residue_complex)]
+        # loop over cplx chains
+        for chain_complex in structure_complex :
+            if chain_complex != chain_receptor:
+                continue
 
-            delta_ASA = freesasa_residue_receptor.relativeTotal - freesasa_residue_complex.relativeTotal
-                
-            if delta_ASA > 0 : # means the ASA in the lig is greater than in the cplx form, so the res is buried in the interface                  
-                interface_receptor.append(residue_complex)
-                surface_receptor.append(residue_complex)
-                print(chain_receptor)
-            else: # not in interface
-                if structure_receptor[chain_complex][str(residue_complex)].relativeTotal > 0.25 : # means the res is located on the lig surface
-                    surface_receptor.append(residue_complex)
+            # loop over residues                 
+            for residue_complex in structure_complex[chain_complex] :
+                freesasa_residue_receptor = structure_receptor[chain_complex][str(residue_complex)]
+                freesasa_residue_complex = structure_complex[chain_complex][str(residue_complex)]
+
+                delta_ASA = freesasa_residue_receptor.relativeTotal - freesasa_residue_complex.relativeTotal
+                freesasa_residue_receptor.chain = chain_receptor
+
+                if delta_ASA > 0 : # means the ASA in the lig is greater than in the cplx form, so the res is buried in the interface
+                    interface_receptor.append(freesasa_residue_receptor)
+                    surface_receptor.append(freesasa_residue_receptor)
+                    # print(f"- residue {freesasa_residue_receptor.residueType}-{freesasa_residue_receptor.residueNumber} of chain {chain_receptor} is part of interface")
+                else: # not in interface
+                    if structure_receptor[chain_complex][str(residue_complex)].relativeTotal > 0.25 : # means the res is located on the lig surface
+                        surface_receptor.append(freesasa_residue_receptor)
 
     return surface_receptor, interface_receptor
 
@@ -110,23 +111,25 @@ def write_interRes_inBfactor(dPDBrec, chainrec, all_rec_inter,monodir,rootname):
     Structure.writePDB(dPDBrec, filout="%s/%s_r_inter_bf.pdb"%(monodir, rootname+"_"+chainrec), bfactor=True)
     
 
-def write_interface_residues(interface_map: list, chain: str, outfile: Union[str, Path]) -> None:
+def write_interface_residues(interface_map: list, outfile: Union[str, Path]) -> None:
     """
     Write a text file listing interface residues of a chain.
     
     The file is formatted with the following informations (space or tab separated):
-    "chain" "resid" "resname"
+    "chain" "resid" "resname" "label value"
 
     Example:
-    A  2  1
-    A  3  1
-    A  6  1
+    #chain   #resid   #resname #label_value
+    A   2    PHE    1  
+    A   3    GLU    1
+    A   6    ALA    1
+
     """
 
     with open(outfile, "w") as _f:
         for i, interface in enumerate(interface_map, start=1):
-            for resid in interface:
-                _f.write(f"{chain}\t{resid}\t{i}\n")
+            for residue in interface:
+                _f.write(f"{residue.chain}\t{residue.residueNumber}\t{residue.residueType}\t{i}\n")
 
 
 def generate_dimers(structure: dict, chain_main: str, outdir: str=".") -> list:
@@ -146,7 +149,9 @@ def generate_dimers(structure: dict, chain_main: str, outdir: str=".") -> list:
         outdir (str, optional): Path where the temporary output files will be written. Defaults to ".".
 
     Returns:
-        list[str]: List of all the generated dimer filenames
+        tuple[list[list], list[str]]:
+            - List of dimer combinations
+            - List of all the generated dimer filenames
     """
     temp_name = "tmp_dimers_" + next(tempfile._get_candidate_names()) + "_chains-"
     out_basename = str(Path(outdir) / temp_name)
@@ -161,12 +166,12 @@ def generate_dimers(structure: dict, chain_main: str, outdir: str=".") -> list:
     dimer_filenames = []
     for dimer_chains in dimer_combinations:
         chains_to_rm = [ x for x in structure["chains"] if x not in list("".join(dimer_chains)) ]
-        dimer_filename = out_basename + ''.join(dimer_chains)
+        dimer_filename = out_basename + ''.join(dimer_chains) + ".pdb"
 
         dimer_filenames.append(dimer_filename)
         Structure.writePDB(dPDB=structure, filout=dimer_filename, bfactor=False, chains_to_rm=chains_to_rm)
 
-    return dimer_filenames
+    return dimer_combinations, dimer_filenames
 
 
 def getResiduesArea(pdbfile: str) -> dict:
@@ -190,89 +195,30 @@ def getResiduesArea(pdbfile: str) -> dict:
     return sasa.residueAreas()
 
 
+def get_args() -> argparse.Namespace:
 
-def main_bak():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-pdb", required=True, help="path to the pdbfile of the protein complex")
-    parser.add_argument("-chain", required=True, help="the chain for which this function extract the residues that are found in the interface with all the other chains of a protein complex")
-    parser.add_argument("-out", help="path of the output", type=str, default=Path("."))
-    parser.add_argument("--write", help="add this argument to create a pdb with the bfactor corresponding to the interfaces", action="store_true")
-    args = parser.parse_args()
+    description = """
+Program allowing to compute interface residues of (a) chain(s) belonging to a given multimeric protein PDB file.
+The default output is a text file listing all residues found at the interface between the given chain(s) and
+the other chain(s) in the multimeric protein and a PDB file made of the given chain(s). In this PDB file,
+the b-factor column is filled with a number for each different interface found.
+    """
 
-    junk = JunkFilePath()
-
-    cplxfile: Union[str, Path] = args.pdb
-    chain_to_map: str = args.chain
-    outpath: Path = Path(args.out)
-    outpath.mkdir(parents=True, exist_ok=True)
-    rootname = outpath / Path(cplxfile).stem
-
-    # filenames of pdb files to write for freesasa
-    pdb_filename_template = "{}_chain-{}.pdb"
-    pdb_chain_filename = pdb_filename_template.format(str(rootname), chain_to_map)
-
-    # get the full pdb structure
-    dCPLX = Structure.parsePDBMultiChains(infile=cplxfile)
-
-    # exit program if given chain is absent from pdb file
-    if chain_to_map not in dCPLX["chains"]:
-        print(f"Error: PDB chain {chain_to_map} not found in the pdb file {cplxfile}")
-        exit()
-
-    # list chains different from chain_to_map
-    chains_not_rec = [ x for x in dCPLX["chains"] if x != chain_to_map ]
-
-    # write the pdb file for the given chain
-    Structure.writePDB(dPDB=dCPLX, filout=pdb_chain_filename, bfactor=False, chains_to_rm=chains_not_rec)
-    junk.add(pdb_chain_filename)
-
-    # generate all combinations of possible dimers
-    dimer_filenames = generate_dimers(structure=dCPLX, chain_main=chain_to_map, outdir=outpath)
-    junk.add(dimer_filenames)
-
-    # compute SASA for the studied chain
-    residues_area_chain = getResiduesArea(pdbfile=pdb_chain_filename)
-
-    # compute SASA for each dimers
-    residues_area_dimers = []
-    for dimer_file in dimer_filenames:
-        residues_area_dimers.append(getResiduesArea(pdbfile=dimer_file))
-
-    # compute interface residues of the given chain relative to the other chain in each dimers
-    interfaces_chain = []
-    for residue_area_dimer in residues_area_dimers:
-        _, interface_chain_dimer = getSurfRes(structure_complex=residue_area_dimer, structure_receptor=residues_area_chain)
-
-        if interface_chain_dimer:
-            interfaces_chain.append(interface_chain_dimer)
-
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("-p", "--pdb", required=True, help="Path to the pdbfile of the protein complex")
+    parser.add_argument("-c", "--chains", required=True, help="Chain(s) for which this function extract the residues that are found in the interface with all the other chains of a protein complex. (e.g. '-c A' or '-c AD' ")
+    parser.add_argument("-o", "--out", help="Path of the output", type=str, default=Path("."))
+    # parser.add_argument("--write", help="Add this argument to create a pdb with the bfactor corresponding to labelled interfaces", action="store_true")
     
-    # write file listing interface residues of the given chain
-    interface_filename = f"{str(rootname)}_chain-{chain_to_map}_interface.txt"
-    write_interface_residues(interface_map=interfaces_chain, chain=chain_to_map, outfile=interface_filename)
+    return parser.parse_args()
 
-
-    if args.write:  # write a new PDB file with interface residues information on bfactor column
-        out_filename = outpath / f"{Path(pdb_chain_filename).stem}_bs.pdb"
-        write_pdb_interface(pdb_filename=pdb_chain_filename, res_filename=interface_filename, out_filename=out_filename)
-
-    # remove intermediray files
-    junk.empty()
-
-    
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-pdb", required=True, help="path to the pdbfile of the protein complex")
-    parser.add_argument("-chain", required=True, help="the chain for which this function extract the residues that are found in the interface with all the other chains of a protein complex")
-    parser.add_argument("-out", help="path of the output", type=str, default=Path("."))
-    parser.add_argument("--write", help="add this argument to create a pdb with the bfactor corresponding to the interfaces", action="store_true")
-    args = parser.parse_args()
 
-    junk = JunkFilePath()
+    args = get_args()
 
     cplxfile: Union[str, Path] = args.pdb
-    chain_to_map: str = args.chain
+    chain_to_map: str = args.chains
     outpath: Path = Path(args.out)
     outpath.mkdir(parents=True, exist_ok=True)
     rootname = outpath / Path(cplxfile).stem
@@ -280,6 +226,9 @@ def main():
     # filenames of pdb files to write for freesasa
     pdb_filename_template = "{}_chain-{}.pdb"
     pdb_chain_filename = pdb_filename_template.format(str(rootname), chain_to_map)
+
+    # create a trash for intermediary files to remove
+    junk = JunkFilePath()
 
     # get the full pdb structure
     dCPLX = Structure.parsePDBMultiChains(infile=cplxfile)
@@ -290,6 +239,9 @@ def main():
             print(f"Error: PDB chain {chain_name} not found in the pdb file {cplxfile}")
             exit()
 
+    print(f"Chains found in the PDB {Path(cplxfile).stem}: {', '.join(dCPLX['chains'])}")
+    print(f"Target chain(s): {', '.join(list(chain_to_map))}")
+
     # list chains different from chain_to_map
     chains_not_rec = [ x for x in dCPLX["chains"] if x not in list(chain_to_map) ]
 
@@ -298,8 +250,9 @@ def main():
     junk.add(pdb_chain_filename)
 
     # generate all combinations of possible dimers
-    dimer_filenames = generate_dimers(structure=dCPLX, chain_main=chain_to_map, outdir=outpath)
+    dimer_combinations, dimer_filenames = generate_dimers(structure=dCPLX, chain_main=chain_to_map, outdir=outpath)
     junk.add(dimer_filenames)
+    print(f"Interface residues will be searched between the following chains: {', '.join([ ' and '.join((x[0],x[1])) for x in dimer_combinations])}")
 
     # compute SASA for the studied chain
     residues_area_chain = getResiduesArea(pdbfile=pdb_chain_filename)
@@ -310,22 +263,21 @@ def main():
         residues_area_dimers.append(getResiduesArea(pdbfile=dimer_file))
 
     # compute interface residues of the given chain relative to the other chain in each dimers
-    interfaces_chain = [] 
-    # [['47', '49', '50', '51', '52', ...], ['18', '20', '21', '22', ...]]
+    residues_interfaces_chain = [] 
     for residue_area_dimer in residues_area_dimers:
         _, interface_chain_dimer = getSurfRes(structure_complex=residue_area_dimer, structure_receptor=residues_area_chain)
 
         if interface_chain_dimer:
-            interfaces_chain.append(interface_chain_dimer)
+            residues_interfaces_chain.append(interface_chain_dimer)
     
     # write file listing interface residues of the given chain
     interface_filename = f"{str(rootname)}_chain-{chain_to_map}_interface.txt"
-    write_interface_residues(interface_map=interfaces_chain, chain=chain_to_map, outfile=interface_filename)
+    write_interface_residues(interface_map=residues_interfaces_chain, outfile=interface_filename)
 
 
-    if args.write:  # write a new PDB file with interface residues information on bfactor column
-        out_filename = outpath / f"{Path(pdb_chain_filename).stem}_bs.pdb"
-        write_pdb_interface(pdb_filename=pdb_chain_filename, res_filename=interface_filename, out_filename=out_filename)
+    # write a new PDB file with interface residues information on bfactor column
+    out_filename = outpath / f"{Path(pdb_chain_filename).stem}_bs.pdb"
+    write_pdb_interface(pdb_filename=pdb_chain_filename, res_filename=interface_filename, out_filename=out_filename)
 
     # remove intermediray files
     junk.empty()

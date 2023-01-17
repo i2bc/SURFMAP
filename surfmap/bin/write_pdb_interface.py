@@ -12,9 +12,10 @@ def parse_res_file(filename: Union[Path, str]) -> dict:
     "chain" "resid" "resname"
 
     Example:
-    A  2  1
-    A  3  1
-    A  6  1
+    #chain   #resid   #resname #label_value
+    A   2    PHE    1  
+    A   3    GLU    1
+    A   6    ALA    1
 
     The function will return a dictionary as follows:
     {
@@ -35,8 +36,8 @@ def parse_res_file(filename: Union[Path, str]) -> dict:
             if line.startswith("#") or not line:
                 continue
 
-            chain, resid, site_label = line.split()
-            if chain not in  bs_residues:
+            chain, resid, resname, site_label = line.split()
+            if chain not in bs_residues:
                 bs_residues[chain] = []
             bs_residues[chain].append((resid, site_label))
 
@@ -59,7 +60,6 @@ def set_bfactor_from_res(structure: dict, bs_residues: dict):
             for atom in structure[chain][resid]["atomlist"]:
                 if chain in bs_residues and resid in residues_ids:
                     bfactor = int(bfactors[residues_ids.index(resid)])
-                    print(f"Setting bfactor to {bfactor} for atom {atom} of residue {resid} from chain {chain}")
                 else:
                     bfactor = 0
 
@@ -70,21 +70,21 @@ def get_args():
     parser = argparse.ArgumentParser()
     
     parser.add_argument(
-        "-pdb",
+        "-p", "--pdb",
         default="str",
         required=True,
         help="Path to a PDB filename"
     )
 
     parser.add_argument(
-        "-res",
+        "-r", "--res",
         default="str",
         required=True,
         help="Path to a text file informing on interface residues."
     )
 
     parser.add_argument(
-        "-out",
+        "-o", "--out",
         type=str,
         required=False,
         default=".",
@@ -92,7 +92,7 @@ def get_args():
     )
 
     parser.add_argument(
-        "-suffix",
+        "-s", "--suffix",
         type=str,
         required=False,
         default="bs.pdb",
