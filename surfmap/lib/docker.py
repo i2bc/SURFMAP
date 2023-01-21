@@ -16,7 +16,7 @@ from typing import List
 
 
 class DockerCLI:
-    DOCKER_REPOSITORY = 'nchenche/surfmap'
+    DOCKER_REPOSITORY = 'lopesi2bc/surfmap'
     TAG = '2.0'
 
     def __init__(self, args, input_args: List[str], output_args: str, out_dirname: str, input_dir: str='/home/surfmap/input', output_dir: str='/home/surfmap/output') -> None:
