@@ -31,7 +31,8 @@ if test $# -ge 1 ;then
 	shift
 	fi
 fi
-nawk -v pathmsms="$MSMS_DIR" 'BEGIN{
+
+awk -v pathmsms="$MSMS_DIR" 'BEGIN{
 	# read radius table and patterns from supplied file
 	npats=0
 	numfile = pathmsms"./atmtypenumbers"

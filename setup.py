@@ -23,10 +23,10 @@ setuptools.setup(
     packages=packages,
     include_package_data=True,
     install_requires=[
-        "pdb2pqr==3.1.0",
-        "requests==2.22.0",
-        "numpy==1.24.1",
         "freesasa==2.1.0",
+        "numpy>=1.21.6",
+        "pdb2pqr==3.1.0",
+        "requests==2.22.0"
         ],
         entry_points={
             'console_scripts': [

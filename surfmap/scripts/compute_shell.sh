@@ -142,6 +142,6 @@ fi
 if [ -f "log" ]; then
     rm log
 fi
-if [ -f "log" ]; then
+if [ -f "io.mc" ]; then
     rm io.mc
 fi

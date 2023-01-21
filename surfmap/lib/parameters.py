@@ -134,8 +134,8 @@ class Parameters:
     DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
     
     def __init__(self, args: argparse.Namespace=get_args(), path_to_scripts: Union[str, Path]=PATH_TO_SCRIPTS) -> None:
-
         self.curdir: Union[str, Path] = Path.cwd()
+        self.args = args
 
         # set useful paths
         self.surftool_script: str = "_surfmap_tool"

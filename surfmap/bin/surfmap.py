@@ -3,8 +3,8 @@
 import subprocess
 
 from surfmap.lib.parameters import Parameters
-from surfmap.lib.computing import surfmap_from_pdb, surfmap_from_matrix
-from surfmap.lib.docker import cli_adapter
+from surfmap.lib.core import surfmap_from_pdb, surfmap_from_matrix
+from surfmap.lib.docker import DockerCLI
 
 
 def show_copyrights():
@@ -49,6 +49,8 @@ def surfmap_local(params: Parameters):
     Args:
         params (Parameters): Set of useful parameters.
     """
+    show_copyrights()
+
     if params.pdbarg:
         surfmap_from_pdb(params=params)
     elif params.mat:
@@ -65,15 +67,20 @@ def surfmap_container(params: Parameters):
     Args:
         params (Parameters): Set of useful parameters.
     """
-    docker_cli = cli_adapter(params)
-    print(" ".join(docker_cli))
-    subprocess.call(docker_cli)
+    cli = DockerCLI(
+        input_args=["-pdb"],
+        output_args="-d",
+        out_dirname=params.outdir,
+        input_dir="/home/surfmap/input",
+        output_dir="/home/surfmap/output",
+        args=params.args
+    )
+
+    cli.show()
+    cli.run()
 
 
-
-    
 def main():
-    show_copyrights()
     params = Parameters()
 
     if params.docker:

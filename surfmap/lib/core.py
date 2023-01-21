@@ -4,13 +4,13 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
-from typing import Union
+from typing import Tuple, Union
 
 from surfmap.lib.parameters import Parameters
 from surfmap.lib.utils import JunkFilePath
 
 
-def compute_shell(params: Parameters) -> tuple[int, str]:
+def compute_shell(params: Parameters) -> Tuple[int, str]:
     """Compute the shell of a given PDB structure.
 
     Two possible options: simple shell or shell with electrostatic potential computed by APBS.
@@ -42,7 +42,7 @@ def compute_shell(params: Parameters) -> tuple[int, str]:
     return proc_status, outfile
 
 
-def compute_spherical_coords(params: Parameters, shell_filename: str, property: str) -> tuple[int, str, str]:
+def compute_spherical_coords(params: Parameters, shell_filename: str, property: str) -> Tuple[int, str, str]:
     """Convert cartesian coordinates of each particule into spherical coordinates and 
     associates the value of interest (electrostatics, hydrophobicity, stickiness...)
 
@@ -74,7 +74,7 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
     if out_pdv_cv.exists():
         # out_pdv_cv.unlink()
         try:
-            shutil.move(out_pdv_cv, params.outdir)
+            shutil.move(str(out_pdv_cv), str(params.outdir))
         except OSError:
             pass
     
@@ -85,7 +85,7 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
     return proc_status, out_coords_reslist, out_coords_all
 
 
-def compute_coords_list(params: Parameters, coords_file: str, property: str) -> tuple[int, str]:
+def compute_coords_list(params: Parameters, coords_file: str, property: str) -> Tuple[int, str]:
     """Compute phi theta list
 
     Args:
@@ -110,7 +110,7 @@ def compute_coords_list(params: Parameters, coords_file: str, property: str) -> 
     return proc_status, out_file
 
 
-def compute_matrix(params: Parameters, coords_file: str, property: str) -> tuple[int, str, str]:
+def compute_matrix(params: Parameters, coords_file: str, property: str) -> Tuple[int, str, str]:
     """Compute matrix files
 
     Args:
