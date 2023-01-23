@@ -1,14 +1,3 @@
-"""
-surfmap -pdb 1g3n.pdb -tomap all 
-
-surfmap -pdb 1g3n.pdb -tomap all --docker
-
-if "--docker":
-then map required io mount point between local and container file systems 
-
-docker run --rm -it -v Path(params.pdbarg).parent.resolve():/input Path(params.outdir).resolve():/output nchenche/surfmap:2.0 surfmap -pdb /input/params.pdbname -tomap stickiness -d /output/
-
-"""
 from pathlib import Path
 import subprocess
 import sys

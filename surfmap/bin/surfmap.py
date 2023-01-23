@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import subprocess
 
-from surfmap.lib.parameters import Parameters
+from surfmap.lib.parameters import Parameters, get_args
 from surfmap.lib.core import surfmap_from_pdb, surfmap_from_matrix
 from surfmap.lib.docker import DockerCLI
 
@@ -31,7 +31,7 @@ papers:
       surface: an efficient way to compute molecular surfaces. 
       Biopolymers, Vol. 38., (3), 305-320.
 
-SURFMAP can also optionnaly map electrostatic potential through the use
+SURFMAP can also optionally map electrostatic potential through the use
 of the APBS software. So if you use SURFMAP with the option 
 '-tomap electrostatics' and find it useful to your research please cite
 one or more of the papers listed in the following webpage:
@@ -81,7 +81,7 @@ def surfmap_container(params: Parameters):
 
 
 def main():
-    params = Parameters()
+    params = Parameters(args=get_args())
 
     if params.docker:
         surfmap_container(params=params)

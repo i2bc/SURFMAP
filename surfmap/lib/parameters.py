@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+from shutil import which
 from typing import Any, Union
 
 from surfmap import PATH_TO_SCRIPTS
@@ -125,19 +126,27 @@ class Parameters:
     - nosmooth: bool  # True to have map not smoothed (for discrete values only)
     - png: bool  # True to generate a PNG file of the map in addition to the usual PDF
     - keep: bool  # True to keep intermediary files that are usually removed
+    - docker: bool  # True to run SURFMAP on a docker container
     - outdir: Union[str, Path]  # path to the output directory
 
 
     """
+    REQUIREMENTS = ["R", "awk", "apbs"]
+
     PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
     DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
     
-    def __init__(self, args: argparse.Namespace=get_args(), path_to_scripts: Union[str, Path]=PATH_TO_SCRIPTS) -> None:
-        self.curdir: Union[str, Path] = Path.cwd()
+    def __init__(self, args: Union[argparse.Namespace, object], path_to_scripts: Union[str, Path]=PATH_TO_SCRIPTS) -> None:
         self.args = args
 
+        if not args.docker:
+            self._check_surfmap_requirements()
+        else:
+            self._check_docker_install()
+
         # set useful paths
+        self.curdir: Union[str, Path] = Path.cwd()
         self.surftool_script: str = "_surfmap_tool"
         self.shell_script: str = str(Path(path_to_scripts) / "compute_shell.sh")
         self.coords_script: str  = str(Path(path_to_scripts) / "computeCoordList.R")
@@ -185,10 +194,33 @@ class Parameters:
         self.nosmooth: bool = args.nosmooth
         self.png: bool = args.png
         self.keep: bool = args.keep
-        self.docker = args.docker
+        self.docker: bool = args.docker
         
         # define and create output directory if not exists
         self._set_outdir(args=args)
+
+
+    def _check_surfmap_requirements(self):
+        """Check if requirements are satisfied (will exit if not).
+
+        Only consider APBS if 'electrostatics' is asked as a -tomap option argument.
+        """
+        exe_not_found = []
+        for requirement in self.REQUIREMENTS:
+            if requirement == "apbs" and self.args.tomap != "electrostatics":
+                continue
+            if not which(requirement):
+                exe_not_found.append(requirement)
+            
+        if exe_not_found:
+            print(f"\nError: the following executable(s) required to run SURFMAP has(ve) not been detected on your system: {', '.join(exe_not_found)}.\nPlease install the missing executable(s).\n")
+            print(f"If you think that an executable is present on your system but is detected as missing, please make sure to make it accessible no matter the current directory. It can be done by setting your search path (export PATH=$PATH:/...)\n")
+            exit()
+
+    
+    def _check_docker_install(self):
+        if not which("docker"):
+            print(f"Error: docker has not been detected on your system. Please install it to use a pre-built image of SURFMAP.\n")
 
 
     def _check_mutually_exclusive_args(self, args):
