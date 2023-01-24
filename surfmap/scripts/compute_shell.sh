@@ -86,13 +86,15 @@ fi
 
 # Modifying format for MSMS
 #cp $MSMS/atmtypenumberstmp atmtypenumbers
-echo -e "Running: $MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp ...\n"
-$MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp
+# echo -e "Running: $MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp ...\n"
+# $MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp
+
+pdb2xyzr -pdb $pdb -rad $rad -out $xyzrfile
 
 # Artificially increasing radius of the atoms
-awk -v s=$rad '{print $1, $2, $3, $4+s}' ${xyzrfile}-tmp | sed 's/,/./g' > ${xyzrfile}
+# awk -v s=$rad '{print $1, $2, $3, $4+s}' ${xyzrfile}-tmp | sed 's/,/./g' > ${xyzrfile}
 
-rm ${xyzrfile}-tmp
+# rm ${xyzrfile}-tmp
 
 # Invoking MSMS to compute Connolly surface.
 $MSMS/msms -if $xyzrfile -of $dshell/${pdbfile%.pdb} > log
