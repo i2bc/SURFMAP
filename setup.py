@@ -34,6 +34,7 @@ setuptools.setup(
                 '_surfmap_tool=surfmap.tools.SurfmapTools:main',
                 'extract_interface=surfmap.bin.extract_interface:main',
                 'write_pdb_bs=surfmap.bin.write_pdb_interface:main',
+                'pdb2xyzr=surfmap.bin.pdb2xyzr:main',
                 ]
             }
     )
