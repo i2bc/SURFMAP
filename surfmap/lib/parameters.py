@@ -1,9 +1,10 @@
 import argparse
 from pathlib import Path
 from shutil import which
+import sys
 from typing import Any, Union
 
-from surfmap import PATH_TO_SCRIPTS
+from surfmap import PATH_TO_SCRIPTS, __COPYRIGHT_NOTICE__
 
 
 def get_args():
@@ -19,6 +20,12 @@ def get_args():
         "-mat",
         type=str,
         help="Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it."
+    )
+
+    group_mutually_exclusive.add_argument(
+        "-v", "--version",
+        action="store_true",
+        help="Print the current used version of SURFMAP."
     )
 
     parser.add_argument(
@@ -100,6 +107,10 @@ def get_args():
         help="If chosen, SURFMAP will be run on a docker container (requires docker installed)."
     )
     
+    if True in [ x in ["-v", "--version"] for x in sys.argv[1:] ]:
+        print(f"{__COPYRIGHT_NOTICE__}")
+        exit()
+
     return parser.parse_args()
 
 
@@ -145,14 +156,6 @@ class Parameters:
         else:
             self._check_docker_install()
 
-        # set useful paths
-        self.curdir: Union[str, Path] = Path.cwd()
-        self.surftool_script: str = "_surfmap_tool"
-        self.shell_script: str = str(Path(path_to_scripts) / "compute_shell.sh")
-        self.coords_script: str  = str(Path(path_to_scripts) / "computeCoordList.R")
-        self.matrix_script: str = str(Path(path_to_scripts) / "computeMatrices.R")
-        self.map_script: str = str(Path(path_to_scripts) / "computeMaps.R")
-
         # define pdb relative variables
         if args.pdb:
             self.mat: str = None
@@ -167,6 +170,16 @@ class Parameters:
             self.pdb_id: str = Path(args.mat).stem
             self.mat: str = args.mat
             self.pdbname: str = Path(self.mat).name
+
+
+
+        # set useful paths
+        self.curdir: Union[str, Path] = Path.cwd()
+        self.surftool_script: str = "_surfmap_tool"
+        self.shell_script: str = str(Path(path_to_scripts) / "compute_shell.sh")
+        self.coords_script: str  = str(Path(path_to_scripts) / "computeCoordList.R")
+        self.matrix_script: str = str(Path(path_to_scripts) / "computeMatrices.R")
+        self.map_script: str = str(Path(path_to_scripts) / "computeMaps.R")
 
         # define projection type
         self.proj: str = self.PROJECTION_MAP[args.proj]
