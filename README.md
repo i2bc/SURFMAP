@@ -9,8 +9,7 @@
   <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
   <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
 
-  <a><img src="https://badges.aleen42.com/src/cli.svg
-" width="7%"/></a>
+  <a><img src="https://badges.aleen42.com/src/cli.svg" width="7%"/></a>
 
 </div>
 
