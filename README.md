@@ -1,19 +1,14 @@
+
+[![docker container status](https://img.shields.io/github/workflow/status/SURFMAP/SURFMAP/Publish%20to%20Docker%20Hub?color=blue&label=docker%20container)](https://hub.docker.com/r/lopesi2bc/surfmap)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40anne__lopes)](https://mobile.twitter.com/anne__lopes)
+[![Github stars](https://img.shields.io/github/stars/i2bc/SURFMAP?style=social)](https://github.com/i2bc/SURFMAP/stargazers)
+
 # SURFMAP ![](https://img.shields.io/badge/version-2.0.0-blue)
 
 <p align="center">
-  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
-  
+  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
 </p>
-<div align="center">
-  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
-  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
-  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
 
-  <a><img src="https://badges.aleen42.com/src/cli.svg" width="7%"/></a>
-
-</div>
-
-https://badges.aleen42.com/src/cli.svg
 
 # Table of contents
 
@@ -52,6 +47,16 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 # Installation
 [Go to the top](#Table-of-contents)
 
+<div align="center">
+  <a><img src="https://badges.aleen42.com/src/cli.svg" width="9.5%"/></a>
+  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
+  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
+  <a><img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" width="6.5%"/></a>
+  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
+
+</div>
+<br>
+
 SURFMAP is a command-line tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
 All those requirements (including APBS) are fullfilled in a [pre-built docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer.
@@ -66,7 +71,6 @@ For a usage of SURFMAP through a:
 - python >= 3.7
 - docker
 </details>
-
 
 <details>
 <summary>local install</summary>
