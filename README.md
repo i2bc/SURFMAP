@@ -1,7 +1,20 @@
-# SURFMAP
+# SURFMAP ![](https://img.shields.io/badge/version-2.0.0-blue)
+
 <p align="center">
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>
+  
 </p>
+<div align="center">
+  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
+  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
+  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
+
+  <a><img src="https://badges.aleen42.com/src/cli.svg
+" width="7%"/></a>
+
+</div>
+
+https://badges.aleen42.com/src/cli.svg
 
 # Table of contents
 
@@ -23,19 +36,51 @@
 
 SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 </div>
-
-<br>
 <br>
 
-# Preamble
+<!-- ![version](https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge)
+![](https://img.shields.io/badge/Python3.6+-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+
+![](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
+
+![]()
+![](https://img.shields.io/github/forks/i2bc/SURFMAP?style=for-the-badge)
+![](https://img.shields.io/github/stars/i2bc/SURFMAP?style=for-the-badge)
+![](https://img.shields.io/github/issues/i2bc/SURFMAP?style=for-the-badge)
+![](https://img.shields.io/github/license/i2bc/SURFMAP?style=for-the-badge) -->
+
+
+# Installation
 [Go to the top](#Table-of-contents)
 
-SURFMAP is written in python (version 3.7), R (version 3.6) and bash. It relies on the MSMS software (1) and may optionally requires APBS (2) if the user wants to perform electrostatics calculations.
-All these requirements (including the APBS software) are fullfilled in a [pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP).
+SURFMAP is a command-line tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
-**Please take note that we strongly advise to use the docker image, especially if you want to compute electrostatics potential. Indeed the installation process of APBS can be tricky. By using the pre-built docker image of SURFMAP, you will not have to install anything except docker itself.**
+All those requirements (including APBS) are fullfilled in a [pre-built docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer.
 
-# Download
+
+### Requirements
+
+For a usage of SURFMAP through a:
+<details>
+<summary>docker image</summary>
+- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
+- python >= 3.7
+- docker
+</details>
+
+
+<details>
+<summary>local install</summary>
+
+- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
+- python >= 3.7
+- R >= 3.6
+- APBS (optional: only if you want to compute electrostatics potential)
+ 
+</details>
+
+
+## Download
 [Go to the top](#Table-of-contents)
 
 The recommended way to retrieve the project is to clone the repository.
@@ -47,8 +92,8 @@ It will allow you to easily update SURFMAP with its latest version through the c
 
 Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
 After downloading, you'll need to unarchive the project. If you downloaded:
-- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.zip`
-- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.tar.gz`
+- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.x.zip`
+- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
 
 
 # Manual Installation
