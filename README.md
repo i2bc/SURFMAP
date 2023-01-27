@@ -1,9 +1,14 @@
 
-[![docker container status](https://img.shields.io/github/workflow/status/SURFMAP/SURFMAP/Publish%20to%20Docker%20Hub?color=blue&label=docker%20container)](https://hub.docker.com/r/lopesi2bc/surfmap)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40anne__lopes)](https://mobile.twitter.com/anne__lopes)
-[![Github stars](https://img.shields.io/github/stars/i2bc/SURFMAP?style=social)](https://github.com/i2bc/SURFMAP/stargazers)
+[![GitHub Release](https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat)]()
+[![Github stars](https://img.shields.io/github/stars/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/stargazers)
+[![Github stars](https://img.shields.io/github/forks/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/fork)
+[![Docker Pulls](https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls)](https://hub.docker.com/r/lopesi2bc/surfmap)
+[![GitHub watchers](https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&label=Watch&style=plastic)]()
+[![Github licence](https://img.shields.io/github/license/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/fork)
 
-# SURFMAP ![](https://img.shields.io/badge/version-2.0.0-blue)
+
+
+# SURFMAP
 
 <p align="center">
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
@@ -41,7 +46,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 ![](https://img.shields.io/github/forks/i2bc/SURFMAP?style=for-the-badge)
 ![](https://img.shields.io/github/stars/i2bc/SURFMAP?style=for-the-badge)
 ![](https://img.shields.io/github/issues/i2bc/SURFMAP?style=for-the-badge)
-![](https://img.shields.io/github/license/i2bc/SURFMAP?style=for-the-badge) -->
+ -->
 
 
 # Installation
