@@ -109,80 +109,58 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 
 ## Install the SURFMAP package
 
-<!-- <details> -->
-<summary>Creating an isolated environment</summary>
-
 Note: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
+
+<details>
+<summary>Creating an isolated environment</summary>
 
 Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 
-
 <h4>1. Install virutalenv</h4>
 
-<div>
-<!-- <pre>
-<code class="bash language-bash"># upgrade pip to its latest version
-python3 -m pip install --upgrade pip</code>
-</pre> -->
-
 <pre>
-```bash
-#scsdcs
-cd ./
-```
+<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+python3 -m pip install --upgrade pip
 
+<span style="color: green"># install virtualenv</span>
+python3 -m pip install virtualenv</code>
 </pre>
 
-
-</div>
-
-<!-- </details> -->
-
-
-<table><tr><td>
+<h4>2. Create and activate an isolated environment</h4>
 <pre>
-**Hello**,
+<code class="bash language-bash"><span style="color: green"># create an isolated environment named 'myenv' (to adapt)</span>
+virtualenv myenv<br>
 
-_world_.
+<span style="color: green"># activate your isolated environment</span>
+source myenv/bin/activate</code>
 </pre>
-</td></tr></table>
+
+Once activated, any python library you'll install using pip will be installed in this isolated environment, and python will only have access to these packages.
+
+Once you're done working on your project, simply type `deactivate` to exit the environment.
+</details>
 
 
-<table><tr><td>
-<pre>
-**Hello**,
-<p><em>world</em>.
-</pre></p>
-</td></tr></table>
-
-
-
-## Install required python libraries
-
-Simply type in a terminal:
+To install SURFMAP, simply type the following command:
 ```bash
-pip3 install -r requirements.txt
+# go to the SURFMAP directory
+cd SURFMAP
+
+# install the SURFMAP package
+python3 -m pip install -e .
 ```
+
 SURFMAP is now ready to use. To make it sure, type in a terminal the following command:
 ```
-python3 surfmap.py
+surfmap
 ```
 This command should display:
 
-<pre>SURFMAP:    Projection of protein surface features on 2D map
-Authors:    Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier,
-            Simon Gosset, Anne Lopes
-Version:    x.x (latest)
-Copyright (c) 2022, H. Schweke
-
-...
-    
-usage: surfmap.py [-h] -pdb PDB -tomap
+<pre>usage: surfmap.py [-h] -pdb PDB -tomap
                            {bfactor,kyte_doolittle,binding_sites,all,circular_variance_atom,stickiness,wimley_white,electrostatics,circular_variance}
                            [-proj {sin,aitoff,moll,cyl}] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png]
                            [--keep]
-surfmap.py: error: the following arguments are required: -tomap
-</pre>
+surfmap: error: the following arguments are required: -tomap</pre>
 
 
 # Use of the pre-built docker image of SURFMAP
