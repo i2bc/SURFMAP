@@ -1,18 +1,19 @@
 
-[![GitHub Release](https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat)]()
-[![Github stars](https://img.shields.io/github/stars/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/stargazers)
-[![Github stars](https://img.shields.io/github/forks/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/fork)
-[![Docker Pulls](https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls)](https://hub.docker.com/r/lopesi2bc/surfmap)
-[![GitHub watchers](https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&label=Watch&style=plastic)]()
-[![Github licence](https://img.shields.io/github/license/i2bc/SURFMAP)](https://github.com/i2bc/SURFMAP/fork)
-
-
-
+<!-- <img src="peek.gif" width="80%"/> -->
 # SURFMAP
 
-<p align="center">
+<div align="center">
+  <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
+  <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
+
+  <img src="https://img.shields.io/github/stars/i2bc/SURFMAP" alt="GitHub Stars"/>
+  <img src="https://img.shields.io/github/forks/i2bc/SURFMAP.svg?style=flat" alt="GitHub Fork"/>
+  <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/>
+  <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
+
+  <br>
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
-</p>
+</div>
 
 
 # Table of contents
@@ -49,6 +50,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
  -->
 
 
+
 # Installation
 [Go to the top](#Table-of-contents)
 
@@ -62,16 +64,17 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 </div>
 <br>
 
-SURFMAP is a command-line tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
+SURFMAP is a command-line interface (CLI) tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
 All those requirements (including APBS) are fullfilled in a [pre-built docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer.
 
 
 ### Requirements
 
-For a usage of SURFMAP through a:
+Below are the basic requirements if you want to use SURFMAP through a:
 <details>
 <summary>docker image</summary>
+
 - an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
 - python >= 3.7
 - docker
@@ -91,12 +94,11 @@ For a usage of SURFMAP through a:
 ## Download
 [Go to the top](#Table-of-contents)
 
-The recommended way to retrieve the project is to clone the repository.
+If you have git installed on your machine, you can clone the repository:
 ```
 git clone https://github.com/i2bc/SURFMAP.git
 ```
-It will allow you to easily update SURFMAP with its latest version through the command `git pull`
-
+It will allow you to easily keep SURFMAP updated with its latest version thanks to the `git pull` command.
 
 Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
 After downloading, you'll need to unarchive the project. If you downloaded:
@@ -104,36 +106,36 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 - the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
 
 
-# Manual Installation
-## Requirements:
-- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
-- python >= 3.7
-- R >= 3.6
-- nawk
+## Install the SURFMAP package
+
+<!-- <details> -->
+<summary>Creating an isolated environment</summary>
+
+Note: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
+
+Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 
 
-Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
+<h4>1. Install virutalenv</h4>
 
-```
-# cd SURFMAP-x-x/ if you downloaded an archived project
-cd SURFMAP/
-ls -l
-```
-
-<pre><font color="#3465A4"><b>.</b></font>
-├── <font color="#3465A4"><b>doc</b></font>
-├── <font color="#3465A4"><b>example</b></font>
-├── how_to_cite_us.txt
-├── LICENSE
-├── <font color="#3465A4"><b>MSMS</b></font>
-├── README.md
-├── requirements.txt
-├── <font color="#4E9A06">run_surfmap_image.py</font>
-├── <font color="#3465A4"><b>scripts</b></font>
-├── <font color="#4E9A06">surfmap.py</font>
-├── <font color="#3465A4"><b>tools</b></font>
-└── <font color="#3465A4"><b>viewer</b></font>
+<pre class="highlight highlight-source-shell notranslate position-relative overflow-auto" >
+<code class="language-bash  hljs">
+<span class="pl-c1"># upgrade pip to its latest version </span> 
+python3 -m pip install --upgrade pip</code>
 </pre>
+
+
+
+<!-- </details> -->
+
+```bash
+# upgrade pip to its latest version 
+python3 -m pip install --upgrade pip
+
+# install virtualenv
+python3 -m pip install virtualenv
+```
+
 
 ## Install required python libraries
 
