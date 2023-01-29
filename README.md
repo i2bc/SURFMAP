@@ -112,9 +112,10 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 Note: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
 
 <details>
-<summary>Creating an isolated environment</summary>
-
+<summary><h1>Creating an isolated environment</h1></summary>
+<p>
 Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
+</p>
 
 <h4>1. Install virutalenv</h4>
 
@@ -161,65 +162,6 @@ This command should display:
                            [-proj {sin,aitoff,moll,cyl}] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png]
                            [--keep]
 surfmap: error: the following arguments are required: -tomap</pre>
-
-
-# Use of the pre-built docker image of SURFMAP
-[Go to the top](#Table-of-contents)
-
-This image will work on any system that can run docker (Unix, MacOS, or Windows 10 through WSL2). It includes all the dependencies and external softwares (MSMS & APBS) to run SURFMAP so that the user don't need to install anything on its machine (except docker).  
-
-## Get docker on your machine
-
-You’ll first need to create an account on [docker hub](https://hub.docker.com/) and [install docker](https://docs.docker.com/get-docker/) on your machine.
-
-
-
-
-## Run SURFMAP with `run_surfmap_image.py`
-
-Once downloaded, please go to the SURFMAP directory where you should have the following files/directories:
-
-```
-# cd SURFMAP-x-x/ if you downloaded an archived project
-cd SURFMAP/
-```
-
-Once you have docker installed on your machine, you are ready to use SURFMAP. Simply type in a terminal:
-```bash
-python3 run_surfmap_image.py
-```  
-
-The first time you’ll type it you may have to also type docker login in the terminal and fill the fields with your docker ID and docker password. It will then take few minutes to download the image on your machine. Once the SURFMAP image has been successfully downloaded on your machine, you should see after typing the `python3 run_surfmap_image.py` command in a terminal the following message:
-
-<pre>
-<font color="#4E9A06"><b>tutor@surfmap</b></font>:<font color="#3465A4"><b>~/i2bc/SURFMAP</b></font>$ python3 run_surfmap_image.py
-usage: run_surfmap_image.py [-h] -pdb PDB -tomap
-                      {electrostatics,all,circular_variance,circular_variance_atom,wimley_white,stickiness,kyte_doolittle,binding_sites,bfactor}
-                      [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth]
-                      [--png] [--keep]
-run_surfmap_image.py: error: the following arguments are required: -tomap
-</pre>
-
-
-
-# Tip
-
-<a id="surfmap-alias"></a>
-Wether you call SURFMAP through `surfmap.py` or `run_surfmap_image.py`, you can make those scripts callable from anywhere on your machine. To do so, add the following lines at the end of your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file:
-
-```bash
-# Alias to run surfmap from its docker image"
-alias surfmap='python3 PATH/TO/SURFMAP/run_surfmap_image.py'
-```
-or 
-```bash
-alias surfmap='python3 PATH/TO/SURFMAP/surfmap.py'
-```
-
-Make sure to replace `PATH/TO/SURFMAP/` with the absolute path you’ve downloaded SURFMAP to. Then type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal to make the change effective.
-
-From now on, you should be able to use SURFMAP by simply typing in a terminal `surfmap`.
-
 
 
 # Usage of SURFMAP
