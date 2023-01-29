@@ -119,31 +119,42 @@ Below is a short illustration on how to use <a href="https://pypi.org/project/vi
 
 <h4>1. Install virutalenv</h4>
 
-<!-- <pre class="highlight highlight-source-shell notranslate position-relative overflow-auto" >
-<code class="language-bash  hljs">
-# upgrade pip to its latest version
-python3 -m pip install --upgrade pip
-</code>
+<div>
+<!-- <pre>
+<code class="bash language-bash"># upgrade pip to its latest version
+python3 -m pip install --upgrade pip</code>
 </pre> -->
 
 <pre>
-    <code class="bash language-bash">
-# upgrade pip to its latest version
-python3 -m pip install --upgrade pip
-    </code>
+```bash
+#scsdcs
+cd ./
+```
+
 </pre>
 
+
+</div>
 
 <!-- </details> -->
 
 
-```bash
-# upgrade pip to its latest version 
-python3 -m pip install --upgrade pip
+<table><tr><td>
+<pre>
+**Hello**,
 
-# install virtualenv
-python3 -m pip install virtualenv
-```
+_world_.
+</pre>
+</td></tr></table>
+
+
+<table><tr><td>
+<pre>
+**Hello**,
+<p><em>world</em>.
+</pre></p>
+</td></tr></table>
+
 
 
 ## Install required python libraries
