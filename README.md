@@ -5,13 +5,14 @@
 <div align="center">
   <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
   <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
+  <br>
 
   <img src="https://img.shields.io/github/stars/i2bc/SURFMAP" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/forks/i2bc/SURFMAP.svg?style=flat" alt="GitHub Fork"/>
   <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/>
   <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
-
   <br>
+  
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
 </div>
 
