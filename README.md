@@ -112,7 +112,7 @@ After downloading, you'll need to unarchive the project. If you downloaded:
 Note: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
 
 <details>
-<summary><h1>Creating an isolated environment</h1></summary>
+<summary><h4>Creating an isolated environment</h4></summary>
 <p>
 Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 </p>
