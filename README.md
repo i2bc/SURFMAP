@@ -3,15 +3,25 @@
 # SURFMAP
 
 <div align="center">
+
+  <a><img src="https://badges.aleen42.com/src/cli.svg" width="9.5%"/></a>
+  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
+  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
+  <a><img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" width="6.5%"/></a>
+  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
+
+
   <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
   <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
+  <br>
+
+  <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
   <br>
 
   <img src="https://img.shields.io/github/stars/i2bc/SURFMAP" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/forks/i2bc/SURFMAP.svg?style=flat" alt="GitHub Fork"/>
   <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/>
-  <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
-  <br>
+
 
   <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
 </div>
@@ -22,10 +32,8 @@
 - [Aims](#Aims)
 - [Preamble](#Preamble)
 - [Download](#Download)
-- [Manual Installation](#Manual-Installation)
-- [Use of the pre-built docker image of SURFMAP](#Use-of-the-pre-built-docker-image-of-SURFMAP)
+- [Installation](#Installation)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
-- [Installing APBS](#Installing-APBS)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
 
 
@@ -39,31 +47,9 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 </div>
 <br>
 
-<!-- ![version](https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge)
-![](https://img.shields.io/badge/Python3.6+-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
-
-![](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
-
-![]()
-![](https://img.shields.io/github/forks/i2bc/SURFMAP?style=for-the-badge)
-![](https://img.shields.io/github/stars/i2bc/SURFMAP?style=for-the-badge)
-![](https://img.shields.io/github/issues/i2bc/SURFMAP?style=for-the-badge)
- -->
-
-
 
 # Installation
 [Go to the top](#Table-of-contents)
-
-<div align="center">
-  <a><img src="https://badges.aleen42.com/src/cli.svg" width="9.5%"/></a>
-  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
-  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
-  <a><img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" width="6.5%"/></a>
-  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
-
-</div>
-<br>
 
 SURFMAP is a command-line interface (CLI) tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
@@ -90,22 +76,6 @@ Below are the basic requirements if you want to use SURFMAP through a:
 - APBS (optional: only if you want to compute electrostatics potential)
  
 </details>
-
-
-## Download
-[Go to the top](#Table-of-contents)
-
-If you have git installed on your machine, you can clone the repository:
-```
-git clone https://github.com/i2bc/SURFMAP.git
-```
-It will allow you to easily keep SURFMAP updated with its latest version thanks to the `git pull` command.
-
-Alternatively, you can click <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a> to access the latest source code of the release.
-After downloading, you'll need to unarchive the project. If you downloaded:
-- the .zip file: type on a terminal (Unix and macOS): `unzip SURFMAP-x.x.x.zip`
-- the .tar.gz file: type on a terminal (Unix and macOS): `tar xzvf SURFMAP-x.x.x.tar.gz`
-
 
 ## Install the SURFMAP package
 
@@ -144,11 +114,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 To install SURFMAP, simply type the following command:
 ```bash
-# go to the SURFMAP directory
-cd SURFMAP
-
-# install the SURFMAP package
-python3 -m pip install -e .
+python3 -m pip install -e git+https://github.com/i2bc/SURFMAP.git@dev_2.0.0#egg=surfmap
 ```
 
 SURFMAP is now ready to use. To make it sure, type in a terminal the following command:
