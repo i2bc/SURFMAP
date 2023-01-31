@@ -1,21 +1,21 @@
 
 <div align="center">
 
-  <a><img src="https://badges.aleen42.com/src/cli.svg" width="9.5%"/></a>
-  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="19%"/></a>
-  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="16%"/></a>
-  <a><img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" width="6.5%"/></a>
-  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="12%"/></a>
+  <a><img src="https://badges.aleen42.com/src/cli.svg" width="6.5%"/></a>
+  <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="13%"/></a>
+  <a><img src="https://img.shields.io/badge/Python3.7+-FFD43B?style=for-the-badge&logo=python&logoColor=blue" width="11.5%"/></a>
+  <a><img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" width="4.6%"/></a>
+  <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="8.5%"/></a>
 
 
   <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
   <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
   <br>
 
-  <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
+  <!-- <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
   <img src="https://img.shields.io/github/stars/i2bc/SURFMAP" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/forks/i2bc/SURFMAP.svg?style=flat" alt="GitHub Fork"/>
-  <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/>
+  <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/> -->
 </div>
 
 <br>
@@ -53,31 +53,7 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 
 SURFMAP is a command-line interface (CLI) tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
-All those requirements (including APBS) are fullfilled in a [pre-built docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer.
-
-
-### Requirements
-
-Below are the basic requirements if you want to use SURFMAP through a:
-<details>
-<summary>docker image</summary>
-
-- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
-- python >= 3.7
-- docker
-</details>
-
-<details>
-<summary>local install</summary>
-
-- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
-- python >= 3.7
-- R >= 3.6
-- APBS (optional: only if you want to compute electrostatics potential)
- 
-</details>
-
-## Install the SURFMAP package
+All those requirements (including APBS) are fullfilled in a [pre-built docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
 
 Note: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
 
@@ -112,22 +88,78 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 </details>
 
 
-To install SURFMAP, simply type the following command:
-```bash
-python3 -m pip install -e git+https://github.com/i2bc/SURFMAP.git@dev_2.0.0#egg=surfmap
-```
+### Requirements
 
-SURFMAP is now ready to use. To make it sure, type in a terminal the following command:
-```
-surfmap
-```
-This command should display:
+<details>
+<summary>For a usage of the docker image</summary>
 
-<pre>usage: surfmap.py [-h] -pdb PDB -tomap
-                           {bfactor,kyte_doolittle,binding_sites,all,circular_variance_atom,stickiness,wimley_white,electrostatics,circular_variance}
-                           [-proj {sin,aitoff,moll,cyl}] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png]
-                           [--keep]
-surfmap: error: the following arguments are required: -tomap</pre>
+- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
+- python >= 3.7
+- docker
+</details>
+
+<details>
+<summary>For a local install</summary>
+
+- an UNIX-based OS system (any linux distribution, a MacOS system or WSL2 on windows)
+- python >= 3.7
+- R >= 3.6
+- APBS (optional: only if you want to compute electrostatics potential)
+ 
+</details>
+
+## Download and install SURFMAP
+
+<details>
+<summary><h2>From this project repository</h2></summary>
+
+<pre>
+<code class="bash language-bash"><span style="color: green"># clone SURFMAP on your machine</span>
+git clone https://github.com/i2bc/SURFMAP.git
+
+<span style="color: green"># go in the SURFMAP/ directory</span>
+cd SURFMAP
+
+<span style="color: green"># upgrade pip to its latest version</span>
+python3 -m pip install --upgrade pip
+
+<span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
+python3 -m pip install -e .</code>
+</pre>
+
+</details>
+
+
+<details>
+<summary><h2>From the archive</h2></summary>
+
+First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
+
+<pre>
+<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+python3 -m pip install --upgrade pip
+
+<span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
+python3 -m pip install SURFMAP-vx.x.x.zip (or .tar.gz)</code>
+</pre>
+
+</details>
+
+
+<details>
+<summary><h2>From the version control systems</h2></summary>
+
+In the following procedure, replace vx.x.x with an existing version of your choice.
+
+<pre>
+<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+python3 -m pip install --upgrade pip
+
+<span style="color: green"># install surfmap (an isolated environment is recommended)</span>
+python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@vx.x.x#egg=surfmap</code>
+</pre>
+
+</details>
 
 
 # Usage of SURFMAP
