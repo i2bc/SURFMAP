@@ -53,12 +53,15 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 
 SURFMAP is a command-line interface (CLI) tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
-All those requirements (including APBS) are fullfilled in a [pre-built Docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
+All those requirements (including APBS) are fullfilled in a [pre-built Docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
 
-**Note**: we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
+**Note**. Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image. The reason is that we have managed the CLI usage so that it is called in exactly the same way wether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
 
 <details>
-<summary><h4>Creating an isolated environment</h4></summary>
+<summary><h4>Creating an isolated environment (recommended)</h4></summary>
+
+We strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
+
 <p>
 Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 </p>
@@ -162,8 +165,15 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 [Go to the top](#Table-of-contents)
 
 
-**Note**: since the version 2.0.0, wether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments. 
+<details>
+<summary><h3>Use of the docker image with the <code>--docker</code> option</h3></summary>
 
+Since the version 2.0.0, wether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments.
+
+</details>
+
+
+**Note**: 
 
 If you followed the steps above, SURFMAP should be ready to use through the script `surfmap.py` (manual installation) or `run_surmap_image.py` (docker installation). In the following section, we assume SURFMAP is callable as `surfmap`, an [alias](#tip) of either `run_surfmap_image.py` or `surfmap.py`.
 
