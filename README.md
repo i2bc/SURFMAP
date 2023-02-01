@@ -55,8 +55,6 @@ SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in pyt
 
 All those requirements (including APBS) are fullfilled in a [pre-built Docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
 
-**Note**. Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image. The reason is that we have managed the CLI usage so that it is called in exactly the same way wether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
-
 ### Requirements
 
 <details>
