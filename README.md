@@ -78,13 +78,15 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 
 #### Notes
 
-1. You will still need to install the SURFMAP package on your machine to use the pre-built Docker image.
-2. Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
-
-Click below for a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
+1. You will still need to install the SURFMAP package on your machine to use the [**pre-built Docker image**](https://hub.docker.com/r/lopesi2bc/surfmap).
+2. We strongly recommend that you install the SURFMAP package and its python dependencies in an isolated environment. Click in the section below for a short illustration on why and how to use an isolated environment.
 
 <details>
-<summary>Creating an isolated environment (recommended)</summary>
+<summary>How to use an isolated environment (recommended)</summary>
+
+By using an isolated environment you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
+
+Below is an example on how to use [virtualenv](https://pypi.org/project/virtualenv/).
 
 #### 1. Install virutalenv
 ```bash
