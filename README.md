@@ -43,7 +43,7 @@
 <div>
 <img src="./doc/images/TOC_Schweke_manuscript_revisions_forGitHub.png" width="60%" align="right"/>
 
-SURFMAP is a free standalone and easy-to-use software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
+SURFMAP is a free standalone and easy-to-use command-line interface (CLI) software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 </div>
 <br>
 
@@ -51,20 +51,42 @@ SURFMAP is a free standalone and easy-to-use software that enables the fast and 
 # Installation
 [Go to the top](#Table-of-contents)
 
-SURFMAP is a command-line interface (CLI) tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
+SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
 All those requirements (including APBS) are fullfilled in a [pre-built Docker image](#Use-of-the-pre-built-docker-image-of-SURFMAP) that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
 
 **Note**. Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image. The reason is that we have managed the CLI usage so that it is called in exactly the same way wether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
 
+### Requirements
+
+<details>
+<summary>For a usage of the docker image</summary>
+
+- an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
+- [Python >= 3.7](https://www.python.org/downloads)
+- [Docker](https://docs.docker.com/get-docker/)
+- the SURFMAP docker image: `docker pull lopesi2bc/surfmap`
+
+</details>
+
+<details>
+<summary>For a local install</summary>
+
+- an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
+- [Python >= 3.7](https://www.python.org/downloads)
+- [R >= 3.6](https://cran.r-project.org/)
+- [APBS](https://github.com/Electrostatics/apbs/releases) (optional - only if you want to compute electrostatics potential)
+ 
+</details>
+
+## Download and install SURFMAP
+
+**Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image.**
+
+Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). Click below for a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
+
 <details>
 <summary><h4>Creating an isolated environment (recommended)</h4></summary>
-
-We strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/).
-
-<p>
-Below is a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
-</p>
 
 <h4>1. Install virutalenv</h4>
 
@@ -91,27 +113,6 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 </details>
 
 
-### Requirements
-
-<details>
-<summary>For a usage of the docker image</summary>
-
-- an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
-- [Python >= 3.7](https://www.python.org/downloads)
-- [Docker](https://docs.docker.com/engine/install/)
-</details>
-
-<details>
-<summary>For a local install</summary>
-
-- an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
-- [Python >= 3.7](https://www.python.org/downloads)
-- [R >= 3.6](https://cran.r-project.org/)
-- [APBS](https://github.com/Electrostatics/apbs/releases) (optional - only if you want to compute electrostatics potential)
- 
-</details>
-
-## Download and install SURFMAP
 
 <details>
 <summary><h3>From this project repository</h3></summary>
@@ -169,6 +170,8 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 <summary><h3>Use of the docker image with the <code>--docker</code> option</h3></summary>
 
 Since the version 2.0.0, wether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments.
+
+The reason is that we have managed the CLI usage so that it is called in exactly the same way wether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
 
 </details>
 
@@ -292,89 +295,6 @@ To interactively visualize a map:
 
 Once the map appears, you can hover over a pixel to see the corresponding residue(s) and its property value.
 
-
-# Installing APBS
-
-**Please take note that we strongly advise to use the docker image, especially if you want to compute electrostatics potential. Indeed the installation process of APBS can be tricky. By using the pre-built docker image of SURFMAP, you will not have to install anything except docker itself.**
-
-
-If you choose not to use the pre-built docker image of SURFMAP and want to compute electrostatics potential, you will also need to install APBS. We recommend to install the pre-compiled binaries from the version 3.0.0 that can be found [here](https://github.com/Electrostatics/apbs/releases/tag/v3.0.0).
-The install documentation from the pre-compiled binaries is accessible [there](https://apbs.readthedocs.io/en/latest/getting/index.html#installing-from-pre-compiled-binaries).
-
-
-After downloading the pre-compiled binaries, you will need to edit your `~/.bashrc` (or `~/.bash_profile` or `~/.profile`) file to make your system aware of the location of some APBS-3.0.0 required paths. Let's say you have downloaded the (Linux) pre-compiled binaries of APBS here: `~/APBS-3.0.0.Linux`. Then open your favorite text editor and add the following lines:
-
-```bash
-export PATH="$HOME/APBS-3.0.0.Linux/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/APBS-3.0.0.Linux/lib"
-export APBS="$HOME/APBS-3.0.0.Linux/"
-```
-
-Finally type `source ~/.bashrc` (or `~/.bash_profile` or `~/.profile`) in the terminal. From now on the `apbs` command should be accessible.
-
-You now have to fix a bug in a file used by APBS. To do so, simply type the following command:
-```bash
-sed -i '152s/nsmall/nsmall\[i\]/' $APBS/tools/manip/psize.py
-```
-
-Now SURFMAP should be ready for use. After typing in a terminal `apbs` you should see:
-
-<pre>----------------------------------------------------------------------
-    APBS -- Adaptive Poisson-Boltzmann Solver Version 3.0
-    
-    ...
-    ...
-
-    apbs [options] apbs.in
-
-    where apbs.in is a formatted input file and [options] are:
-
---output-file=&lt;name&gt;     Enables output logging to the path
-    listed in &lt;name&gt;.  Uses flat-file
-    format is --output-format is not used.
---output-format=&lt;type&gt;   Specifies format for logging.  Options
-    for type are either &quot;xml&quot; or &quot;flat&quot;.
---help                   Display this help information.
---version                Display the current APBS version.
-----------------------------------------------------------------------
-</pre>
-
-### Notes on possible missing libraries
-
-Depending on your system, you may face some missing libraries issues.
-
-#### 1. The libreadline library is missing
-
- If you are getting the following error message while running APBS:
-
- ```
- apbs: error while loading shared libraries: libreadline.so.4: cannot open shared object file: No such file or directory 
- ```
-
- Your system is likely to have a `libreadline.so` in a more recent version. You can find it on a Linux distribution with the following command: `ldconfig -p | grep libreadline`
-
- On my machine, it tells me that `libreadline.so.8` is present in `/lib/x86_64-linux-gnu/`:
-<pre><font color="#CC0000"><b>libreadline</b></font>.so.8 (libc6,x86-64) =&gt; /lib/x86_64-linux-gnu/<font color="#CC0000"><b>libreadline</b></font>.so.8
-</pre>
-
-So to fix the problem, i'll just have create a symlink to make APBS recognize `libreadline.so.8` as `libreadline.so.4`:
-
- ```
- sudo ln -s /lib/x86_64-linux-gnu/libreadline.so.8 /lib/x86_64-linux-gnu/libreadline.so.4
- ```
-
- #### 2. The libg2c library is missing
-
-If you are getting the following error message while running APBS:
-
- ```
-apbs: error while loading shared libraries: libg2c.so.0: cannot open shared object file: No such file or directory
- ```
-
- In this case, you'll have to install a gfortran compiler, for instance [g77](https://gcc.gnu.org/fortran/)
-
-<br>
-<br>
 
 # How to cite SURFMAP
 [Go to the top](#Table-of-contents)
