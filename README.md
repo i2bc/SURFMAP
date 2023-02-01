@@ -76,11 +76,32 @@ All those requirements (including APBS) are fullfilled in a pre-built Docker ima
  
 </details>
 
-## Download and install SURFMAP
+## How to install SURFMAP
+
+
+
+<details>
+  <summary>Click me</summary>
+  
+  ### Heading
+  1. Foo
+  2. Bar
+     * Baz
+     * Qux
+
+  ### Some Code
+  ```js
+  function logSomething(something) {
+    console.log('Something', something);
+  }
+  ```
+</details>
 
 **Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image.**
 
-Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). Click below for a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
+Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
+
+Click below for a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 
 <details>
 <summary>Creating an isolated environment (recommended)</summary>
@@ -110,10 +131,8 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 </details>
 
 
-
 <details>
 <summary><h3>From this project repository</h3></summary>
-
 <pre>
 <code class="bash language-bash"><span style="color: green"># clone SURFMAP on your machine</span>
 git clone https://github.com/i2bc/SURFMAP.git
@@ -127,12 +146,11 @@ python3 -m pip install --upgrade pip
 <span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
 python3 -m pip install -e .</code>
 </pre>
-
 </details>
+
 
 <details>
 <summary><h3>From the archive</h3></summary>
-
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
 <pre>
@@ -142,8 +160,8 @@ python3 -m pip install --upgrade pip
 <span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
 python3 -m pip install SURFMAP-v2.0.0.zip (or .tar.gz)</code>
 </pre>
-
 </details>
+
 
 <details>
 <summary><h3>From the version control systems</h3></summary>
@@ -155,7 +173,6 @@ python3 -m pip install --upgrade pip
 <span style="color: green"># install surfmap (an isolated environment is recommended)</span>
 python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap</code>
 </pre>
-
 </details>
 
 
