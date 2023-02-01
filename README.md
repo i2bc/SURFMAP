@@ -52,7 +52,7 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 
 SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
 
-All those requirements (including APBS) are fullfilled in a pre-built Docker image that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
+All those requirements (including APBS) are fullfilled in a [**pre-built Docker image**](https://hub.docker.com/r/lopesi2bc/surfmap) that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
 
 ### Requirements
 
@@ -76,11 +76,10 @@ All those requirements (including APBS) are fullfilled in a pre-built Docker ima
  
 </details>
 
-### About the install
+#### Notes
 
-**Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image.**
-
-Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
+1. You will still need to install the SURFMAP package on your machine to use the pre-built Docker image.
+2. Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
 
 Click below for a short illustration on how to use <a href="https://pypi.org/project/virtualenv/">virtualenv</a>.
 
