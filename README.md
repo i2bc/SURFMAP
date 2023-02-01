@@ -78,25 +78,6 @@ All those requirements (including APBS) are fullfilled in a pre-built Docker ima
 
 ## How to install SURFMAP
 
-
-
-<details>
-  <summary>Click me</summary>
-  
-  ### Heading
-  1. Foo
-  2. Bar
-     * Baz
-     * Qux
-
-  ### Some Code
-  ```js
-  function logSomething(something) {
-    console.log('Something', something);
-  }
-  ```
-</details>
-
 **Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image.**
 
 Also, we strongly recommend that you install SURFMAP and its python dependencies in an isolated environment. In this way, you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
@@ -106,29 +87,27 @@ Click below for a short illustration on how to use <a href="https://pypi.org/pro
 <details>
 <summary>Creating an isolated environment (recommended)</summary>
 
-<h4>1. Install virutalenv</h4>
-
-<pre>
-<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+#### 1. Install virutalenv
+```bash
+# upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-<span style="color: green"># install virtualenv</span>
-python3 -m pip install virtualenv</code>
-</pre>
+# install virtualenv
+python3 -m pip install virtualenv
+```
 
-<h4>2. Create and activate an isolated environment</h4>
-<pre>
-<code class="bash language-bash"><span style="color: green"># create an isolated environment named 'myenv' (to adapt)</span>
-virtualenv myenv<br>
+#### 2. Create and activate an isolated environment
+```bash
+# create an isolated environment named 'myenv' (to adapt)
+virtualenv myenv
 
-<span style="color: green"># activate your isolated environment</span>
-source myenv/bin/activate</code>
-</pre>
+# activate your isolated environment
+source myenv/bin/activate
+```
 
 Once activated, any python library you'll install using pip will be installed in this isolated environment, and python will only have access to these packages.
 
 Once you're done working on your project, simply type `deactivate` to exit the environment.
-</details>
 
 
 <details>
