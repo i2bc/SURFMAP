@@ -76,7 +76,7 @@ All those requirements (including APBS) are fullfilled in a pre-built Docker ima
  
 </details>
 
-## How to install SURFMAP
+### About the install
 
 **Please note that you will still need to install the SURFMAP package on your machine to use the pre-built Docker image.**
 
@@ -108,23 +108,24 @@ source myenv/bin/activate
 Once activated, any python library you'll install using pip will be installed in this isolated environment, and python will only have access to these packages.
 
 Once you're done working on your project, simply type `deactivate` to exit the environment.
+</details>
 
+
+## How to install SURFMAP
 
 <details>
 <summary><h3>From this project repository</h3></summary>
-<pre>
-<code class="bash language-bash"><span style="color: green"># clone SURFMAP on your machine</span>
+
+```bash
+# clone SURFMAP on your machine
 git clone https://github.com/i2bc/SURFMAP.git
 
-<span style="color: green"># go in the SURFMAP/ directory</span>
+# go in the SURFMAP/ directory
 cd SURFMAP
 
-<span style="color: green"># upgrade pip to its latest version</span>
-python3 -m pip install --upgrade pip
-
-<span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
-python3 -m pip install -e .</code>
-</pre>
+# install SURFMAP
+python3 -m pip install -e .
+```
 </details>
 
 
