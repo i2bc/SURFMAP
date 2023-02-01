@@ -83,6 +83,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 
 <details>
 <summary>How to use an isolated environment (recommended)</summary>
+
 <p>
 By using an isolated environment you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
 </p>
