@@ -116,8 +116,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 ## How to install SURFMAP
 
-<details>
-<summary><h3>From this project repository</h3></summary>
+### From this project repository
 
 ```bash
 # clone SURFMAP on your machine
@@ -126,38 +125,33 @@ git clone https://github.com/i2bc/SURFMAP.git
 # go in the SURFMAP/ directory
 cd SURFMAP
 
+# upgrade pip to its latest version
+python3 -m pip install --upgrade pip
+
 # install SURFMAP
 python3 -m pip install -e .
 ```
-</details>
 
-
-<details>
-<summary><h3>From the archive</h3></summary>
+### From the archive
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
-<pre>
-<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+```bash
+# upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-<span style="color: green"># install SURFMAP (an isolated environment is recommended)</span>
+# install SURFMAP
 python3 -m pip install SURFMAP-v2.0.0.zip (or .tar.gz)</code>
-</pre>
-</details>
+```
 
+### From the version control systems
 
-<details>
-<summary><h3>From the version control systems</h3></summary>
-
-<pre>
-<code class="bash language-bash"><span style="color: green"># upgrade pip to its latest version</span>
+```bash
+# upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-<span style="color: green"># install surfmap (an isolated environment is recommended)</span>
+# install SURFMAP
 python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap</code>
-</pre>
-</details>
-
+```
 
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
