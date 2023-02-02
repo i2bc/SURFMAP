@@ -62,7 +62,7 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
     """
     out_coords_reslist = None  # output file with spherical coordinates of specific residues
     out_coords_all = Path(params.outdir) / f"{Path(params.pdbarg).stem}_{property}_partlist.out"  # output file with spherical coordinates of each residue
-    out_pdv_cv = Path(params.curdir) / f"{Path(params.pdbarg).stem}_CV.pdb" 
+    out_pdb_cv = Path(params.curdir) / f"{Path(params.pdbarg).stem}_CV.pdb" 
 
     if params.resfile:
         cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-res", params.resfile, "-d", params.outdir]
@@ -71,10 +71,10 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
         cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-d", params.outdir]
 
     proc_status = subprocess.call(cmd_surfmap)
-    if out_pdv_cv.exists():
-        # out_pdv_cv.unlink()
+    if out_pdb_cv.exists():
+        # out_pdb_cv.unlink()
         try:
-            shutil.move(str(out_pdv_cv), str(params.outdir))
+            shutil.move(str(out_pdb_cv), str(params.outdir))
         except OSError:
             pass
     
@@ -198,16 +198,16 @@ def surfmap_from_pdb(params: Parameters):
     for tomap in listtomap:        
         print("Surface property mapping:", tomap)
 
-        # Step 2: convert cartesian coordinates of each particule into spherical coordinates and associates the value of interest (electrostatics, hydrophobicity, stickiness...)
+        # Step 2: compute and/or associate the property value of interest (electrostatics, hydrophobicity, stickiness...) to atoms/residues
         property = "bfactor" if tomap == "binding_sites" else tomap
         _, reslist, mapfile = compute_spherical_coords(params=params, shell_filename=shell, property=property)
         junk_optional.add(element=[reslist, mapfile])
 
-        # Part 3: computing phi theta list
+        # Part 3: compute phi theta list and generete a raw matrix file
         _, coordfile = compute_coords_list(params=params, coords_file=mapfile, property=property)
         junk_optional.add(element=[coordfile, Path(coordfile).parent])
 
-        # Step 4: computing matrix
+        # Step 4: smooth the matrix
         _, matrix_file, smoothed_matrix_file = compute_matrix(params=params, coords_file=coordfile, property=tomap)
         junk_optional.add(element=[matrix_file, Path(matrix_file).parent])
 
