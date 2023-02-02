@@ -166,14 +166,35 @@ The reason is that we have managed the CLI usage so that it is called in exactly
 
 </details> -->
 
-## Generate a 2D map of protein surface features
+## Generate a protein surface 2D map of a feature
 
-### From a predefined features
+Two inputs are required:
+- a PDB file
+- a key referring to a feature to map:
+  - `kyte_doolittle`
+  - `wimley_white`
+  - `stickiness`
+  - `circular_variance`
+  - `circular_variance_atom`
+  - `electrostatics` (requires APBS)
+  - `bfactor`
+  - `all` 
 
-### From a predefined features
+```bash
+# map the stickiness values for residues at the surface of the chain A of 1g3n.pdb 
+surfmap -pdb 1g3n_A.pdb -tomap stickiness --docker
+```
+
+A typical output has the following structure and content:
+<pre><font color="#12488B"><b>output_SURFMAP_1g3n_A_stickiness/</b></font>
+├── <font color="#12488B"><b>maps</b></font>
+│   └── 1g3n_A_stickiness_map.pdf
+├── parameters.log
+└── <font color="#12488B"><b>smoothed_matrices</b></font>
+    └── 1g3n_A_stickiness_smoothed_matrix.txt
+</pre>
 
 
-Map the  protein surface features and to map them on a 2D plan through a projection. The user has the choice between three different projections:
 
 
 
