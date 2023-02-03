@@ -1,6 +1,8 @@
 
 import importlib.resources as pkg_resources
 from pathlib import Path
+import os
+
 
 with pkg_resources.path("surfmap.scripts", 'compute_shell.sh') as resource:
     PATH_TO_SCRIPTS = Path(resource).parent.resolve()
@@ -9,6 +11,7 @@ ROOT = PATH_TO_SCRIPTS.parent.parent.resolve()
 PATH_TO_EXAMPLES = ROOT / "example"
 
 __VERSION__ = '2.0.0'
+SURFMAP_DOCKER_VERSION = os.getenv('SURFMAP_DOCKER_VERSION', __VERSION__)
 
 SEP = f"{'-' * 80}"
 

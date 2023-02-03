@@ -3,10 +3,12 @@ import subprocess
 import sys
 from typing import List
 
+from surfmap import SURFMAP_DOCKER_VERSION
+
 
 class DockerCLI:
     DOCKER_REPOSITORY = 'lopesi2bc/surfmap'
-    TAG = '2.0'
+    TAG = SURFMAP_DOCKER_VERSION
 
     def __init__(self, args, input_args: List[str], output_args: str, out_dirname: str, input_dir: str='/home/surfmap/input', output_dir: str='/home/surfmap/output') -> None:
         self.cli = ['docker', 'run', '-it', '--rm']

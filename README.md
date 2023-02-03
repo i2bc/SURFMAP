@@ -90,7 +90,7 @@ By using an isolated environment you'll avoid potential version conflicts betwee
 
 Below is an example on how to use [virtualenv](https://pypi.org/project/virtualenv/).
 
-#### 1. Install virutalenv
+#### 1. Install virtualenv
 ```bash
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
@@ -139,8 +139,8 @@ First download an archive of our latest release <a href="https://github.com/i2bc
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP
-python3 -m pip install SURFMAP-v2.0.0.zip (or .tar.gz)</code>
+# install SURFMAP - replace x.x.x valid version numbers
+python3 -m pip install SURFMAP-vx.x.x.zip # (or .tar.gz) 
 ```
 
 ### From the version control systems
@@ -149,8 +149,8 @@ python3 -m pip install SURFMAP-v2.0.0.zip (or .tar.gz)</code>
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP
-python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap</code>
+# install SURFMAP - replace x.x.x valid version numbers
+python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@vx.x.x#egg=surfmap
 ```
 
 # Usage of SURFMAP
@@ -160,17 +160,17 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 <!-- <details>
 <summary><h3>Use of the docker image with the <code>--docker</code> option</h3></summary>
 
-Since the version 2.0.0, wether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments.
+Since the version 2.0.0, whether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments.
 
-The reason is that we have managed the CLI usage so that it is called in exactly the same way wether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
+The reason is that we have managed the CLI usage so that it is called in exactly the same way whether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
 
 </details> -->
 
-## Generate a protein surface 2D map of a feature
+## Generate a 2D map of a feature's protein surface
 
 Two inputs are required:
 - a PDB file
-- a key referring to a feature to map:
+- a valid key referring to a feature to map:
   - `kyte_doolittle`
   - `wimley_white`
   - `stickiness`
@@ -181,11 +181,11 @@ Two inputs are required:
   - `all` 
 
 ```bash
-# map the stickiness values for residues at the surface of the chain A of 1g3n.pdb 
+# example - command to map the stickiness values for residues at the surface of the chain A of 1g3n.pdb
 surfmap -pdb 1g3n_A.pdb -tomap stickiness --docker
 ```
 
-A typical output has the following structure and content:
+The output has the following structure and content:
 <pre><font color="#12488B"><b>output_SURFMAP_1g3n_A_stickiness/</b></font>
 ├── <font color="#12488B"><b>maps</b></font>
 │   └── 1g3n_A_stickiness_map.pdf
@@ -194,6 +194,10 @@ A typical output has the following structure and content:
     └── 1g3n_A_stickiness_smoothed_matrix.txt
 </pre>
 
+with:
+- `parameters.log`: a summary of the parameters used to compute the map
+- `1g3n_A_stickiness_map.pdf`: the generated 2D map in pdf format
+- `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file (txt file) used to generate the 2D map. This matrix has the expected format of a matrix file that can be used as a direct input of SURFMAP through the used of the `-mat` argument.
 
 
 
