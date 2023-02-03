@@ -166,10 +166,10 @@ The reason is that we have managed the CLI usage so that it is called in exactly
 
 </details> -->
 
-## Generate a 2D map of a feature's protein surface
+## Project a protein feature on a 2D map
 
-Two inputs are required:
-- a PDB file
+In order to generate a 2D map, two inputs are required:
+- either a PDB file (`-pdb` option) OR a SURFMAP matrix file (`-mat` option)
 - a valid key referring to a feature to map:
   - `kyte_doolittle`
   - `wimley_white`
@@ -178,7 +178,9 @@ Two inputs are required:
   - `circular_variance_atom`
   - `electrostatics` (requires APBS)
   - `bfactor`
-  - `all` 
+  - `all` (to compute)
+
+### From a PDB structure `-pdb`
 
 ```bash
 # example - command to map the stickiness values for residues at the surface of the chain A of 1g3n.pdb
@@ -198,6 +200,18 @@ with:
 - `parameters.log`: a summary of the parameters used to compute the map
 - `1g3n_A_stickiness_map.pdf`: the generated 2D map in pdf format
 - `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file (txt file) used to generate the 2D map. This matrix has the expected format of a matrix file that can be used as a direct input of SURFMAP through the used of the `-mat` argument.
+
+
+### From a SURFMAP matrix file `-mat`
+
+A SURFMAP matrix file can also be used as an input to generate a 2D map. The feature to map has to be the same as the one used to generate the matrix file. As a fancy usage example, the command below will reproduce the 2D map generated from the command above:
+
+```bash
+# example - command to map the stickiness values for residues at the surface of the chain A of 1g3n.pdb
+surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
+```
+
+The real usage of this option is to compute maps from your own customized matrices. For example the user can create maps with SURFMAP for a same protein in different conformational states, and then compute an averaged matrix file for all the matrices. The `-mat` option can thus be used to generate a 2D map of this averaged matrix.
 
 
 
