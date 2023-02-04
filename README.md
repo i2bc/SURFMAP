@@ -139,8 +139,8 @@ First download an archive of our latest release <a href="https://github.com/i2bc
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP - replace x.x.x valid version numbers
-python3 -m pip install SURFMAP-vx.x.x.zip # (or .tar.gz) 
+# install SURFMAP v2.0.0
+python3 -m pip install SURFMAP-v0.0.0.zip # (or .tar.gz) 
 ```
 
 ### From the version control systems
@@ -149,24 +149,30 @@ python3 -m pip install SURFMAP-vx.x.x.zip # (or .tar.gz)
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP - replace x.x.x valid version numbers
-python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@vx.x.x#egg=surfmap
+# install SURFMAP v2.0.0
+python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
 ```
 
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
+<!-- python -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)" -->
 
-<!-- <details>
-<summary><h3>Use of the docker image with the <code>--docker</code> option</h3></summary>
+**Note**<br>
+To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the command `python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"`
 
-Since the version 2.0.0, whether you want to use SURFMAP from a Docker container or from a local install, the same command-line interface has to be used (`surfmap -h`). The difference is that for running SURFMAP on a container (recommended way) you just have to add the `--docker` as an extra argument to the other required/optional basic arguments.
+All command examples below will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
 
-The reason is that we have managed the CLI usage so that it is called in exactly the same way whether you use SURFMAP from a local install or through its Docker image. Concretely, when using the Docker image, you will not have to deal with volumes binding; all you'll have to do is simply add the `--docker` option in your command.
+```bash
+# this command will run on a docker container
+surfmap -pdb foo.pdb -tomap stickiness --docker
 
-</details> -->
+# this command will run locally
+surfmap -pdb foo.pdb -tomap stickiness
+```
 
-## Project a protein feature on a 2D map
+
+## Projection of a protein surface feature on a 2D map
 
 In order to generate a 2D map, two inputs are required:
 - either a PDB file (`-pdb` option) OR a SURFMAP matrix file (`-mat` option)
@@ -207,13 +213,26 @@ with:
 A SURFMAP matrix file can also be used as an input to generate a 2D map. The feature to map has to be the same as the one used to generate the matrix file. As a fancy usage example, the command below will reproduce the 2D map generated from the command above:
 
 ```bash
-# example - command to map the stickiness values for residues at the surface of the chain A of 1g3n.pdb
+# example - command to create a map from a SURFMAP matrix file generated with stickiness values
 surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
 ```
 
-The real usage of this option is to compute maps from your own customized matrices. For example the user can create maps with SURFMAP for a same protein in different conformational states, and then compute an averaged matrix file for all the matrices. The `-mat` option can thus be used to generate a 2D map of this averaged matrix.
+A more realistic usage of this option is to compute maps from your own customized matrices. For example the user can create maps with SURFMAP from a same protein in different conformational states. An averaged matrix file of all the matrices could then be computed. Thus, the `-mat` option could be used to generate a 2D map of this averaged matrix.
 
 
+## Projection of a protein surface binding site on a 2D map
+
+SURFMAP allows to map binding sites of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
+- `0` for atoms that are not part of any binding sites
+- `1` for atoms being part of one known binding site
+- `2` for atoms being part of a second binding site (if there is)
+- etc
+
+Such a pre-edited file is present in the example directory. Below is the command to map its knwown binding site:
+```bash
+# example - command to create a map from a SURFMAP matrix file generated with stickiness values
+surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
+```
 
 
 # How to cite SURFMAP
@@ -221,10 +240,9 @@ The real usage of this option is to compute maps from your own customized matric
 
 If SURFMAP has been useful to your research, please cite us as well as the original MSMS paper:
 
-> Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier, Simon Gosset, Anne Lopes. SURFMAP: a software for mapping in two dimensions protein surface features. J. Chem. Inf. Model. 2022. doi: 10.1021/acs.jcim.1c01269
+> Hugo Schweke, Marie-Hélène Mucchielli, Nicolas Chevrollier, Simon Gosset, Anne Lopes. SURFMAP: a software for mapping in two dimensions protein surface features. J. Chem. Inf. Model. 2022. [Link](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269)
 
-> Sanner MF, Olson AJ, Spehner JC. Reduced surface: an efficient way to compute molecular surfaces. Biopolymers. 1996 Mar;38(3):305-20. doi: 10.1002/(SICI)1097-0282(199603)38:3%3C305::AID-BIP4%3E3.0.CO;2-Y. PMID: 8906967. https://doi.org/10.1002/(sici)1097-0282(199603)38:3%3c305::aid-bip4%3e3.0.co;2-y
-
+> Sanner, M. F., Olson A.J. & Spehner, J.-C. (1996). Reduced Surface: An Efficient Way to Compute Molecular Surfaces. Biopolymers 38:305-320. [Link](https://doi.org/10.1002/(sici)1097-0282(199603)38:3%3c305::aid-bip4%3e3.0.co;2-y)
 <br>
 
 Moreover, if you use APBS in your research, please cite one or more of the following papers listed in the [Supporting APBS](https://apbs.readthedocs.io/en/latest/supporting.html) documentation page.
