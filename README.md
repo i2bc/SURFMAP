@@ -116,7 +116,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 ## How to install SURFMAP
 
-### Option 1: from this project repository
+#### Option 1: from this project repository
 
 ```bash
 # clone SURFMAP on your machine
@@ -132,7 +132,7 @@ python3 -m pip install --upgrade pip
 python3 -m pip install -e .
 ```
 
-### Option 2: from the archive
+#### Option 2: from the archive
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
 ```bash
@@ -140,10 +140,10 @@ First download an archive of our latest release <a href="https://github.com/i2bc
 python3 -m pip install --upgrade pip
 
 # install SURFMAP v2.0.0
-python3 -m pip install SURFMAP-v0.0.0.zip # (or .tar.gz) 
+python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz) 
 ```
 
-### Option 3: from the version control systems
+#### Option 3: from the version control systems
 
 ```bash
 # upgrade pip to its latest version
