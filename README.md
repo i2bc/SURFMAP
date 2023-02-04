@@ -72,7 +72,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
 - [R >= 3.6](https://cran.r-project.org/)
-- [APBS](https://github.com/Electrostatics/apbs/releases) (optional - only if you want to compute electrostatics potential)
+- [APBS](https://github.com/Electrostatics/apbs/releases) (optional - only if you want to compute electrostatic potential)
  
 </details>
 
@@ -116,7 +116,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 ## How to install SURFMAP
 
-### From this project repository
+### Option 1: from this project repository
 
 ```bash
 # clone SURFMAP on your machine
@@ -132,7 +132,7 @@ python3 -m pip install --upgrade pip
 python3 -m pip install -e .
 ```
 
-### From the archive
+### Option 2: from the archive
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
 ```bash
@@ -143,7 +143,7 @@ python3 -m pip install --upgrade pip
 python3 -m pip install SURFMAP-v0.0.0.zip # (or .tar.gz) 
 ```
 
-### From the version control systems
+### Option 3: from the version control systems
 
 ```bash
 # upgrade pip to its latest version
@@ -159,7 +159,11 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 <!-- python -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)" -->
 
 **Note**<br>
-To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the command `python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"`
+To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the following command:
+
+```bash
+python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
+```
 
 All command examples below will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
 
