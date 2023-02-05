@@ -156,25 +156,31 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-<!-- python -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)" -->
+## Foreworder
 
-**Note**<br>
+#### Find the example directory
+
 To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the following command:
 
 ```bash
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
 
-All command examples below will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
+#### How to run on a container or locally
+
+All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
+
+<details>
+<summary>How to run on a container or locally</summary>
 
 ```bash
-# this command will run on a docker container
+# a command that will run on a docker container
 surfmap -pdb foo.pdb -tomap stickiness --docker
 
-# this command will run locally
+# the same command that will run locally
 surfmap -pdb foo.pdb -tomap stickiness
 ```
-
+</details>
 
 ## Projection of a protein surface feature on a 2D map
 
@@ -221,22 +227,45 @@ A SURFMAP matrix file can also be used as an input to generate a 2D map. The fea
 surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
 ```
 
-A more realistic usage of this option is to compute maps from your own customized matrices. For example the user can create maps with SURFMAP from a same protein in different conformational states. An averaged matrix file of all the matrices could then be computed. Thus, the `-mat` option could be used to generate a 2D map of this averaged matrix.
+A more realistic usage of this option is to compute maps from your own customized matrices. For example you can create maps of a same protein in different conformational states. In this case, you may want to compute an averaged matrix file (please note that we don't provide such script utilities). The `-mat` option could then be used to generate a 2D map of this averaged matrix.
 
 
 ## Projection of a protein surface binding site on a 2D map
 
-SURFMAP allows to map binding sites of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
+SURFMAP allows to map interface residues of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
 - `0` for atoms that are not part of any binding sites
 - `1` for atoms being part of one known binding site
 - `2` for atoms being part of a second binding site (if there is)
 - etc
 
-Such a pre-edited file is present in the example directory. Below is the command to map its knwown binding site:
+Such a pre-edited file is present in the example directory. Below is the command to map its known binding site:
 ```bash
 # example - command to create a map from a SURFMAP matrix file generated with stickiness values
-surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
+surfmap -pdb 1gv3_A_binding_sites.pdb -tomap binding_sites
 ```
+
+As shown below, we provide two utility scripts to help users working with maps related to the `-tomap binding_sites` option.
+
+
+### Utility command to extract interface residues
+
+The SURFMAP package includes a command called `extract_interface` that, given a multi-chain PDB file, allows to identify the interface residues between a (set of) chain(s), and all the other chains of the PDB structure. The output of the command is a PDB file of the given (set of) chain(s) ready for use by `surfmap` with the option `-tomap binding_sites`.
+
+As an illustration, the PDB file `1g3n_ABC.pdb` in the example directory is made of the three chains A, B and C where A interacts with both the chains A and B. We can use `extract_interface` to identify the residues of the chain A at the interface of all other chains. Interface residues between the chains A and B will constitue one binding site; and interface residues between A and C will constitute a second binding site.
+```bash
+# identify residues at the interface of the chain A and all other chains: interface residues between chains A-B, and chains A-C
+extract_interface -pdb 1g3n_ABC.pdb -chains A
+```
+
+The command will generate two output files:
+- `1g3n_ABC_chain-A_bs.pdb`: a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+- `1g3n_ABC_chain-A_interface.txt`: a text file containing information about identified interface residues.
+
+
+### Utility command to edit a PDB file from known interface residues
+
+In case you have a list of residues you want to map with the option `-tomap binding_sites` but these residues cannot be identified by `extract_interface`, we provide a utility command to help users in writing a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+
 
 
 # How to cite SURFMAP
