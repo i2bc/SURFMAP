@@ -156,22 +156,20 @@ python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surf
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-## Foreworder
-
-#### Find the example directory
+<details>
+<summary><h4>The example directory</h4></summary>
 
 To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the following command:
 
 ```bash
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
-
-#### How to run on a container or locally
-
-All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
+</details>
 
 <details>
-<summary>How to run on a container or locally</summary>
+<summary><h4>Run SURFMAP on a container or locally</h4></summary>
+
+All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
 
 ```bash
 # a command that will run on a docker container
@@ -181,6 +179,7 @@ surfmap -pdb foo.pdb -tomap stickiness --docker
 surfmap -pdb foo.pdb -tomap stickiness
 ```
 </details>
+
 
 ## Projection of a protein surface feature on a 2D map
 
