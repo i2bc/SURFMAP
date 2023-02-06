@@ -55,7 +55,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 ### Requirements
 
 <details>
-<summary>For a usage of the docker image</summary>
+<summary><b>For a usage of the docker image<b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
@@ -113,8 +113,30 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 
 ## How to install SURFMAP
+Choose option 1 or 2 if you're not interested in the source code access/modification, otherwise prefer option 3. 
 
-#### Option 1: from this project repository
+#### Option 1: from the archive (git not required)
+First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
+
+```bash
+# upgrade pip to its latest version
+python3 -m pip install --upgrade pip
+
+# install SURFMAP v2.0.0
+python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz) 
+```
+
+#### Option 2: from the version control systems
+
+```bash
+# upgrade pip to its latest version
+python3 -m pip install --upgrade pip
+
+# install SURFMAP v2.0.0
+python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
+```
+
+#### Option 3: from this project repository
 
 ```bash
 # clone SURFMAP on your machine
@@ -130,26 +152,7 @@ python3 -m pip install --upgrade pip
 python3 -m pip install -e .
 ```
 
-#### Option 2: from the archive
-First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
-```bash
-# upgrade pip to its latest version
-python3 -m pip install --upgrade pip
-
-# install SURFMAP v2.0.0
-python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz) 
-```
-
-#### Option 3: from the version control systems
-
-```bash
-# upgrade pip to its latest version
-python3 -m pip install --upgrade pip
-
-# install SURFMAP v2.0.0
-python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
-```
 
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
@@ -248,7 +251,7 @@ As shown below, we provide two utility scripts to help users working with maps r
 
 The SURFMAP package includes a command called `extract_interface` that, given a multi-chain PDB file, allows to identify the interface residues between a (set of) chain(s), and all the other chains of the PDB structure. The output of the command is a PDB file of the given (set of) chain(s) ready for use by `surfmap` with the option `-tomap binding_sites`.
 
-As an illustration, the PDB file `1g3n_ABC.pdb` in the example directory is made of the three chains A, B and C where A interacts with both the chains A and B. We can use `extract_interface` to identify the residues of the chain A at the interface of all other chains. Interface residues between the chains A and B will constitue one binding site; and interface residues between A and C will constitute a second binding site.
+As an illustration, the PDB file `1g3n_ABC.pdb` in the example directory is made of the three chains A, B and C where A interacts with both the chains B and C. We can use `extract_interface` to identify the residues of the chain A at the interface of all other chains. Interface residues between the chains A and B will constitue one binding site; and interface residues between A and C will constitute a second binding site.
 ```bash
 # identify residues at the interface of the chain A and all other chains: interface residues between chains A-B, and chains A-C
 extract_interface -pdb 1g3n_ABC.pdb -chains A
@@ -256,12 +259,33 @@ extract_interface -pdb 1g3n_ABC.pdb -chains A
 
 The command will generate two output files:
 - `1g3n_ABC_chain-A_bs.pdb`: a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
-- `1g3n_ABC_chain-A_interface.txt`: a text file containing information about identified interface residues.
+- `1g3n_ABC_chain-A_interface.txt`: a text file containing information about identified interface residues. This file can be edited and used as input for the command `write_pdb_bs` described below.
 
 
 ### Utility command to edit a PDB file from known interface residues
 
-In case you have a list of residues you want to map with the option `-tomap binding_sites` but these residues cannot be identified by `extract_interface`, we provide a utility command to help users in writing a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+In case you have a list of residues you want to map with the option `-tomap binding_sites` but these residues cannot be identified by `extract_interface`, we provide the utility command `write_pdb_bs` to help users in labelling the b-factor column of a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+
+The command `write_pdb_bs` takes as inputs a PDB file to "edit" and a text file that must be formatted as follows:
+- 1st column: the chain name that has an interface residue
+- 2nd column: a residue ID
+- 3rd column: a residue name
+- 4th column: a discrete value (one value per different binding site)
+
+For instance, if you want to map the residues GLU-14 and CYS-15 of the chain A as part of an interface, and the residues GLY-50 and GLU-51 of the chain A as part of another interface, you should create your input file as follows:
+```
+A	14	GLU	1
+A	15	CYS	1
+A	50	GLY	1
+A	17	GLU	1
+```
+
+As a fancy example, the command below will reproduce the PDB file `1g3n_ABC_chain-A_bs.pdb` ready for use by `surfmap` with the option `-tomap binding_sites`:
+```bash
+write_pdb_bs -pdb 1g3n_ABC_chain-A_bs.pdb -res 1g3n_ABC_chain-A_interface.txt
+```
+
+
 
 
 
