@@ -55,7 +55,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 ### Requirements
 
 <details>
-<summary><b>For a usage of the docker image<b></summary>
+<summary><b>For a usage of the docker image</b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
@@ -65,7 +65,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 </details>
 
 <details>
-<summary>For a local install</summary>
+<summary><b>For a local install</b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
@@ -151,7 +151,6 @@ python3 -m pip install --upgrade pip
 # install SURFMAP
 python3 -m pip install -e .
 ```
-
 
 
 # Usage of SURFMAP
