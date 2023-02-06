@@ -1,4 +1,13 @@
 
+
+# SURFMAP
+
+<div align="center">
+  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
+</div>
+
+---
+
 <div align="center">
 
   <a><img src="https://badges.aleen42.com/src/cli.svg" width="6.5%"/></a>
@@ -18,13 +27,6 @@
   <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/> -->
 </div>
 
-<br>
-
-# SURFMAP
-
-<div align="center">
-  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
-</div>
 
 
 # Table of contents
