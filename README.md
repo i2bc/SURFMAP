@@ -1,13 +1,3 @@
-
-
-# SURFMAP
-
-<div align="center">
-  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
-</div>
-
----
-
 <div align="center">
 
   <a><img src="https://badges.aleen42.com/src/cli.svg" width="6.5%"/></a>
@@ -19,7 +9,7 @@
 
   <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
   <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
-  <br>
+  <!-- <br> -->
 
   <!-- <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
   <img src="https://img.shields.io/github/stars/i2bc/SURFMAP" alt="GitHub Stars"/>
@@ -27,7 +17,13 @@
   <img src="https://img.shields.io/github/watchers/i2bc/SURFMAP.svg?style=social&style=plastic" alt="GitHub Watchers"/> -->
 </div>
 
+---
 
+# SURFMAP
+
+<div align="center">
+  <img src="./doc/images/toc_Schweke_SURFMAP_cmyk.png" width="80%"/>  
+</div>
 
 # Table of contents
 
