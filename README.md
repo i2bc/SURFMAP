@@ -230,47 +230,26 @@ A more realistic usage of this option is to compute maps from your own customize
 
 ## Projection of a set of residues on a 2D map
 
-<!-- <div align="center">
+<div align="center">
     <img src="./doc/custom/project_binding_site.svg">
-</div> -->
+</div>
 
 | ![s](./doc/images/1g3n_chain-A_interface_full.png) |
-|:---|
+|:---:|
 | **Projection on a 2D map of the chain A interface residues of 1G3N** |
-| On the left side, the chains B and C of 1G3N are represented as a cartoon, in red and blue respectively. The 3D structure of the chain A of 1G3N is represented  as a surface in gray. Interface residues of the chain A are colored as the chain they interact with. | 
 
-<figure style="border: 1px solid lightgray; padding: 2px 12px">
 
-<img style="border-bottom: 1px solid lightgray" src="./doc/images/1g3n_chain-A_interface_full.png" alt="Projection on a 2D map of the chain A interface residues of 1G3N.">
 
-<figcaption align="center" style="font-size: 12px; text-align: justify; padding: 8px 8px">
-<b style="font-size: 13px">Projection on a 2D map of the chain A interface residues of 1G3N.</b>
 
-<div>
-On the left side, the chains B and C of 1G3N are represented as a cartoon, in red and blue respectively. The 3D structure of the chain A of 1G3N is represented  as a surface in gray. Interface residues of the chain A are colored as the chain they interact with.
-</div>
 
-<div>
-On the right side is the corresponding 2D maps representing the projection of interface residues of the chain A, with each interface following the same color scheme as the one used on the left side.
-</div>
-
-<details style="margin-top: 4px">
-<summary><b>Show commands</b></summary>
-
-```bash
+<!-- ```bash
 # generate a PDB file of the chain A in which the b-factor column will contain a discrete value for each different interface residues that will be found 
 extract_interface -pdb 1g3n_ABC.pdb -chains A
 
 # Use the PDB file generated with the command above to project labelled residues on a 2D map 
 surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
-```
-</details>
+``` -->
 
-</figcaption>
-</figure>
-
-
-<figure><img src="https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwzOTU0NTB8fGVufDB8fHw%3D&w=1000&q=80" alt="Trulli" style="width:100%"><figcaption align = "center"><b>Fig.1 - 4K Mountains Wallpaper</b></figcaption></figure>
 
 
 SURFMAP allows to map interface residues of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
