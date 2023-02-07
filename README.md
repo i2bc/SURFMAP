@@ -1,4 +1,8 @@
 <div align="center">
+    <img src="./doc/styles.css" width="10" height="10">
+</div>
+
+<div align="center">
 
   <a><img src="https://badges.aleen42.com/src/cli.svg" width="6.5%"/></a>
   <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="13%"/></a>
@@ -34,6 +38,7 @@
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
 
+<h1>Hello world!</h1>
 
 # Aims
 [Go to the top](#Table-of-contents)
