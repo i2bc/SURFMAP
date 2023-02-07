@@ -1,8 +1,4 @@
 <div align="center">
-    <img src="./doc/styles.svg" width="10" height="10">
-</div>
-
-<div align="center">
 
   <a><img src="https://badges.aleen42.com/src/cli.svg" width="6.5%"/></a>
   <a><img src="https://img.shields.io/badge/Unix%20based%20os-053766?style=for-the-badge&logo=Linux&logoColor=white&" width="13%"/></a>
@@ -37,8 +33,6 @@
 - [Installation](#Installation)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
-
-<h1>Hello world!</h1>
 
 # Aims
 [Go to the top](#Table-of-contents)
@@ -235,6 +229,10 @@ A more realistic usage of this option is to compute maps from your own customize
 
 
 ## Projection of a set of residues on a 2D map
+
+<div align="center">
+    <img src="./doc/custom/project_binding_site.svg">
+</div>
 
 <figure style="border: 1px solid lightgray; padding: 2px 12px">
 
