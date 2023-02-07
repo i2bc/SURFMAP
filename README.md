@@ -230,14 +230,14 @@ A more realistic usage of this option is to compute maps from your own customize
 
 ## Projection of a set of residues on a 2D map
 
-<div align="center">
+<!-- <div align="center">
     <img src="./doc/custom/project_binding_site.svg">
-</div>
+</div> -->
 
-<object data="./doc/custom/project_binding_site.svg" type="image/svg+xml">
-  
-  <div class="container">test</div>
-</object>
+| ![s](./doc/images/1g3n_chain-A_interface_full.png) |
+|:---|
+| **Projection on a 2D map of the chain A interface residues of 1G3N** |
+| On the left side, the chains B and C of 1G3N are represented as a cartoon, in red and blue respectively. The 3D structure of the chain A of 1G3N is represented  as a surface in gray. Interface residues of the chain A are colored as the chain they interact with. | 
 
 <figure style="border: 1px solid lightgray; padding: 2px 12px">
 
@@ -266,10 +266,11 @@ surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
 ```
 </details>
 
-
 </figcaption>
-
 </figure>
+
+
+<figure><img src="https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwzOTU0NTB8fGVufDB8fHw%3D&w=1000&q=80" alt="Trulli" style="width:100%"><figcaption align = "center"><b>Fig.1 - 4K Mountains Wallpaper</b></figcaption></figure>
 
 
 SURFMAP allows to map interface residues of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
