@@ -234,6 +234,11 @@ A more realistic usage of this option is to compute maps from your own customize
     <img src="./doc/custom/project_binding_site.svg">
 </div>
 
+<object data="./doc/custom/project_binding_site.svg" type="image/svg+xml">
+  
+  <div class="container">test</div>
+</object>
+
 <figure style="border: 1px solid lightgray; padding: 2px 12px">
 
 <img style="border-bottom: 1px solid lightgray" src="./doc/images/1g3n_chain-A_interface_full.png" alt="Projection on a 2D map of the chain A interface residues of 1G3N.">
