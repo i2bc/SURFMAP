@@ -79,7 +79,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 1. You will still need to install the SURFMAP package on your machine to use the [**pre-built Docker image**](https://hub.docker.com/r/lopesi2bc/surfmap).
 2. We strongly recommend that you install the SURFMAP package and its python dependencies in an isolated environment. Click in the section below for a short illustration on why and how to use an isolated environment.
 
-<details>
+<details style="margin-left: 32px">
 <summary>How to use an isolated environment (recommended)</summary>
 <br>
 <p>
@@ -113,7 +113,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 
 ## How to install SURFMAP
-Choose option 1 or 2 if you're not interested in the source code access/modification, otherwise prefer option 3. 
+Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
 #### Option 1: from the archive (git not required)
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
@@ -229,7 +229,40 @@ surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickines
 A more realistic usage of this option is to compute maps from your own customized matrices. For example you can create maps of a same protein in different conformational states. In this case, you may want to compute an averaged matrix file (please note that we don't provide such script utilities). The `-mat` option could then be used to generate a 2D map of this averaged matrix.
 
 
-## Projection of a protein surface binding site on a 2D map
+## Projection of a set of residues on a 2D map
+
+<figure style="border: 1px solid lightgray; padding: 2px 12px">
+
+<img style="border-bottom: 1px solid lightgray" src="./doc/images/1g3n_chain-A_interface_full.png" alt="Projection on a 2D map of the chain A interface residues of 1G3N.">
+
+<figcaption align="center" style="font-size: 12px; text-align: justify; padding: 8px 8px">
+<b style="font-size: 13px">Projection on a 2D map of the chain A interface residues of 1G3N.</b>
+
+<div>
+On the left side, the chains B and C of 1G3N are represented as a cartoon, in red and blue respectively. The 3D structure of the chain A of 1G3N is represented  as a surface in gray. Interface residues of the chain A are colored as the chain they interact with.
+</div>
+
+<div>
+On the right side is the corresponding 2D maps representing the projection of interface residues of the chain A, with each interface following the same color scheme as the one used on the left side.
+</div>
+
+<details style="margin-top: 4px">
+<summary><b>Show commands</b></summary>
+
+```bash
+# generate a PDB file of the chain A in which the b-factor column will contain a discrete value for each different interface residues that will be found 
+extract_interface -pdb 1g3n_ABC.pdb -chains A
+
+# Use the PDB file generated with the command above to project labelled residues on a 2D map 
+surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
+```
+</details>
+
+
+</figcaption>
+
+</figure>
+
 
 SURFMAP allows to map interface residues of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
 - `0` for atoms that are not part of any binding sites
