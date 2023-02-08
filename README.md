@@ -114,7 +114,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 ## How to install SURFMAP
 Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
-<details>
+<details open>
 <summary><h4>Option 1: from the archive (git not required)</h4></summary>
 
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
