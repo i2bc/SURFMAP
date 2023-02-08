@@ -163,13 +163,13 @@ python3 -m pip install -e .
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the following command:
+To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
 
 ```bash
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
 
-All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
+All command examples will make use of the docker image of SURFMAP thanks to the CLI option **`--docker`**. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
 
 ```bash
 # a command that will run on a docker container

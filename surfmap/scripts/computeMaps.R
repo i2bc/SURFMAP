@@ -413,14 +413,14 @@ for (file in (1:length(files))) {
   
   # Add native site to plot.
   if (!is.na(opt$coord)) {
-    points(nat_phi/360, nat_theta/180, pch = 8, col = "black", cex = 3, lwd = 2)
+    points(nat_phi/360, nat_theta/180, pch = 8, col = "black", cex = 2, lwd = 2)
     #text(nat_phi/360, nat_theta/180+22/180, labels = theta_phi_nat[,2], cex = 1.8)
   }
 
   # Add coordinates of residues of interest
   if (!is.na(opt$reslist)) {
-    points(res_phi/360, res_theta/180, pch = 8, col = "black", cex = 2, lwd = 1.5)
-    text(res_phi/360, res_theta/180+14/180, labels = legend, cex = 0.7, lwd = 1.5)
+    points(res_phi/360, res_theta/180, pch = 4, col = rgb(red = 0, green = 0, blue = 0, alpha = 0.75), cex = 1.15, lwd = 1.)
+    text(res_phi/360, res_theta/180+14/180, labels = legend, cex = 0.7, lwd = 1.5, col = rgb(red = 0, green = 0, blue = 0, alpha = 0.75))
   }
   # Add scale to plot. 
   par(mar=c(15.5,1.6,10.5,4.5))
