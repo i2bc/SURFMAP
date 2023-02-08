@@ -163,20 +163,13 @@ python3 -m pip install -e .
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-<details>
-<summary><h4>The example directory</h4></summary>
-
 To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where it is located with the following command:
 
 ```bash
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
-</details>
 
-<details>
-<summary><h4>Run SURFMAP on a container or locally</h4></summary>
-
-All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option.
+All command examples will make use of the docker image of SURFMAP thanks to the CLI option `--docker`. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
 
 ```bash
 # a command that will run on a docker container
@@ -185,7 +178,6 @@ surfmap -pdb foo.pdb -tomap stickiness --docker
 # the same command that will run locally
 surfmap -pdb foo.pdb -tomap stickiness
 ```
-</details>
 
 
 ## Projection of a protein surface feature on a 2D map
