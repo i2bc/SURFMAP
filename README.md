@@ -114,7 +114,9 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 ## How to install SURFMAP
 Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
-#### Option 1: from the archive (git not required)
+<details>
+<summary><h4>Option 1: from the archive (git not required)</h4></summary>
+
 First download an archive of our latest release <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank">here</a>.
 
 ```bash
@@ -124,8 +126,11 @@ python3 -m pip install --upgrade pip
 # install SURFMAP v2.0.0
 python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz) 
 ```
+</details>
 
-#### Option 2: from the version control systems
+
+<details>
+<summary><h4>Option 2: from the version control systems</h4></summary>
 
 ```bash
 # upgrade pip to its latest version
@@ -134,8 +139,10 @@ python3 -m pip install --upgrade pip
 # install SURFMAP v2.0.0
 python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
 ```
+</details>
 
-#### Option 3: from this project repository
+<details>
+<summary><h4>Option 3: from this project repository</h4></summary>
 
 ```bash
 # clone SURFMAP on your machine
@@ -150,6 +157,7 @@ python3 -m pip install --upgrade pip
 # install SURFMAP
 python3 -m pip install -e .
 ```
+</details>
 
 
 # Usage of SURFMAP
@@ -192,7 +200,7 @@ In order to generate a 2D map, two inputs are required:
   - `circular_variance_atom`
   - `electrostatics` (requires APBS)
   - `bfactor`
-  - `all` (to compute)
+  - `all` (to compute sequentially kyte_doolittle, wimley_white, stickiness and circular_variance features)
 
 ### From a PDB structure `-pdb`
 
@@ -234,57 +242,46 @@ A more realistic usage of this option is to compute maps from your own customize
 
 Instead of projecting a protein surface feature on a 2D map, you may be interested in the projection of interface residues. This is possible with the option `-tomap binding_sites` of SURFMAP. 
 
-When using the `-tomap binding_sites` option, the input PDB file requires to have the b-factor column filled with discrete values used to encode information about interface residues:
+With the `-tomap binding_sites` option, a discrete color scale is used to associate one color to each different value found in the b-factor column. So in order to use this option, your input PDB file must contain discrete values in the b-factor column for each atoms, the value depending on whether the atoms belong to an interface or not. For instance:
 - `0` for atoms that are not part of any binding sites
 - `1` for atoms being part of one known binding site
 - `2` for atoms being part of a second binding site (if there is)
 - `...`
 
 
+We provide two utility scripts to help users generating a PDB file that can be used with the `-tomap binding_sites` option of SURFMAP:
+- `extract_interface`
+- `write_pdb_bs`
 
+##### Usage of extract_interface
 
+From multi-chain PDB file, the command `extract_interface` will find the interface residues between a given chain (or set of chains) and all the other chains of the input PDB structure. It will then output a new PDB file of the given chain(s) with the expected format for the `-tomap binding_sites` option.
 
+The command below illustrates the usage of `extract_interface` with the PDB file `1g3n_ABC.pdb` in the example directory. 
 
-
-
-<!-- ```bash
-# generate a PDB file of the chain A in which the b-factor column will contain a discrete value for each different interface residues that will be found 
-extract_interface -pdb 1g3n_ABC.pdb -chains A
-
-# Use the PDB file generated with the command above to project labelled residues on a 2D map 
-surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
-``` -->
-
-
-Such a pre-edited file is present in the example directory. Below is the command to map its known binding site:
 ```bash
-# example - command to create a map from a SURFMAP matrix file generated with stickiness values
-surfmap -pdb 1gv3_A_binding_sites.pdb -tomap binding_sites
-```
-
-As shown below, we provide two utility scripts to help users working with maps related to the `-tomap binding_sites` option.
-
-
-### Utility command to extract interface residues
-
-The SURFMAP package includes a command called `extract_interface` that, given a multi-chain PDB file, allows to identify the interface residues between a (set of) chain(s), and all the other chains of the PDB structure. The output of the command is a PDB file of the given (set of) chain(s) ready for use by `surfmap` with the option `-tomap binding_sites`.
-
-As an illustration, the PDB file `1g3n_ABC.pdb` in the example directory is made of the three chains A, B and C where A interacts with both the chains B and C. We can use `extract_interface` to identify the residues of the chain A at the interface of all other chains. Interface residues between the chains A and B will constitue one binding site; and interface residues between A and C will constitute a second binding site.
-```bash
-# identify residues at the interface of the chain A and all other chains: interface residues between chains A-B, and chains A-C
+# generate a PDB file of the chain A in which the b-factor column will contain a discrete value for each different interface residues that will be found between chains A and B, and A and C
 extract_interface -pdb 1g3n_ABC.pdb -chains A
 ```
 
-The command will generate two output files:
-- `1g3n_ABC_chain-A_bs.pdb`: a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+It will generate two output files:
+- `1g3n_ABC_chain-A_bs.pdb`: a PDB file ready for use by the command `surfmap` with the option `-tomap binding_sites`.
 - `1g3n_ABC_chain-A_interface.txt`: a text file containing information about identified interface residues. This file can be edited and used as input for the command `write_pdb_bs` described below.
 
 
-### Utility command to edit a PDB file from known interface residues
+So now, we can map interface residues of the chain A of 1G3N:
+```bash
+# Use the PDB file generated with the command above to project labelled residues on a 2D map 
+surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
+```
 
-In case you have a list of residues you want to map with the option `-tomap binding_sites` but these residues cannot be identified by `extract_interface`, we provide the utility command `write_pdb_bs` to help users in labelling the b-factor column of a PDB file ready for use by `surfmap` with the option `-tomap binding_sites`.
+##### Usage of write_pdb_bs
 
-The command `write_pdb_bs` takes as inputs a PDB file to "edit" and a text file that must be formatted as follows:
+The command `write_pdb_bs` is made to avoid the manual editing of the b-factor column of a PDB file that you would like to use with the `-tomap binding_sites` option. The command takes as inputs:
+- a PDB file of interest
+- a text file listing interface residues of interest
+
+The text file listing interface residues must be formatted as follows:
 - 1st column: the chain name that has an interface residue
 - 2nd column: a residue ID
 - 3rd column: a residue name
@@ -294,18 +291,14 @@ For instance, if you want to map the residues GLU-14 and CYS-15 of the chain A a
 ```
 A	14	GLU	1
 A	15	CYS	1
-A	50	GLY	1
-A	17	GLU	1
+A	50	GLY	2
+A	17	GLU	2
 ```
 
 As a fancy example, the command below will reproduce the PDB file `1g3n_ABC_chain-A_bs.pdb` ready for use by `surfmap` with the option `-tomap binding_sites`:
 ```bash
 write_pdb_bs -pdb 1g3n_ABC_chain-A_bs.pdb -res 1g3n_ABC_chain-A_interface.txt
 ```
-
-
-
-
 
 # How to cite SURFMAP
 [Go to the top](#Table-of-contents)
