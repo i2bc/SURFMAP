@@ -31,7 +31,7 @@ the b-factor column is filled with a number for each different interface found.
 
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("-pdb", required=True, help="Path to the pdbfile of the protein complex")
-    parser.add_argument("-chains", required=True, help="Chain(s) for which this function extract the residues that are found in the interface with all the other chains of a protein complex. (e.g. '-c A' or '-c AD' ")
+    parser.add_argument("-chains", required=True, help="Chain(s) for which this function extract the residues that are found in the interface with all the other chains of a protein complex. (e.g. '-chains A' or '-chains AD' ")
     parser.add_argument("-out", help="Path of the output", type=str, default=Path("."))
     parser.add_argument("--docker", action="store_true", help="If chosen, SURFMAP will be run on a docker container (requires docker installed).")
     # parser.add_argument("--write", help="Add this argument to create a pdb with the bfactor corresponding to labelled interfaces", action="store_true")

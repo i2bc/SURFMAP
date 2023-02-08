@@ -1,3 +1,3 @@
-A  2  ASP
-A  3  GLN
-A  6  GLU
+A  10  ASP
+A  11  GLN
+A  14  GLU

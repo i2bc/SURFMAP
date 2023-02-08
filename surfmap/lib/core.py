@@ -66,7 +66,7 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
 
     if params.resfile:
         cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-res", params.resfile, "-d", params.outdir]
-        out_coords_reslist = str(Path(params.outdir) / Path(params.resfile).stem + "_sph_coords.out")
+        out_coords_reslist = str(Path(params.outdir) / (Path(params.resfile).stem + "_sph_coords.out"))
     else:
         cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-d", params.outdir]
 
