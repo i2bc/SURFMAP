@@ -228,15 +228,20 @@ surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickines
 A more realistic usage of this option is to compute maps from your own customized matrices. For example you can create maps of a same protein in different conformational states. In this case, you may want to compute an averaged matrix file (please note that we don't provide such script utilities). The `-mat` option could then be used to generate a 2D map of this averaged matrix.
 
 
-## Projection of a set of residues on a 2D map
+## Projection of interface residues on a 2D map
 
-<div align="center">
-    <img src="./doc/custom/project_binding_site.svg">
-</div>
+<p><img src="./doc/custom/project_binding_site.svg"></p>
 
-| ![s](./doc/images/1g3n_chain-A_interface_full.png) |
-|:---:|
-| **Projection on a 2D map of the chain A interface residues of 1G3N** |
+Instead of projecting a protein surface feature on a 2D map, you may be interested in the projection of interface residues. This is possible with the option `-tomap binding_sites` of SURFMAP. 
+
+When using the `-tomap binding_sites` option, the input PDB file requires to have the b-factor column filled with discrete values used to encode information about interface residues:
+- `0` for atoms that are not part of any binding sites
+- `1` for atoms being part of one known binding site
+- `2` for atoms being part of a second binding site (if there is)
+- `...`
+
+
+
 
 
 
@@ -250,13 +255,6 @@ extract_interface -pdb 1g3n_ABC.pdb -chains A
 surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
 ``` -->
 
-
-
-SURFMAP allows to map interface residues of a protein with the option `-tomap binding_sites`. This specific option requires that the PDB file is filled with discrete values in the b-bactor column:
-- `0` for atoms that are not part of any binding sites
-- `1` for atoms being part of one known binding site
-- `2` for atoms being part of a second binding site (if there is)
-- etc
 
 Such a pre-edited file is present in the example directory. Below is the command to map its known binding site:
 ```bash
