@@ -125,14 +125,14 @@ then
     sed -i "s|pot dx pot|pot dx $pqrfile|g" $apbsfile
 
     # Invoke apbs -> create pot file
-    $APBS/bin/apbs $apbsfile > log  # from APBS 3.4.1
+    $APBS/bin/apbs $apbsfile >> log 2>&1  # from APBS 3.4.1
 
 
     #=================== Electrostatic potential of the shell =====================
 
     # using "multivalue" executable from APBS to calculate electrostatic potential at the surface points determined by MSMS.
     # Multivalue is simply "crossing" the MSMS csv file with the potential gridfile created by APBS.
-    $APBS/share/apbs/tools/bin/multivalue $csvfile $potfile $multfile >> log
+    $APBS/share/apbs/tools/bin/multivalue $csvfile $potfile $multfile >> log 2>&1  # from APBS 3.4.1
    
     # multivalue output converted into pdb format.
     python3 $DIR/multival_csv_to_pdb.py -i $multfile -o $shellfile
