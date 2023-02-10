@@ -171,8 +171,6 @@ class Parameters:
             self.mat: str = args.mat
             self.pdbname: str = Path(self.mat).name
 
-
-
         # set useful paths
         self.curdir: Union[str, Path] = Path.cwd()
         self.surftool_script: str = "_surfmap_tool"

@@ -6,9 +6,13 @@ import shutil
 import subprocess
 from typing import Tuple, Union
 
+from surfmap.lib.custom_logging import Log
 from surfmap.lib.parameters import Parameters
 from surfmap.lib.utils import JunkFilePath
+from surfmap.tools.SurfmapTools import run_spherical_coords
 
+
+logger = Log()
 
 def compute_shell(params: Parameters) -> Tuple[int, str]:
     """Compute the shell of a given PDB structure.
@@ -60,29 +64,34 @@ def compute_spherical_coords(params: Parameters, shell_filename: str, property: 
     Returns:
         tuple[int, str, str]: return the status value of the process, the output filename of reslist, if any, and the output filename of partlist
     """
-    out_coords_reslist = None  # output file with spherical coordinates of specific residues
-    out_coords_all = Path(params.outdir) / f"{Path(params.pdbarg).stem}_{property}_partlist.out"  # output file with spherical coordinates of each residue
-    out_pdb_cv = Path(params.curdir) / f"{Path(params.pdbarg).stem}_CV.pdb" 
 
-    if params.resfile:
-        cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-res", params.resfile, "-d", params.outdir]
-        out_coords_reslist = str(Path(params.outdir) / (Path(params.resfile).stem + "_sph_coords.out"))
-    else:
-        cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-d", params.outdir]
+    pdb_CV, outfile_res_to_map, partlist_outfile = run_spherical_coords(shell=shell_filename, pdb=params.pdbarg, tomap=property, outdir=params.outdir, res=params.resfile)
 
-    proc_status = subprocess.call(cmd_surfmap)
-    if out_pdb_cv.exists():
+    # out_coords_reslist = None  # output file with spherical coordinates of specific residues
+    # out_coords_all = Path(params.outdir) / f"{Path(params.pdbarg).stem}_{property}_partlist.out"  # output file with spherical coordinates of each residue
+    # out_pdb_cv = Path(params.curdir) / f"{Path(params.pdbarg).stem}_CV.pdb" 
+
+    # if params.resfile:
+    #     cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-res", params.resfile, "-d", params.outdir]
+    #     out_coords_reslist = str(Path(params.outdir) / (Path(params.resfile).stem + "_sph_coords.out"))
+    # else:
+    #     cmd_surfmap = [params.surftool_script, "-pdb", params.pdbarg, "-shell", shell_filename, "-tomap", property, "-d", params.outdir]
+
+    # proc_status = subprocess.call(cmd_surfmap)
+
+
+    if Path(pdb_CV).exists():
         # out_pdb_cv.unlink()
         try:
-            shutil.move(str(out_pdb_cv), str(params.outdir))
+            shutil.move(str(pdb_CV), str(params.outdir))
         except OSError:
             pass
     
-    if proc_status != 0:
-        print("\nMapping of the residues given in input failed. This can be due to a malformed residue file or a mistake in the reisdue numbering, type or chain.\n\nFormat should be the following:\nchain residuenumber residuetype\nexample: A\t5 LEU\n\nExiting now.")
-        exit()
+    # if proc_status != 0:
+    #     print("\nMapping of the residues given in input failed. This can be due to a malformed residue file or a mistake in the reisdue numbering, type or chain.\n\nFormat should be the following:\nchain residuenumber residuetype\nexample: A\t5 LEU\n\nExiting now.")
+    #     exit()
 
-    return proc_status, out_coords_reslist, out_coords_all
+    return outfile_res_to_map, partlist_outfile
 
 
 def compute_coords_list(params: Parameters, coords_file: str, property: str) -> Tuple[int, str]:
@@ -104,7 +113,7 @@ def compute_coords_list(params: Parameters, coords_file: str, property: str) -> 
     """
     out_file = str(Path(params.outdir) / "coord_lists" / f"{Path(params.pdbarg).stem}_{property}_coord_list.txt")
 
-    cmdlist = ["Rscript", params.coords_script, "-f", coords_file, "-s", str(params.cellsize), "-P", params.proj]
+    cmdlist = ["Rscript", params.coords_script, "-f", coords_file, "-s", str(params.cellsize), "-P", params.proj, "-o", params.outdir]
     proc_status = subprocess.call(cmdlist)
 
     return proc_status, out_file
@@ -132,6 +141,7 @@ def compute_matrix(params: Parameters, coords_file: str, property: str) -> Tuple
     out_matrix = str(Path(params.outdir) / "matrices" / f"{Path(params.pdbarg).stem}_{named_property}_matrix.txt")
 
     cmd = ["Rscript", params.matrix_script, "-i", coords_file, "-s", str(params.cellsize), "--discrete", "-P", params.proj]
+
     if params.nosmooth and property != "binding_sites":
         cmd[-3] = "--nosmooth"
     elif not params.nosmooth and property != "binding_sites":
@@ -190,29 +200,43 @@ def surfmap_from_pdb(params: Parameters):
     # create a junk for intermediary files to remove
     junk_optional = JunkFilePath(elements=[Path(params.outdir) / "shells", Path(params.outdir) / "tmp-elec"])
 
-
-    # Step 1: Generation of shell around protein surface.
-    _, shell = compute_shell(params=params)
+    shell = None
 
     listtomap = ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"] if params.ppttomap == "all" else [params.ppttomap]        
-    for tomap in listtomap:        
-        print("Surface property mapping:", tomap)
+    for tomap in listtomap:
 
-        # Step 2: compute and/or associate the property value of interest (electrostatics, hydrophobicity, stickiness...) to atoms/residues
+        logger.section(message=f"Surface mapping of the {tomap} property".upper())
+
+        if shell is None:
+            logger.info(message="- Step 1: computing a shell around the protein surface")
+            _, shell = compute_shell(params=params)
+        else:
+            logger.info(message="- Step 1: shell already exists. Skip computing step of a shell")
+
+        logger.info(message="- Step 2: computing the property value and assign it to the closest particle of the shell")
         property = "bfactor" if tomap == "binding_sites" else tomap
-        _, reslist, mapfile = compute_spherical_coords(params=params, shell_filename=shell, property=property)
-        junk_optional.add(element=[reslist, mapfile])
+        reslist, partlist_outfile = compute_spherical_coords(params=params, shell_filename=shell, property=property)
+        junk_optional.add(element=[reslist, partlist_outfile])
 
-        # Part 3: compute phi theta list and generete a raw matrix file
-        _, coordfile = compute_coords_list(params=params, coords_file=mapfile, property=property)
+        logger.info(message="- Step 3: computing spherical coordinates of each particle with an assigned property value and generate a raw matrix file")
+        status, coordfile = compute_coords_list(params=params, coords_file=partlist_outfile, property=property)
         junk_optional.add(element=[coordfile, Path(coordfile).parent])
+        if status != 0:
+            print(f"Error occured in step 4, the process will stop.")
+            exit(1)
 
-        # Step 4: smooth the matrix
-        _, matrix_file, smoothed_matrix_file = compute_matrix(params=params, coords_file=coordfile, property=tomap)
+        logger.info(message="- Step 4: Smoothing the raw matrix file values")
+        status, matrix_file, smoothed_matrix_file = compute_matrix(params=params, coords_file=coordfile, property=tomap)
         junk_optional.add(element=[matrix_file, Path(matrix_file).parent])
+        if status != 0:
+            print(f"Error occured in step 4, the process will stop.")
+            exit(1)
 
-        # Step 5: computing map
+        logger.info(message="- Step 5: Computing the 2D map")
         _, png_filename, pdf_filename = compute_map(params=params, matrix_file=smoothed_matrix_file, property=tomap, reslist=reslist)
+        if status != 0:
+            print(f"Error occured in step 4, the process will stop.")
+            exit(1)
 
 
     # Deleting all intermediate files and directories

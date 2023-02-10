@@ -116,15 +116,16 @@ then
     #======================= Electrostatic calculation ============================
     # Invoke pdb2pqr -> create pqr file from input pdb. 
     # Rk: I choose to use Charmm forcefield, but another force field could be chosen as well.
-    pdb2pqr30 --ff CHARMM --whitespace $pdb $pqrfile >> log
+    pdb2pqr30 --ff CHARMM --whitespace $pdb $pqrfile >> log 2>&1
 
     # Create apbs input file
-    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile #APBS 3.4.1
+    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile  # from APBS 3.4.1
+
     sed -i "s|${pdbfile%.pdb}.pqr|${pqrfile}|g" $apbsfile
     sed -i "s|pot dx pot|pot dx $pqrfile|g" $apbsfile
 
     # Invoke apbs -> create pot file
-    $APBS/bin/apbs $apbsfile > log
+    $APBS/bin/apbs $apbsfile > log  # from APBS 3.4.1
 
 
     #=================== Electrostatic potential of the shell =====================

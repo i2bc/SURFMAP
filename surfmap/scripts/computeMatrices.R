@@ -301,6 +301,7 @@ if (file_test("-f", opt$input)) {
   files = list.files(pattern = "\\.txt$")
 } else {
   cat("input arg -i is not a directory nor a file:\nexiting now\n\n")
+  quit(status=1)
   stop()
 }
 
@@ -318,6 +319,7 @@ stepord <<- 180/width
 
 if (180%%width != 0) {
   cat("\nError: Grid cell is not a multiple of 180:\nexiting now.\n\n")
+  quit(status=1)
   stop()
 }
 
@@ -337,4 +339,7 @@ for (file in (1:length(files))) {
   filename2 = paste("../matrices/", name_prefix, "_matrix.txt", sep = "")
   write.table(val_frame[,c("absc","ord", "svalue", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
   write.table(val_frame[,c("absc","ord", "value", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
+
+  quit(status=0)
+
 }

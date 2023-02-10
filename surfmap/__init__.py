@@ -65,6 +65,7 @@ papers:
     - Sanner, M.F., Spehner, J.-C., and Olson, A.J. (1996) Reduced 
       surface: an efficient way to compute molecular surfaces. 
       Biopolymers, Vol. 38., (3), 305-320.
-{}""".format(SEP, SEP)
+{}
+""".format(SEP, SEP)
 
 __COPYRIGHT_FULL__ = f"{__COPYRIGHT_NOTICE__}{__COPYRIGHT_MSMS__}"

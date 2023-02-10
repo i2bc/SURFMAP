@@ -72,7 +72,9 @@ option_list = list(
               help="dimension of a grid cell. max is 180. please chose a multiple of 180. (default = 5)", 
               metavar="character"),
   make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
-              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character")
+              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character"),
+  make_option(c("-o", "--outdir"), type="character", default=".", 
+              help="output directory", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -81,12 +83,14 @@ projection <<- opt$projection
 
 if (!is.na(opt$file)) {
   path = dirname(opt$file)
-  files = c(basename(opt$file))
+  # files = c(basename(opt$file))
+  files = c(opt$file)
 } else if (!is.na(opt$path)) {
   path = opt$path
   files = list.files(path, pattern = "\\partlist.out$")
 } else {
   cat("\nError: no file nor directory in input. Exiting now.\n")
+  quit(status=1)
   stop()
 }
 
@@ -100,14 +104,15 @@ height <<- width
 
 if (180%%width != 0) {
   cat("\nError: Grid cell is not a multiple of 180. Exiting now.\n")
+  quit(status=1)
   stop()
 }
 
-setwd(path)
-dir.create("coord_lists", showWarnings = FALSE)
+outdir = file.path(opt$outdir, "coord_lists")
+dir.create(outdir, showWarnings = FALSE)
 
 for (file in (1:length(files))) {
-  name_prefix = gsub("_partlist.out", "", files[file]) 
+
   Data = read.table(files[file], fill = TRUE, header = TRUE)
   
   Data[,1] = (Data[,1])%%(2*pi) # Now phi values are included in [0, 2*pi]
@@ -172,7 +177,9 @@ for (file in (1:length(files))) {
   energy_frame = energy_matrix(Dataproj, file)
   
   # write the data frame in a file.
-  #filename = paste0("coord_lists/", name_prefix, "_s", width, "_coord_list.txt")
-  filename = paste0("coord_lists/", name_prefix, "_coord_list.txt")
+  name_prefix = gsub("_partlist.out", "", basename(files[file]))
+  filename = file.path(outdir, paste0(name_prefix, "_coord_list.txt"))
+  
   write.table(energy_frame, file = filename, sep = "\t", row.names = FALSE, quote = FALSE)
+  quit(status=0)
 }
