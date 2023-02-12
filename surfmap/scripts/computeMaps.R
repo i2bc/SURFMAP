@@ -153,6 +153,7 @@ if (file_test("-f", opt$input)) {
   files = list.files(path, pattern = "\\matrix.txt$")
 } else {
   cat("Error from computeMaps.R: input arg -i is not a directory nor a file:\nexiting now\n\n")
+  quit(status=1)
   stop()
 }
 
@@ -184,6 +185,7 @@ stepord <<- 180/width
 
 if (180%%width != 0) {
   cat("\nError: Grid cell is not a multiple of 180. Exiting now.\n")
+  quit(status=1)
   stop()
 }
 
@@ -196,7 +198,6 @@ for (file in (1:length(files))) {
     png(paste("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.png", 
         sep = ""), res = 300, width = 17.78, height = 17.78, units = "cm")
   } else {
-    #pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]), "_", projection, "_map.pdf"))
     pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
     
   }
@@ -428,5 +429,6 @@ for (file in (1:length(files))) {
   axis(4,at=scale_at, las=2, cex.axis=0.8, labels=round(axis_scale,digits = 2))
 
   dev.off()
+  quit(status=0)
 }
 

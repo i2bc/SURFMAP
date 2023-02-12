@@ -262,15 +262,10 @@ comp_val_matrix <- function(Data) {
   return(filledmat)
 }
 
-#####################################################
-
-
 
 #####################################################
 #                      MAIN
 #####################################################
-
-#cat("##############################################\n\nexecuting computeMatrices.R\n\n\n")
 
 option_list = list(
   make_option(c("-i", "--input"), type="character", default=".", 
@@ -282,7 +277,9 @@ option_list = list(
   make_option(c("--discrete"), action="store_true", default="FALSE", 
               help="if TRUE discrete value are used (max value per cell instead of mean)", metavar="boolean"),
   make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
-              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character")
+              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character"),
+  make_option(c("-o", "--outdir"), type="character", default=".",
+              help="output directory", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -291,13 +288,8 @@ projection <<- opt$projection
 
 # Testing if input is a file, a directory, or neither.
 if (file_test("-f", opt$input)) {
-  path = dirname(normalizePath(opt$input))
-  setwd(path)
-  dir.create("../maps", showWarnings = FALSE)
-  files = c(basename(opt$input))
+  files = c(opt$input)
 } else if (file_test("-d", opt$input)) {
-  setwd(opt$input)
-  dir.create("../maps", showWarnings = FALSE)
   files = list.files(pattern = "\\.txt$")
 } else {
   cat("input arg -i is not a directory nor a file:\nexiting now\n\n")
@@ -315,31 +307,31 @@ height <<- width
 stepabs <<- 360/width
 stepord <<- 180/width
 
-#cat("grid size: ", width, "\n")
-
 if (180%%width != 0) {
   cat("\nError: Grid cell is not a multiple of 180:\nexiting now.\n\n")
   quit(status=1)
   stop()
 }
 
-dir.create("../matrices", showWarnings = FALSE)
-dir.create("../smoothed_matrices", showWarnings = FALSE)
+# prepare outputs
+outdir_matrices = file.path(opt$outdir, "matrices")
+outdir_smoothed_matrices = file.path(opt$outdir, "smoothed_matrices")
+dir.create(outdir_matrices, showWarnings = FALSE)
+dir.create(outdir_smoothed_matrices, showWarnings = FALSE)
 
 for (file in (1:length(files))) {
-  #prot_name = substr(files[file], 1, 6)
-  name_prefix = gsub("_coord_list.txt", "", files[file]) 
   Data = read.table(files[file], fill = TRUE, header = TRUE)
   
   # Call the function that will actually create the energy matrix.
   val_frame = comp_val_matrix(Data)
 
   # write the data frame in a file.
-  filename1 = paste("../smoothed_matrices/" ,name_prefix, "_smoothed_matrix.txt", sep = "")
-  filename2 = paste("../matrices/", name_prefix, "_matrix.txt", sep = "")
-  write.table(val_frame[,c("absc","ord", "svalue", "residues")], file = filename1, sep = "\t", row.names = FALSE, quote = FALSE)
-  write.table(val_frame[,c("absc","ord", "value", "residues")], file = filename2, sep = "\t", row.names = FALSE, quote = FALSE)
-
-  quit(status=0)
-
+  name_prefix = gsub("_coord_list.txt", "", basename(files[file])) 
+  outname_matrices = file.path(outdir_matrices, paste0(name_prefix, "_matrix.txt"))
+  outname_smoothed_matrices = file.path(outdir_smoothed_matrices, paste0(name_prefix, "_smoothed_matrix.txt"))
+  
+  write.table(val_frame[,c("absc","ord", "svalue", "residues")], file = outname_smoothed_matrices, sep = "\t", row.names = FALSE, quote = FALSE)
+  write.table(val_frame[,c("absc","ord", "value", "residues")], file = outname_matrices, sep = "\t", row.names = FALSE, quote = FALSE)
 }
+
+quit(status=0)

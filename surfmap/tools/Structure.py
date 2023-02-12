@@ -2,16 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os, os.path, sys, string, re, math, numpy
-
-#path_blasttools = "/usr/local/src/ncbi/bin/"
-#pgr_dir = os.path.expanduser("~/bin/")
-#sys.path.append(os.path.expanduser("~/TOOLS/sequence_treatment/"))
-#sys.path.append(os.path.expanduser("~/TOOLS/general_tools/"))
-#sys.path.append(os.path.expanduser("~/TOOLS/structure/"))
-#import  GeneralTools, PDBTools, SeqTools
+from typing import Dict, List
 
 
-
+PROPERTIES = {
+    "stickiness": {"ALA":0.0062, "CYS":1.0372, "ASP":-0.7485, "GLU":-0.7893, "PHE":1.2727, "GLY":-0.1771, "HIS":0.1204, "ILE":1.1109, "LYS":-1.1806, "LEU":0.9138, "MET":1.0124, "ASN":-0.2693, "PRO":-0.1799 , "GLN":-0.4114, "ARG":-0.0876, "SER":0.1376, "THR":0.1031, "VAL":0.7599, "TRP":0.7925, "TYR":0.8806},
+    "wimley_white": {"ALA":4.08, "CYS":4.49, "ASP":3.02, "GLU":2.23, "PHE":5.38, "GLY":4.24, "HIS":4.08, "ILE":4.52, "LYS":3.77, "LEU":4.81, "MET":4.48, "ASN":3.83, "PRO":3.80 , "GLN":3.67, "ARG":3.91, "SER":4.12, "THR":4.11, "VAL":4.18, "TRP":6.10, "TYR":5.19},
+    "kyte_doolittle": {"ALA":1.8, "CYS":2.5, "ASP":-3.5, "GLU":-3.5, "PHE":2.8, "GLY":-0.4, "HIS":-3.2, "ILE":4.5, "LYS":-3.9, "LEU":3.8, "MET":1.9, "ASN":-3.5, "PRO":1.6 , "GLN":-3.5, "ARG":-4.5, "SER":-0.8, "THR":-0.7, "VAL":4.2, "TRP":-0.9, "TYR":-1.3}
+}
 
 
 def computeResidueCM(dPDB, chain, resnumber):
@@ -99,16 +97,31 @@ def centerMassResidueList(dPDB, all = True, reslist = False, computeForMulti = T
 
 
 
-def getAtomCMRDist(idres, coordlist, CMR) :
+def get_coords_idres(dPDB: Dict):
+    # create numpy array of coordinates (for speed purpose)
+    coordlist = list()
+    idres = list()
+    for chaini in dPDB["chains"] :
+        for resi in dPDB[chaini]["reslist"]:
+            for atomi in dPDB[chaini][resi]["atomlist"] :
+                xres = dPDB[chaini][resi][atomi]["x"]
+                yres = dPDB[chaini][resi][atomi]["y"]
+                zres = dPDB[chaini][resi][atomi]["z"]
+                coordlist.append((xres,yres,zres))
+                idres.append((chaini, resi, atomi))
+    coordlist = numpy.asarray(coordlist)
+
+    return coordlist, idres
+
+
+def getAtomCMRDist(coordlist, idres, CMR) :
     """computes the distance between each atom stored in dPDB and the Center of Mass of given in input (CMR -> tupple)
        Returns a dico (Key = "Chaini_Resi_Atomi", Value = distance with CMR)
     """
-    d_distances = {}
     mindist = closest_atom_2(CMR, coordlist)
     resmini = "%s_%s_%s"%(idres[mindist])
     
     return mindist, resmini
-
 
 
 def closest_atom(part, atoms):
@@ -127,41 +140,15 @@ def closest_atom_2(part, atoms):
 ################################################################
 
 
-def CoulombicEner(qi, qj, rij, epsilon = "default") :
-    
+def CoulombicEner(qi, qj, rij, epsilon="default") :    
     if epsilon == "default" :
         epsilon = 15*rij
 
     return float(qi*qj)/(epsilon*rij)
 
 
-
-def returnPropensity(aa, rij, scale = "stickiness"):
-
-    # dictionary of the stickiness values (E. Levy et al, PNAS 2012 (SupMat p14))
-    dstickiscale = {"ALA":0.0062, "CYS":1.0372, "ASP":-0.7485, "GLU":-0.7893, "PHE":1.2727, "GLY":-0.1771, "HIS":0.1204, "ILE":1.1109, "LYS":-1.1806, "LEU":0.9138, "MET":1.0124, "ASN":-0.2693, "PRO":-0.1799 , "GLN":-0.4114, "ARG":-0.0876, "SER":0.1376, "THR":0.1031, "VAL":0.7599, "TRP":0.7925, "TYR":0.8806}
-
-    # dictionary of the hydrophobicity values of Wimley-White hydrophobicity scale (Wimley and White, Nat. Struct. Biol., 1996).
-    dwimley_white={"ALA":4.08, "CYS":4.49, "ASP":3.02, "GLU":2.23, "PHE":5.38, "GLY":4.24, "HIS":4.08, "ILE":4.52, "LYS":3.77, "LEU":4.81, "MET":4.48, "ASN":3.83, "PRO":3.80 , "GLN":3.67, "ARG":3.91, "SER":4.12, "THR":4.11, "VAL":4.18, "TRP":6.10, "TYR":5.19}
-
-    # dictionary of the hydrophobicity values of Kyte-Doolittle hydrophobicity scale (Kyte and Doolittle, JMB 1982).
-    dkyte_doolittle={"ALA":1.8, "CYS":2.5, "ASP":-3.5, "GLU":-3.5, "PHE":2.8, "GLY":-0.4, "HIS":-3.2, "ILE":4.5, "LYS":-3.9, "LEU":3.8, "MET":1.9, "ASN":-3.5, "PRO":1.6 , "GLN":-3.5, "ARG":-4.5, "SER":-0.8, "THR":-0.7, "VAL":4.2, "TRP":-0.9, "TYR":-1.3}
-    
-    if scale == "stickiness" :
-        #stick = float(dstickiscale[aa])/rij
-        stick = float(dstickiscale[aa])
-        #print stick
-        return stick
-
-    elif scale == "kyte_doolittle" :
-        #kyte_doolittle = float(dkyte_doolittle[aa])/rij
-        kyte_doolittle = float(dkyte_doolittle[aa])
-        return kyte_doolittle
-    
-    elif scale == "wimley_white" :
-        #wimley_white = float(dwimley_white[aa])/rij
-        wimley_white = float(dwimley_white[aa])
-        return wimley_white
+def returnPropensity(aa, scale="stickiness"):    
+    return PROPERTIES[scale][aa]
 
     
 ################################################################
@@ -278,7 +265,7 @@ def parsePDBParticule(filin, charge = 1, infile = False) :
 
     
 
-def writePDB(dPDB, filout="out.pdb", bfactor=False, charge=False, CG=False, chains_to_rm: list = []):
+def writePDB(dPDB, filout="out.pdb", bfactor=False, charge=False, CG=False, chains_to_rm: List=[]):
     """according to the coordinates in dPDB, writes the corresponding PDB file."""
 
     fout = open(filout, "w")
@@ -331,9 +318,6 @@ def coord2spherical(ori, coordi):
               coordi (tupple corresponding to the cartesian coords of the input atom)
        output: spherical coords (R, phi, theta) of the input atom relative to ori       
     """
-
-    #(x,y,z) = centering(ori, coordi)
-
     x = coordi[0] - ori[0]
     y = coordi[1] - ori[1]
     z = coordi[2] - ori[2]
@@ -410,7 +394,7 @@ def CV_AllRes(atoms, rc=8):
 
 
 # Compute circular variance of a pdb file
-def compute_CV(pdb, perres = True) :
+def compute_CV(pdb, perres=True, outfilename: str=None) :
     pdbfile = open(pdb, "r")
     pdblines = pdbfile.readlines()
     pdbfile.close()
@@ -431,11 +415,8 @@ def compute_CV(pdb, perres = True) :
 
     # Compute circular variance for all atom in file
     allCV=CV_AllRes(atomlist)
-
-    outfilename = os.path.splitext(pdb)[0] + "_CV.pdb"
     
     dico_CV = dict()
-
     for elem in allCV:
         res = elem[0][4] + "_" + elem[0][5] + "_" + str(elem[0][3])
         CV = elem[1]
@@ -449,6 +430,10 @@ def compute_CV(pdb, perres = True) :
 
     for key in dico_CV:
         dico_CV[key].append(sum(dico_CV[key][0])/len(dico_CV[key][0]))
+
+
+    if not outfilename:
+        outfilename = os.path.splitext(pdb)[0] + "_CV.pdb"
 
     with open(outfilename, "w+") as outfile:
         cpt = 0
@@ -470,7 +455,3 @@ def compute_CV(pdb, perres = True) :
                 line_to_write = line[0:60].strip("\n") + white_spaces + CV_to_write + "\n"
                 outfile.write(line_to_write)
                 cpt = cpt+1
-    
-    return outfilename
-
-

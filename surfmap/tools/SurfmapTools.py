@@ -65,19 +65,23 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
         exit()
 
     # extracting information from receptor and particles
-    bfactor = False if "electrostatics" in tomap else True
-    infile = True if "electrostatics" in tomap else False
-    pdb_CV = ""
+    is_bfactor = False if "electrostatics" in tomap else True
+    is_charge = True if "electrostatics" in tomap else False
 
     if "circular_variance" in tomap:
         perres = False if "atom" in tomap else True
-        pdb_CV = Structure.compute_CV(pdb, perres=perres)
+        pdb_cv_filename = str(Path(outdir) / f"{Path(pdb).stem}_{tomap}.pdb")
+        Structure.compute_CV(pdb, perres=perres, outfilename=pdb_cv_filename)
 
+    input_pdb = pdb_cv_filename if "circular_variance" in tomap else pdb
+    dPDB = Structure.parsePDBMultiChains(input_pdb, bfactor=is_bfactor)  # get pdb dict structure
+    dshell = Structure.parsePDBParticule(shell, infile=is_charge)  # get shell dict structure
 
-    input_pdb = pdb_CV if "circular_variance" in tomap else pdb
-    dPDB = Structure.parsePDBMultiChains(input_pdb, bfactor=bfactor)  # get pdb dict structure
-    dshell = Structure.parsePDBParticule(shell, infile=infile)  # get shell dict structure
-
+    try:
+        Path(pdb_cv_filename).unlink(missing_ok=True)
+    except:
+        pass
+    
     # redefine tomap if necessary
     if tomap in ["interface", "circular_variance", "circular_variance_atom"]:
         property = "bfactor"
@@ -87,51 +91,41 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
     # generate specific spherical coords file if some residues are asked to be mapped
     outfile_res_to_map = None
     if res:
-        outfile_res_to_map = str(outdir / f"{Path(res).stem}_sph_coords.out")
+        outfile_res_to_map = str(Path(outdir) / f"{Path(res).stem}_sph_coords.out")
         parseResidueList(res, dPDB, outfile=outfile_res_to_map)
 
     # compute center of mass of receptor
     CMR = Structure.centerMassResidueList(dPDB, all=True, reslist=False, computeForMulti=True, chain=" ")
+
+    # get coords structure to computes distances
+    coordlist, idres = Structure.get_coords_idres(dPDB=dPDB)
     
-    # create numpy array of coordinates (for speed purpose)
-    coordlist = list()
-    idres = list()
-    for chaini in dPDB["chains"] :
-        for resi in dPDB[chaini]["reslist"]:
-            for atomi in dPDB[chaini][resi]["atomlist"] :
-                xres = dPDB[chaini][resi][atomi]["x"]
-                yres = dPDB[chaini][resi][atomi]["y"]
-                zres = dPDB[chaini][resi][atomi]["z"]
-                coordlist.append((xres,yres,zres))
-                idres.append((chaini, resi, atomi))
-    coordlist = numpy.asarray(coordlist) # Necessary step for function closest_atom()
-
     partlist_outfile = Path(outdir) / f"{Path(pdb).stem}_{tomap}_partlist.out"
-
     with open(partlist_outfile, "w") as out:
         out.write("phi\ttheta\tvalue\tresnb\trestype\tchain\n")
 
         # looping over all particules and computing corresponding Value
-        for parti in dshell["partlist"] :
+        for particle in dshell["partlist"]:
 
-            coordparti = (dshell[parti]["x"], dshell[parti]["y"], dshell[parti]["z"])  # get coords of the particule
-            _, phi, theta = Structure.coord2spherical(CMR, coordparti)  # get the phi/theta corresponding angles
+            # get coords of the particule
+            coord_particle = (dshell[particle]["x"], dshell[particle]["y"], dshell[particle]["z"])  
+            _, phi, theta = Structure.coord2spherical(CMR, coord_particle)  # get spherical coordinates from particle cartesian coords 
 
             # get the closest atom of the shell particle
-            distmini, closestAtom = Structure.getAtomCMRDist(idres, coordlist, coordparti)        
-            chainid, resid, atomid = closestAtom.split("_")
+            _, closestAtom = Structure.getAtomCMRDist(coordlist=coordlist, idres=idres, CMR=coord_particle)     
+            chainid, resid, atomtype = closestAtom.split("_")
 
-            # assign the closest atom shell value to the center of mass of the particle
+            # assign the property value of atoms/residues to their closest shell particle
             if property == "electrostatics" :
-                scalevalue = dshell[parti]["charge"]
+                scalevalue = dshell[particle]["charge"]
             elif property == "bfactor" :
-                scalevalue = dPDB[chainid][resid][atomid]["bfactor"]
+                scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
             else:                
-                scalevalue = Structure.returnPropensity(dPDB[chainid][resid]["resname"], distmini, scale=tomap)            
+                scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)            
 
             out.write("{:8f} {:8f} {:3f} {:8} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"], chainid))
 
-    return pdb_CV, outfile_res_to_map, partlist_outfile
+    return outfile_res_to_map, partlist_outfile
 
 
 def main():

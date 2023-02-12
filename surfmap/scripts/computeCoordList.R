@@ -83,7 +83,6 @@ projection <<- opt$projection
 
 if (!is.na(opt$file)) {
   path = dirname(opt$file)
-  # files = c(basename(opt$file))
   files = c(opt$file)
 } else if (!is.na(opt$path)) {
   path = opt$path
