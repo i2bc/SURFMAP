@@ -137,7 +137,11 @@ option_list = list(
   make_option(c("--discrete"), action="store_true", default = "FALSE",
               help="use discrete scale (up to 10 colors)", metavar="character"),
   make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
-              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character")
+              help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character"),
+  make_option(c("-o", "--outdir"), type="character", default=".",
+              help="output directory", metavar="character"),
+  make_option(c("--suffix"), type="character", default="_smoothed_matrix.txt",
+              help="Input suffix that is removed to to build basename of output files.", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -146,8 +150,7 @@ pdb_id = opt$pdb
 projection = opt$projection
 
 if (file_test("-f", opt$input)) {
-  path = dirname(normalizePath(opt$input))
-  files = c(basename(opt$input))
+  files = c(opt$input)
 } else if (file_test("-d", opt$input)) {
   path = opt$input
   files = list.files(path, pattern = "\\matrix.txt$")
@@ -190,18 +193,20 @@ if (180%%width != 0) {
 }
 
 # Moving to working directory
-setwd(path)
-dir.create("../maps", showWarnings = FALSE)
+outdir = file.path(opt$outdir, "maps")
+dir.create(outdir, showWarnings = FALSE)
 
 for (file in (1:length(files))) {
+  name_prefix = gsub(opt$suffix, "", basename(files[file]))
+  pdf_filename = file.path(outdir, paste0(name_prefix, "_map.pdf"))
+
   if (opt$png == TRUE) {
-    png(paste("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.png", 
-        sep = ""), res = 300, width = 17.78, height = 17.78, units = "cm")
+    png(gsub(".pdf", ".png", pdf_filename), res = 300, width = 17.78, height = 17.78, units = "cm")
   } else {
-    pdf(paste0("../maps/",gsub("_smoothed_matrix.txt", "", files[file]),"_map.pdf"))
-    
+    pdf(pdf_filename)
   }
-  prot_name = gsub("_smoothed_matrix.txt", "", files[file])
+
+  prot_name = name_prefix
   
   # Retieving coordinates of points to plot (if user has enterd coord file).
   if (!is.na(opt$reslist)) {
@@ -399,7 +404,7 @@ for (file in (1:length(files))) {
   
   # Creation of the image.
   image.nan.better(t(val_matrix),col=colorScale,
-                   zlim=c(minval,maxval),
+                   zlim=c(minval, maxval),
                    outside.below.color='white',
                    outside.above.color='gray90',
                    na.color='white',
@@ -429,6 +434,7 @@ for (file in (1:length(files))) {
   axis(4,at=scale_at, las=2, cex.axis=0.8, labels=round(axis_scale,digits = 2))
 
   dev.off()
-  quit(status=0)
 }
+
+quit(status=0)
 

@@ -279,7 +279,9 @@ option_list = list(
   make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
               help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character"),
   make_option(c("-o", "--outdir"), type="character", default=".",
-              help="output directory", metavar="character")
+              help="output directory", metavar="character"),
+  make_option(c("-S", "--suffix"), type="character", default="_coord_list.txt",
+              help="Input suffix that is removed to to build basename of output files.", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -326,7 +328,7 @@ for (file in (1:length(files))) {
   val_frame = comp_val_matrix(Data)
 
   # write the data frame in a file.
-  name_prefix = gsub("_coord_list.txt", "", basename(files[file])) 
+  name_prefix = gsub(opt$suffix, "", basename(files[file])) 
   outname_matrices = file.path(outdir_matrices, paste0(name_prefix, "_matrix.txt"))
   outname_smoothed_matrices = file.path(outdir_smoothed_matrices, paste0(name_prefix, "_smoothed_matrix.txt"))
   
