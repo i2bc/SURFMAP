@@ -40,7 +40,7 @@ def compute_shell(params: Parameters) -> Tuple[int, str]:
         print("The script compute_shell.sh failed. It can be because MSMS could not compute the Connolly surface of the protein.\nYou need to provide a pdb file that MSMS can handle.\nPlease check that there is no problem with your input pdb file.\nExiting now.")
         exit()
     if not Path(outfile).exists():
-        print("Shell not found. This is probably because MSMS did not manage to compute the surface of the protein.\nExiting now.")
+        print("Shell not found. This is probably because MSMS did not manage to compute the surface of the protein. Exiting now.\n")
         exit()
 
     return proc_status, outfile
@@ -92,6 +92,10 @@ def compute_coords_list(params: Parameters, coords_file: str, property: str) -> 
     cmdlist = ["Rscript", params.coords_script, "-f", coords_file, "-s", str(params.cellsize), "-P", params.proj, "-o", params.outdir]
     proc_status = subprocess.call(cmdlist)
 
+    if proc_status != 0:
+        print(f"Error occured in step 3, the process will stop.")
+        exit(1)
+
     return proc_status, out_file
 
 
@@ -124,6 +128,10 @@ def compute_matrix(params: Parameters, coords_file: str, property: str, suffix="
         del cmd[-1]
 
     proc_status = subprocess.call(cmd)
+
+    if proc_status != 0:
+        print(f"Error occured in step 4, the process will stop.")
+        exit(1)
 
     return proc_status, out_matrix, out_matrix_smoothed        
 
@@ -169,6 +177,10 @@ def compute_map(params: Parameters, matrix_file: str, property: str, reslist: st
 
     proc_status = subprocess.call(cmdmap)
 
+    if proc_status != 0:
+        print(f"Error occured in step 5, the process will stop.")
+        exit(1)
+
     return proc_status, out_png, out_pdf
 
 
@@ -195,30 +207,25 @@ def surfmap_from_pdb(params: Parameters):
         else:
             logger.info(message="- Step 1: shell already exists. Skip computing step of a shell")
 
+
         logger.info(message="- Step 2: computing the property value and assign it to the closest particle of the shell")
         property = "bfactor" if tomap == "binding_sites" else tomap
         reslist, partlist_outfile = compute_spherical_coords(params=params, shell_filename=shell, property=property)
         junk_optional.add(element=[reslist, partlist_outfile])
 
+
         logger.info(message="- Step 3: computing spherical coordinates of each particle with an assigned property value and generate a raw matrix file")
-        status, coordfile = compute_coords_list(params=params, coords_file=partlist_outfile, property=property)
+        _, coordfile = compute_coords_list(params=params, coords_file=partlist_outfile, property=property)
         junk_optional.add(element=[coordfile, Path(coordfile).parent])
-        if status != 0:
-            print(f"Error occured in step 4, the process will stop.")
-            exit(1)
+
 
         logger.info(message="- Step 4: Smoothing the raw matrix file values")
         status, matrix_file, smoothed_matrix_file = compute_matrix(params=params, coords_file=coordfile, property=tomap)
         junk_optional.add(element=[matrix_file, Path(matrix_file).parent])
-        if status != 0:
-            print(f"Error occured in step 4, the process will stop.")
-            exit(1)
+
 
         logger.info(message="- Step 5: Computing the 2D map")
         _, png_filename, pdf_filename = compute_map(params=params, matrix_file=smoothed_matrix_file, property=tomap, reslist=reslist)
-        if status != 0:
-            print(f"Error occured in step 4, the process will stop.")
-            exit(1)
 
 
     # Deleting all intermediate files and directories
