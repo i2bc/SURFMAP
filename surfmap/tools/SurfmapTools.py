@@ -73,10 +73,12 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
         pdb_cv_filename = str(Path(outdir) / f"{Path(pdb).stem}_{tomap}.pdb")
         Structure.compute_CV(pdb, perres=perres, outfilename=pdb_cv_filename)
 
+    # get pdb dict structure of input pdb and shell particles
     input_pdb = pdb_cv_filename if "circular_variance" in tomap else pdb
-    dPDB = Structure.parsePDBMultiChains(input_pdb, bfactor=is_bfactor)  # get pdb dict structure
-    dshell = Structure.parsePDBParticule(shell, infile=is_charge)  # get shell dict structure
+    dPDB = Structure.parsePDBMultiChains(input_pdb, bfactor=is_bfactor)
+    dshell = Structure.parsePDBParticule(shell, infile=is_charge)
 
+    # remove pdb of circular_variance if exists
     try:
         Path(pdb_cv_filename).unlink(missing_ok=True)
     except:
@@ -97,12 +99,12 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
     # compute center of mass of receptor
     CMR = Structure.centerMassResidueList(dPDB, all=True, reslist=False, computeForMulti=True, chain=" ")
 
-    # get coords structure to computes distances
+    # get coords structure to compute distances
     coordlist, idres = Structure.get_coords_idres(dPDB=dPDB)
     
     partlist_outfile = Path(outdir) / f"{Path(pdb).stem}_{tomap}_partlist.out"
     with open(partlist_outfile, "w") as out:
-        out.write("phi\ttheta\tvalue\tresnb\trestype\tchain\n")
+        out.write(f"{'phi'}\t{'theta'}\t{'value'}\t{'resnb'}\t{'restype'}\t{'chain'}\n")
 
         # looping over all particules and computing corresponding Value
         for particle in dshell["partlist"]:

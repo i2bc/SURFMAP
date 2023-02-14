@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from ast import Tuple
 import os, os.path, sys, string, re, math, numpy
 from typing import Dict, List
 
@@ -393,18 +394,26 @@ def CV_AllRes(atoms, rc=8):
     return allCVs
 
 
-# Compute circular variance of a pdb file
-def compute_CV(pdb, perres=True, outfilename: str=None) :
-    pdbfile = open(pdb, "r")
-    pdblines = pdbfile.readlines()
-    pdbfile.close()
-    
+def get_pdb_coords(pdb_filename: str, return_lines: bool=False) -> List[Tuple]:
+    """Utility function used to store atom coordinates of a given PDB file in a list of tuple.
+    The list of tuple has the following structure: [(x, y, z, residue_nb, chain_name), ...]
+
+    Args:
+        pdb_filename (str): Path to a PDB file
+        return_lines (bool): True to return the list of the pdb lines. Defaults to False 
+    Returns:
+        atomlist (List[Tuple]): [(x, y, z, residue_nb, chain_name), ...]
+    """
+    pdblines = None
     atomlist = []
-    cpt = 0
-    
-    for line in pdblines:
-        if line.startswith("ATOM") == True:
-            cpt = cpt+1
+    with open(pdb_filename, "r") as pdb_file:
+        if return_lines:
+            pdblines = pdb_file.readlines()
+            pdb_file.seek(0)
+        for line in pdb_file:
+            if not line.startswith("ATOM"):
+                continue
+
             x = float(line[30:38])
             y = float(line[38:46])
             z = float(line[46:54])
@@ -412,6 +421,25 @@ def compute_CV(pdb, perres=True, outfilename: str=None) :
             numres = int(line[22:26])
             chain = line[21]
             atomlist.append((x, y, z, numres, res, chain))
+
+    return atomlist, pdblines
+
+
+# Compute circular variance of a pdb file
+def compute_CV(pdb: str, perres: bool=True, outfilename: str="") -> str:
+    """Compute circular variance per residue (default) or per atom of a given PDB file.
+    It generates a new PDB file with computed circular variance values in the b-factor column.
+
+    Args:
+        pdb (str): Path to a PDB filename
+        perres (bool, optional): True to compute CV per residue, False to comute CV per atoms. Defaults to True.
+        outfilename (str, optional): Name of the output PDB file. Defaults to "".
+
+    Returns:
+        outfilename (str): Filename of the generated PDB file.
+    """
+    # get atom coors of the pdb in a simplified structure
+    atomlist, pdblines = get_pdb_coords(pdb_filename=pdb, return_lines=True)    
 
     # Compute circular variance for all atom in file
     allCV=CV_AllRes(atomlist)
@@ -431,27 +459,24 @@ def compute_CV(pdb, perres=True, outfilename: str=None) :
     for key in dico_CV:
         dico_CV[key].append(sum(dico_CV[key][0])/len(dico_CV[key][0]))
 
-
     if not outfilename:
         outfilename = os.path.splitext(pdb)[0] + "_CV.pdb"
 
     with open(outfilename, "w+") as outfile:
-        cpt = 0
+        i = 0
         for line in pdblines:
-            if line.startswith("ATOM") == True:
-                resid = line[17:20].strip(" ")+"_"+ line[21]+ "_" +line[22:26].strip(" ")
-                toadd = 61-len(line)
-                if toadd > 0:
-                    white_spaces = " " * toadd
-                else:
-                    white_spaces = ""
-                
-                if perres == True:
-                    CV = round(dico_CV[resid][1],2)
-                else:
-                    CV = round(allCV[cpt][1],2)
-                    CV = '{0:.2f}'.format(CV)
-                CV_to_write = '{:>6}'.format(CV)
-                line_to_write = line[0:60].strip("\n") + white_spaces + CV_to_write + "\n"
-                outfile.write(line_to_write)
-                cpt = cpt+1
+            if not line.startswith("ATOM"):
+                continue
+
+            resid = line[17:20].strip(" ")+"_"+ line[21]+ "_" +line[22:26].strip(" ")
+            toadd = 61-len(line)
+
+            white_spaces = " "*toadd if toadd > 0 else ""
+            CV = round(dico_CV[resid][1], 2) if perres == True else round(allCV[i][1], 2)            
+            CV_to_write = '{:>6}'.format(CV)
+
+            line_to_write = f"{line[0:60].strip()}{white_spaces}{CV_to_write}\n"
+            outfile.write(line_to_write)
+            i += 1
+
+    return outfilename

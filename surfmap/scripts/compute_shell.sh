@@ -71,7 +71,6 @@ vertfile=$dshell${pdbfile%.pdb}.vert # output of MSMS
 csvfile=$dshell/${pdbfile%.pdb}.csv # input needed for multivalue
 shellfile=$dshell/${pdbfile%.pdb}_shell.pdb # shell file with electrostatic values.
 pqrfile=$delec/${pdbfile%.pdb}.pqr # pqr format is needed for APBS
-#apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS
 apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS (in v2.0, changed pqr.in to .in)
 potfile=${pqrfile}.dx # output of APBS (OpenDX scalar format)
 multfile=$delec/${pdbfile%.pdb}.mult # output of multivalue (electrostatic potential calculated at the coordinates given in input).
@@ -83,18 +82,8 @@ then
     mkdir -p $dshell
 fi
 
-
-# Modifying format for MSMS
-#cp $MSMS/atmtypenumberstmp atmtypenumbers
-# echo -e "Running: $MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp ...\n"
-# $MSMS/pdb_to_xyzr $pdb > $xyzrfile-tmp
-
+# generate xyzr format input for MSMS
 pdb2xyzr -pdb $pdb -rad $rad -out $xyzrfile
-
-# Artificially increasing radius of the atoms
-# awk -v s=$rad '{print $1, $2, $3, $4+s}' ${xyzrfile}-tmp | sed 's/,/./g' > ${xyzrfile}
-
-# rm ${xyzrfile}-tmp
 
 # Invoking MSMS to compute Connolly surface.
 $MSMS/msms -if $xyzrfile -of $dshell/${pdbfile%.pdb} > log
