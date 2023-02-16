@@ -134,10 +134,10 @@ then
     $APBS/share/apbs/tools/bin/multivalue $csvfile $potfile $multfile >> log 2>&1  # from APBS 3.4.1
    
     # multivalue output converted into pdb format.
-    python3 $DIR/multival_csv_to_pdb.py -i $multfile -o $shellfile
+    multival_csv2pdb -i $multfile -o $shellfile
 
 else
-    python3 $DIR/multival_csv_to_pdb.py -i $csvfile -o $shellfile
+    multival_csv2pdb -i $csvfile -o $shellfile
 fi
 
 # Remove MSMS and APBS log files
