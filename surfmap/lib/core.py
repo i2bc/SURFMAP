@@ -25,6 +25,7 @@ def compute_shell(params: Parameters) -> Tuple[int, str]:
             - params.shell_script  # path to the script compute_shell.sh
             - params.pdbarg  # pdb filename
             - rad: float  # radius used for shell computation
+            - pqr: str  # path to a pqr file (optionally used with electrostatics only)          
             - params.outdir  # path to the output directory
 
     Returns:
@@ -34,7 +35,12 @@ def compute_shell(params: Parameters) -> Tuple[int, str]:
     elecval = "1" if params.ppttomap == "electrostatics" else "0"
 
     # Create shell. (two options: simple shell or shell with elec potential computed by APBS.)
-    proc_status = subprocess.call(["bash", params.shell_script, "-p", params.pdbarg, "-e", elecval, "-r", str(params.rad), "-o", params.outdir])
+    cmd_shell = ["bash", params.shell_script, "-p", params.pdbarg, "-e", elecval, "-r", str(params.rad), "-o", params.outdir]
+
+    if params.pqr:
+        cmd_shell += ["-q", params.pqr]
+
+    proc_status = subprocess.call(cmd_shell)
 
     if proc_status != 0:
         print("The script compute_shell.sh failed. It can be because MSMS could not compute the Connolly surface of the protein.\nYou need to provide a pdb file that MSMS can handle.\nPlease check that there is no problem with your input pdb file.\nExiting now.")

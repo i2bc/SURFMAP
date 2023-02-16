@@ -106,6 +106,14 @@ def get_args():
         action="store_true",
         help="If chosen, SURFMAP will be run on a docker container (requires docker installed)."
     )
+
+    parser.add_argument(
+        "--pqr",
+        required=False,
+        type=str,
+        default=None,
+        help="Path to a PQR file used for electrostatics calculation. Option only available if '-tomap electrosatics' is requested. Defaults to None."
+    )
     
     if True in [ x in ["-v", "--version"] for x in sys.argv[1:] ]:
         print(f"{__COPYRIGHT_NOTICE__}")
@@ -124,7 +132,7 @@ class Parameters:
     - coords_script: str  # path to computeCoordList.sh
     - matrix_script: str  # path to computeMatrices.sh
     - map_script: str  # path to computeMaps.sh
-    - mat: str = None  # path to a given matrix file
+    - mat: str=None  # path to a given matrix file
     - pdbarg: str = None  # path to a given PDB file
     - pdb_id: str  # PDB stem name (e.g. '1g3n')
     - pdbname: str  # name of PDB file with no path (e.g. '1g3n.pdb')
@@ -139,6 +147,7 @@ class Parameters:
     - keep: bool  # True to keep intermediary files that are usually removed
     - docker: bool  # True to run SURFMAP on a docker container
     - outdir: Union[str, Path]  # path to the output directory
+    - pqr: str=None  # path to a PQR file used for electrostatics calculation. Defaults to None
 
 
     """
@@ -184,6 +193,9 @@ class Parameters:
 
         # define property to map
         self.ppttomap: str = args.tomap
+
+        # define optional pqr file (optionally used for electrostatics)
+        self.pqr: str = args.pqr
 
         # define residues to map, if any
         self.resfile: str = args.res
@@ -281,6 +293,7 @@ Parameters used to compute the maps:
 - PDB file (-pdb): {}
 - Matrix file (-mat): {}
 - Projection type (-proj): {}
+- PQR file: {}
 - Name of the property mapped (-ppttomap): {} 
 - Filename of residues to map (-resfile): {}
 - MSMS radius used for shell computation (-rad): {}
@@ -294,6 +307,7 @@ Parameters used to compute the maps:
         self.pdbarg if self.pdbarg else "None",
         self.mat if self.mat else "None",
         self.proj,
+        self.pqr if self.pqr else "None",
         self.ppttomap if self.ppttomap != "all" else ", ".join(self.PROPERTIES["all"]),
         self.resfile if self.resfile else "None",
         self.rad,

@@ -33,23 +33,26 @@ function HELP {
     echo "-e --elec if 1 invoke APBS to calculate electrostatic potential, if 0 create simple shell."
     echo "-r --radius radius added to the standard radius of residues (the higher the radius, the smoother the surface, r=0 being the excluded surface area)."
     echo "-o --out main output directory."
+    echo "-q --pqr Path to a PQR file"
     echo -e "-h --help${NORM}\n"
     exit 1
 }
 
-while getopts p:e:r:o: option
+while getopts p:e:r:o:q:: option
 do
     case "${option}" in
         p) pdb=${OPTARG};;
         e) elec=${OPTARG};;
         r) rad=${OPTARG};;
         o) outdir=${OPTARG};;
+        q) pqr=${OPTARG};;
         h) HELP;;
         \?) # unrecognized option
         echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
         HELP
     esac
 done
+
 
 # Check number of arguments. If none are passed, print help and exit.
 NUMARGS=$#
@@ -70,10 +73,7 @@ xyzrfile=$dshell${pdbfile%.pdb}.xyzr # input needed for MSMS
 vertfile=$dshell${pdbfile%.pdb}.vert # output of MSMS
 csvfile=$dshell/${pdbfile%.pdb}.csv # input needed for multivalue
 shellfile=$dshell/${pdbfile%.pdb}_shell.pdb # shell file with electrostatic values.
-pqrfile=$delec/${pdbfile%.pdb}.pqr # pqr format is needed for APBS
-apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS (in v2.0, changed pqr.in to .in)
-potfile=${pqrfile}.dx # output of APBS (OpenDX scalar format)
-multfile=$delec/${pdbfile%.pdb}.mult # output of multivalue (electrostatic potential calculated at the coordinates given in input).
+
 #============================= Shell creation =================================
 
 # Create directory containing shells and other files
@@ -81,6 +81,7 @@ if [ ! -d "$dshell" ]
 then
     mkdir -p $dshell
 fi
+
 
 # generate xyzr format input for MSMS
 pdb2xyzr -pdb $pdb -rad $rad -out $xyzrfile
@@ -96,19 +97,28 @@ tail -n +4 $vertfile | awk '{print $1","$2","$3}' > $csvfile
 
 if [ "$elec" == 1 ]
 then
-
+    # create directory for electrostatics calculation
     if [ ! -d "$delec" ]
     then
         mkdir -p $delec
     fi
 
-    #======================= Electrostatic calculation ============================
-    # Invoke pdb2pqr -> create pqr file from input pdb. 
-    # Rk: I choose to use Charmm forcefield, but another force field could be chosen as well.
-    pdb2pqr30 --ff CHARMM --whitespace $pdb $pqrfile >> log 2>&1
+    # set io variables
+    pqrfile=$delec/${pdbfile%.pdb}.pqr # pqr format is needed for APBS
+    apbsfile=$delec/${pdbfile%.pdb}.in # input needed for APBS (in v2.0, changed pqr.in to .in)
+    potfile=${pqrfile}.dx # output of APBS (OpenDX scalar format)
+    multfile=$delec/${pdbfile%.pdb}.mult # output of multivalue (electrostatic potential calculated at the coordinates given in input).
 
-    # Create apbs input file
-    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile  # from APBS 3.4.1
+    # generate or copy a given pqrfile in expected directory
+    if [ -z "${pqr}" ]
+    then
+        pdb2pqr30 --ff CHARMM --whitespace $pdb $pqrfile >> log 2>&1 
+    else 
+        cp $pqr $delec/${pdbfile%.pdb}.pqr
+    fi
+
+    # Create apbs input file (.in)
+    python3 $APBS/share/apbs/tools/manip/inputgen.py --method=auto $pqrfile > /dev/null 2>&1   # from APBS 3.4.1
 
     sed -i "s|${pdbfile%.pdb}.pqr|${pqrfile}|g" $apbsfile
     sed -i "s|pot dx pot|pot dx $pqrfile|g" $apbsfile
