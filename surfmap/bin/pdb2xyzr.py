@@ -4,8 +4,8 @@ from pathlib import Path
 import re
 from typing import Dict, Tuple, Union
 
-from surfmap import PATH_TO_SCRIPTS
-PATH_TO_ATOMTYPENB = Path(PATH_TO_SCRIPTS).parent / "utils" / "MSMS" / "atmtypenumbers"
+from surfmap import PATH_MSMS
+PATH_TO_ATOMTYPENB =  PATH_MSMS / "atmtypenumbers"
 
 
 def get_radius(atmtype_filename: str) -> Tuple[Dict]:

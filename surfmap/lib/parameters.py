@@ -4,7 +4,7 @@ from shutil import which
 import sys
 from typing import Any, Union
 
-from surfmap import PATH_TO_SCRIPTS, __COPYRIGHT_NOTICE__
+from surfmap import PATH_R_SCRIPTS, __COPYRIGHT_NOTICE__
 
 
 def get_args():
@@ -155,9 +155,8 @@ class Parameters:
 
     PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
-    DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
     
-    def __init__(self, args: Union[argparse.Namespace, object], path_to_scripts: Union[str, Path]=PATH_TO_SCRIPTS) -> None:
+    def __init__(self, args: Union[argparse.Namespace, object], path_to_scripts: Union[str, Path]=PATH_R_SCRIPTS) -> None:
         self.args = args
 
         if not args.docker:
@@ -220,6 +219,7 @@ class Parameters:
         self.docker: bool = args.docker
         
         # define and create output directory if not exists
+        self.DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
         self._set_outdir(args=args)
 
 

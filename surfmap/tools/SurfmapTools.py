@@ -8,7 +8,6 @@ import sys
 from typing import Union
 
 from surfmap.tools import Structure
-import numpy
 
 
 def parseResidueList(reslist, dPDB, outfile):
@@ -52,6 +51,17 @@ def parseResidueList(reslist, dPDB, outfile):
 
 def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: str, outdir: Union[str, Path]=".", res: Union[str, Path]=None):
     """Assign atom/residue property value to its closest shell particle and compute the spherical coordinates of this particle.
+
+    Two PDB structures are required:
+        - one with coordinates of the shell particles
+        - one with coordinates of the initial atoms of a protein
+
+    Each shell particle must be assigned a property value. With the exception of the electrostatics property, each value assigned to a particle is retrieved from the property value
+    of its closest atom/residue of the protein. For electrostatics property, values are already assigned to each particle.
+
+    For hydrophobic properties (stickiness, kyte_doolittle and wimley_white), the values are computed on the fly for the closest atom/residue of a given particle.
+    For properties like interface, circular_variance or circular_variance_atom, bfactor, the values are retrieved in the bfactor column. So, when circular variance property is asked,
+    a new PDB must be generated first.    
 
     Args:
         shell (Union[str, Path]): path to the shell file produced with MSMS
@@ -118,9 +128,9 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
             chainid, resid, atomtype = closestAtom.split("_")
 
             # assign the property value of atoms/residues to their closest shell particle
-            if property == "electrostatics" :
+            if property == "electrostatics":
                 scalevalue = dshell[particle]["charge"]
-            elif property == "bfactor" :
+            elif property == "bfactor":
                 scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
             else:                
                 scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)            
