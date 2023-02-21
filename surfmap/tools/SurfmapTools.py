@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import argparse
-import os
 from pathlib import Path
 import sys
 from typing import Union
 
 from surfmap.tools import Structure
+from surfmap.lib.logs import get_logger
+
+
+logger = get_logger(name=__name__)
 
 
 def parseResidueList(reslist, dPDB, outfile):
@@ -37,19 +39,19 @@ def parseResidueList(reslist, dPDB, outfile):
                         linetowrite = line.strip("\n") + "\t" + str(round(rho, 3)) + "\t" + str(round(phi, 3)) + "\t" + str(round(theta, 3)) + "\n"
                         outf.write(linetowrite)
                     else:
-                        print("Error in residue list: residue not of the good type.\nPlease follow the numerotation of the pdb given in input.")
+                        logger.error("Error in residue list: residue not of the good type.\nPlease follow the numerotation of the pdb given in input.")
                         sys.exit(1)
                 else:
-                    print("Error in residue list: residue does not exist.\nPlease follow the numerotation of the pdb given in input.")
+                    logger.error("Error in residue list: residue does not exist.\nPlease follow the numerotation of the pdb given in input.")
                     sys.exit(1)
             else:
-                print("Error in residue list: chain does not exist.\nPlease follow the numerotation of the pdb given in input.")
+                logger.error("Error in residue list: chain does not exist.\nPlease follow the numerotation of the pdb given in input.")
                 sys.exit(1)
 
     outf.close()
 
 
-def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: str, outdir: Union[str, Path]=".", res: Union[str, Path]=None):
+def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap: str, outdir: Union[str, Path]=".", res: Union[str, Path]=None):
     """Assign atom/residue property value to its closest shell particle and compute the spherical coordinates of this particle.
 
     Two PDB structures are required:
@@ -61,14 +63,17 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
 
     For hydrophobic properties (stickiness, kyte_doolittle and wimley_white), the values are computed on the fly for the closest atom/residue of a given particle.
     For properties like interface, circular_variance or circular_variance_atom, bfactor, the values are retrieved in the bfactor column. So, when circular variance property is asked,
-    a new PDB must be generated first.    
+    a new PDB is first generated.
+
+    If a file with a list of residues to map is given, an output file with '_sph_coords.out' as suffix/extension is generated. This file could then be given to the 
+    compute_map function to map those residues.
 
     Args:
         shell (Union[str, Path]): path to the shell file produced with MSMS
-        pdb (Union[str, Path]): path to the input pdb file
-        outdir (str): output directory
-        tomap (str): property to map
-        pdb (Union[str, Path]): path to a residue list to map (optional)
+        pdb (Union[str, Path]): Path to the input pdb file
+        tomap (str): Property to map
+        outdir (str): Path to the output directory. Defaults to '.'.
+        res (Union[str, Path]): Optional path to a file with list of residues to map (optional)
     """
     if not Path(shell).exists():
         print("Could not find the shell file. This is probably because MSMS could not compute it. Generally it is due to a malformed pdb file.\nExiting now")
@@ -81,16 +86,22 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
     if "circular_variance" in tomap:
         perres = False if "atom" in tomap else True
         pdb_cv_filename = str(Path(outdir) / f"{Path(pdb).stem}_{tomap}.pdb")
+        logger.debug(f"Running circular variance computation of {pdb_cv_filename}")
         Structure.compute_CV(pdb, perres=perres, outfilename=pdb_cv_filename)
 
     # get pdb dict structure of input pdb and shell particles
     input_pdb = pdb_cv_filename if "circular_variance" in tomap else pdb
+
+    logger.debug(f"Get dictionary of the PDB structure from {input_pdb}")
     dPDB = Structure.parsePDBMultiChains(input_pdb, bfactor=is_bfactor)
+
+    logger.debug(f"Get dictionary of the shell structure from {shell}")
     dshell = Structure.parsePDBParticule(shell, infile=is_charge)
 
     # remove pdb of circular_variance if exists
     try:
         Path(pdb_cv_filename).unlink(missing_ok=True)
+        logger.debug(f"{pdb_cv_filename} has been removed")
     except:
         pass
     
@@ -104,9 +115,11 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
     outfile_res_to_map = None
     if res:
         outfile_res_to_map = str(Path(outdir) / f"{Path(res).stem}_sph_coords.out")
+        logger.debug(f"Parsing user-given residues to map and generating {outfile_res_to_map}")
         parseResidueList(res, dPDB, outfile=outfile_res_to_map)
 
     # compute center of mass of receptor
+    logger.debug(f"Retrieving the center of mass of the pdb structure")
     CMR = Structure.centerMassResidueList(dPDB, all=True, reslist=False, computeForMulti=True, chain=" ")
 
     # get coords structure to compute distances
@@ -117,23 +130,29 @@ def run_spherical_coords(shell: Union[str, Path], pdb: Union[str, Path], tomap: 
         out.write(f"{'phi'}\t{'theta'}\t{'value'}\t{'resnb'}\t{'restype'}\t{'chain'}\n")
 
         # looping over all particules and computing corresponding Value
-        for particle in dshell["partlist"]:
+        logger.debug(f"Looping over all shell particles to assign them the property value of their closest atoms/residues")
+        for i, particle in enumerate(dshell["partlist"], start=1):
 
             # get coords of the particule
-            coord_particle = (dshell[particle]["x"], dshell[particle]["y"], dshell[particle]["z"])  
-            _, phi, theta = Structure.coord2spherical(CMR, coord_particle)  # get spherical coordinates from particle cartesian coords 
+            logger.debug(f"Reading coordinates of the particle {i} and converting it into spherical coordinates")
+            coord_particle = (dshell[particle]["x"], dshell[particle]["y"], dshell[particle]["z"])
+            _, phi, theta = Structure.coord2spherical(CMR, coord_particle)
 
             # get the closest atom of the shell particle
-            _, closestAtom = Structure.getAtomCMRDist(coordlist=coordlist, idres=idres, CMR=coord_particle)     
+            logger.debug(f"Retrieving the closest atom of the particle {i}")
+            _, closestAtom = Structure.getAtomCMRDist(coordlist=coordlist, idres=idres, CMR=coord_particle)
             chainid, resid, atomtype = closestAtom.split("_")
 
-            # assign the property value of atoms/residues to their closest shell particle
+            # assign the property value of atoms/residues to their closest shell particle or directly from the shell particle
             if property == "electrostatics":
                 scalevalue = dshell[particle]["charge"]
-            elif property == "bfactor":
-                scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
-            else:                
-                scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)            
+                logger.debug(f"Electrostatic value {scalevalue} read from the shell structure has been assigned to the particle {i}")
+            elif  property == "bfactor":
+                    scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
+                    logger.debug(f"{tomap} value {scalevalue} read from the atom {chainid}-{resid}-{atomtype} of {input_pdb} has been assigned to the particle {i}")
+            else:
+                scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)
+                logger.debug(f"{tomap} value {scalevalue} computed for the residue {chainid}-{resid} of {input_pdb} has been assigned to the particle {i}")
 
             out.write("{:8f} {:8f} {:3f} {:8} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"], chainid))
 
@@ -158,7 +177,7 @@ def main():
     tomap = args.tomap
     res=args.res
 
-    run_spherical_coords(shell=shell, pdb=pdb, outdir=outdir, tomap=tomap, res=res)
+    run_particles_mapping(shell=shell, pdb=pdb, outdir=outdir, tomap=tomap, res=res)
 
 if __name__ == "__main__":
     main()

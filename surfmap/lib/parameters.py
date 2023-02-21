@@ -114,6 +114,14 @@ def get_args():
         default=None,
         help="Path to a PQR file used for electrostatics calculation. Option only available if '-tomap electrosatics' is requested. Defaults to None."
     )
+
+    parser.add_argument(
+        "-verbose",
+        required=False,
+        type=int,
+        default=1,
+        help="Verbose level of the console log. 0 for silence, 1 for info level, 2 for debug level. Defaults to 1."
+    )
     
     if True in [ x in ["-v", "--version"] for x in sys.argv[1:] ]:
         print(f"{__COPYRIGHT_NOTICE__}")
@@ -148,13 +156,22 @@ class Parameters:
     - docker: bool  # True to run SURFMAP on a docker container
     - outdir: Union[str, Path]  # path to the output directory
     - pqr: str=None  # path to a PQR file used for electrostatics calculation. Defaults to None
-
+    - verbose: int=2  # Verbose level of the console log. 0 for silence, 1 for debug level, 2 for info level. Defaults to 2.
 
     """
     REQUIREMENTS = ["R", "awk", "apbs"]
 
     PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
+
+    VERBOSE_MAP = {
+        0: 100,
+        1: 20,
+        2: 10,
+        3: 30,
+        4: 40,
+        5: 50
+    }
     
     def __init__(self, args: Union[argparse.Namespace, object], path_to_scripts: Union[str, Path]=PATH_R_SCRIPTS) -> None:
         self.args = args
@@ -222,6 +239,12 @@ class Parameters:
         self.DEFAULT_OUTDIR_BASENAME = "output_SURFMAP_{}_{}"
         self._set_outdir(args=args)
 
+        # set verbose
+        if args.verbose in self.VERBOSE_MAP:
+            self.verbose = self.VERBOSE_MAP[args.verbose]
+        else:
+            print("Warning: verbose level must be either 0, 1, or 2. Use of default verbose level (2)")
+            self.verbose = self.VERBOSE_MAP[2]
 
     def _check_surfmap_requirements(self):
         """Check if requirements are satisfied (will exit if not).

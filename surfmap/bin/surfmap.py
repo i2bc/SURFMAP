@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import surfmap
 from surfmap import __COPYRIGHT_FULL__
-from surfmap.lib.parameters import Parameters, get_args
 from surfmap.lib.core import surfmap_from_pdb, surfmap_from_matrix
+from surfmap.lib.logs import set_root_logger
 from surfmap.lib.docker import DockerCLI
+from surfmap.lib.parameters import Parameters, get_args
 
 
 def surfmap_local(params: Parameters):
@@ -12,8 +14,6 @@ def surfmap_local(params: Parameters):
     Args:
         params (Parameters): Set of useful parameters.
     """
-    print(__COPYRIGHT_FULL__)
-
     if params.pdbarg:
         surfmap_from_pdb(params=params)
     elif params.mat:
@@ -45,6 +45,7 @@ def surfmap_container(params: Parameters):
 
 def main():
     params = Parameters(args=get_args())
+    set_root_logger(outpath=params.outdir, level=params.verbose)
 
     if params.docker:
         surfmap_container(params=params)

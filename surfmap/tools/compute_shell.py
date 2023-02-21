@@ -1,4 +1,5 @@
 import argparse
+import logging
 from pathlib import Path
 import subprocess
 from typing import Union
@@ -6,6 +7,10 @@ from typing import Union
 from surfmap import PATH_MSMS
 from surfmap.bin.pdb2xyzr import run as run_pdb2xyzr
 from surfmap.bin.multival_csv_to_pdb import run as run_multival_csv2pdb
+from surfmap.lib.logs import get_logger
+
+
+logger = logging.getLogger(name=__name__)
 
 
 def get_args():
@@ -71,14 +76,25 @@ def vert2csv(vertfile: Union[str, Path], outfile: Union[str, Path], skiplines: l
                 _outfile.write(f"{x},{y},{z}\n")
 
 
+def run(pdb_filename: Union[str, Path], out_dir: Union[str, Path]=".", extra_radius: float=3.0, explicit_hydrogen: bool=False):
+    """Function that will compute a shell with MSMS from a PDB file.
 
-def run(pdb_filename: Union[str, Path], out_dir: Union[str, Path]=".", out_subdir: Union[str, Path]="shells", extra_radius: float=3.0, explicit_hydrogen: bool=False):
+    Args:
+        pdb_filename (Union[str, Path]): Path to a PDB file
+        out_dir (Union[str, Path]): Path to the output directory
+        extra_radius (float, optional): Radius added to the standard radius of residues - the higher the radius, the smoother the surface. Defaults to 3.0.
+
+    Returns:
+        Tuple[str, str]: Path to a CSV and a PDB file, both with coordinates of the shell particles.
+    """    
+    
     # Create directory containing shells and other files
-    outdir = Path(out_dir) / Path(out_subdir)
+    outdir = Path(out_dir)
     outdir.mkdir(exist_ok=True, parents=True)
     outfile_basename = str(outdir / Path(pdb_filename).stem)
 
     # generate xyzr format input for MSMS
+    logger.debug("Convert pdb to xyzr format (expected MSMS input)")
     outfile_xyzr = f"{outfile_basename}.xyzr"
     run_pdb2xyzr(pdb_filename=pdb_filename, out_filename=outfile_xyzr, extra_radius=extra_radius, explicit_hydrogen=explicit_hydrogen)
 
@@ -88,14 +104,17 @@ def run(pdb_filename: Union[str, Path], out_dir: Union[str, Path]=".", out_subdi
     msms = f"{str(PATH_MSMS / 'msms')}"
 
     cmd_msms = [msms, "-if", outfile_xyzr, "-of", f"{outfile_basename}"]
+    logger.debug(f"Running MSMS command: {' '.join(cmd_msms)}")
     completed_process = subprocess.run(cmd_msms, capture_output=True)
 
     # convert .vert file shell coordinates into .csv file
     outfile_csv = f"{outfile_basename}.csv"
+    logger.debug(f"Convert MSMS .vert file into CSV format")
     vert2csv(vertfile=outfile_vert, outfile=outfile_csv, skiplines=list(range(3)))
 
     # convert .csv file into a PDB file
     outfile_pdb = f"{outfile_basename}_shell.pdb"
+    logger.debug(f"Convert CSV into PDB format")
     run_multival_csv2pdb(ifile=outfile_csv, ofile=outfile_pdb)
 
     return outfile_csv, outfile_pdb
@@ -107,7 +126,6 @@ def main():
     return run(
         pdb_filename=args.pdb,
         out_dir=args.out,
-        out_subdir=args.subdir,
         extra_radius=args.rad,
         explicit_hydrogen=args.explicit_h
     )
