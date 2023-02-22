@@ -105,7 +105,11 @@ def run(pdb_filename: Union[str, Path], out_dir: Union[str, Path]=".", extra_rad
 
     cmd_msms = [msms, "-if", outfile_xyzr, "-of", f"{outfile_basename}"]
     logger.debug(f"Running MSMS command: {' '.join(cmd_msms)}")
-    completed_process = subprocess.run(cmd_msms, capture_output=True)
+    status = subprocess.run(cmd_msms, capture_output=True)
+    if status != 0:
+        logger.error(f"Error occured during the MSMS command, the process will stop.")
+        exit(1)
+    
 
     # convert .vert file shell coordinates into .csv file
     outfile_csv = f"{outfile_basename}.csv"
