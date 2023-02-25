@@ -54,10 +54,13 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 
 <br>
 
-
 SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
 
-[Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: the 2D map projection in a PDF format (PNG is also available) and a text file. This text file is a matrix written in a SURFMAP-specific format containing all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+[Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: 
+- the 2D map projection in a PDF format (PNG is also available)
+- a matrix text file written in a SURFMAP-specific format
+
+The matrix text file contains all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
 
 <details>
 <summary><b>Example of a SURFMAP-specific matrix format (.txt)</b></summary>
