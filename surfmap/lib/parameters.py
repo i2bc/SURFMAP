@@ -178,9 +178,7 @@ class Parameters:
         0: 100,
         1: 20,
         2: 10,
-        3: 30,
-        4: 40,
-        5: 50
+        3: 5,
     }
     
     def __init__(self, args: Union[argparse.Namespace, object], path_to_scripts: Union[str, Path]=PATH_R_SCRIPTS) -> None:
@@ -227,14 +225,14 @@ class Parameters:
         self.force_field: str = str(args.ff).upper()
         if self.force_field not in self.PDB2PQR_FORCE_FIELDS:
             print(f"Error, the force field {self.force_field} is not accepted.")
-            print(f"Accepted force fields are: {' '.join(self.PDB2PQR_FORCE_FIELDS)}.\n")
+            print(f"Accepted force fields are: {', '.join(self.PDB2PQR_FORCE_FIELDS)}.\n")
             exit(1)
         
 
         # define residues to map, if any
         self.resfile: str = args.res
         if self.resfile and not Path(self.resfile).exists():
-            print("The residue file could not be found (arg -res). It seems that this file does not exist.\nThis could be due to a mistake in the path to the file, for example.\nExiting now.")
+            print("The residue file could not be found (arg -res). It seems that this file does not exist.\nThis could be due to a mistake in the path to the file.\nExiting now.")
             exit()
 
         # define radius in angström added to usual atomic radius (used for calculation solvent excluded surface)
@@ -261,8 +259,8 @@ class Parameters:
         if args.verbose in self.VERBOSE_MAP:
             self.verbose = self.VERBOSE_MAP[args.verbose]
         else:
-            print("Warning: verbose level must be either 0, 1, or 2. Use of default verbose level (2)")
-            self.verbose = self.VERBOSE_MAP[2]
+            print("Warning: verbose level must be either 0, 1, or 2. Use of the default verbose level (1)")
+            self.verbose = self.VERBOSE_MAP[1]
 
     def _check_surfmap_requirements(self):
         """Check if requirements are satisfied (will exit if not).

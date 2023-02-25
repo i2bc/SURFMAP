@@ -108,7 +108,7 @@ def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], force_fi
         logger.debug("Convert PDB to PQR format")
         status = subprocess.run(cmd_pdb2pqr, capture_output=True)
         if status.returncode != 0:
-            logger.error(f"Error occured during the conversion of PDB to PQR, the process will stop. Status: {status}")
+            logger.error(f"Error occured during the conversion of PDB to PQR, the process will stop. Status: {status.returncode}")
             exit(1)        
     else:
         logger.debug(f"Copying user-given PQR file as {outfile_pqr}")
@@ -121,7 +121,7 @@ def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], force_fi
     logger.debug(f"Running inputgen command: {' '.join(cmd_inputgen)}")
     status = subprocess.run(args=cmd_inputgen, capture_output=True)
     if status.returncode != 0:
-        logger.error(f"Error occured during the inputgen command, the process will stop. Status: {status}")
+        logger.error(f"Error occured during the inputgen command, the process will stop. Status: {status.returncode}")
         exit(1)
 
 
@@ -136,7 +136,7 @@ def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], force_fi
     logger.debug(f"Running APBS command: {cmd_apbs}")
     status = subprocess.run(args=cmd_apbs, capture_output=True)
     if status.returncode != 0:
-        logger.error(f"Error occured during the APBS command, the process will stop. Status: {status}")
+        logger.error(f"Error occured during the APBS command, the process will stop. Status: {status.returncode}")
         exit(1)
 
 
@@ -144,9 +144,9 @@ def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], force_fi
     outfile_multivalue = f"{outfile_basename}.mult"
     cmd_multivalue = [multivalue, csv_filename, outfile_pot, outfile_multivalue]
     logger.debug(f"Running multivalue command: {cmd_multivalue}")
-    status.returncode = subprocess.run(args=cmd_multivalue, capture_output=True)
-    if status != 0:
-        logger.error(f"Error occured during the multivalue command, the process will stop. Status: {status}")
+    status = subprocess.run(args=cmd_multivalue, capture_output=True)
+    if status.returncode != 0:
+        logger.error(f"Error occured during the multivalue command, the process will stop. Status: {status.returncode}")
         exit(1)
 
 

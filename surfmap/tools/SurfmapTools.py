@@ -157,29 +157,29 @@ def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap:
         out.write(f"{'phi'}\t{'theta'}\t{'value'}\t{'resnb'}\t{'restype'}\t{'chain'}\n")
 
         # looping over all particules and computing corresponding Value
-        logger.debug(f"Looping over all shell particles to assign them the property value of their closest atoms/residues")
+        logger.trace(f"Looping over all shell particles to assign them the property value of their closest atoms/residues")
         for i, particle in enumerate(dshell["partlist"], start=1):
 
             # get coords of the particule
-            logger.debug(f"Reading coordinates of the particle {i} and converting it into spherical coordinates")
+            logger.trace(f"Reading coordinates of the particle {i} and converting it into spherical coordinates")
             coord_particle = (dshell[particle]["x"], dshell[particle]["y"], dshell[particle]["z"])
             _, phi, theta = Structure.coord2spherical(CMR, coord_particle)
 
             # get the closest atom of the shell particle
-            logger.debug(f"Retrieving the closest atom of the particle {i}")
+            logger.trace(f"Retrieving the closest atom of the particle {i}")
             _, closestAtom = Structure.getAtomCMRDist(coordlist=coordlist, idres=idres, CMR=coord_particle)
             chainid, resid, atomtype = closestAtom.split("_")
 
             # assign the property value of atoms/residues to their closest shell particle or directly from the shell particle
             if property == "electrostatics":
                 scalevalue = dshell[particle]["charge"]
-                logger.debug(f"Electrostatic value {scalevalue} read from the shell structure has been assigned to the particle {i}")
+                logger.trace(f"Electrostatic value {scalevalue} read from the shell structure has been assigned to the particle {i}")
             elif property == "bfactor":
                     scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
-                    logger.debug(f"{tomap} value {scalevalue} read from the atom {chainid}-{resid}-{atomtype} of {input_pdb} has been assigned to the particle {i}")
+                    logger.trace(f"{tomap} value {scalevalue} read from the atom {chainid}-{resid}-{atomtype} of {input_pdb} has been assigned to the particle {i}")
             else:
                 scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)
-                logger.debug(f"{tomap} value {scalevalue} computed for the residue {chainid}-{resid} of {input_pdb} has been assigned to the particle {i}")
+                logger.trace(f"{tomap} value {scalevalue} computed for the residue {chainid}-{resid} of {input_pdb} has been assigned to the particle {i}")
 
             # temporary - assign value to shell
             dshell[particle]["charge"] = scalevalue
