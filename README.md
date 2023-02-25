@@ -87,7 +87,7 @@ SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specif
 
 SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6). It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations.
 
-All those requirements (including APBS) are met in a [predefined Docker image](https://hub.docker.com/r/lopesi2bc/surfmap) that we recommend the user to use. 
+All those requirements (including APBS) are met in a [predefined Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags) that we recommend the user to use. 
 
 **Please also note that whether you want to use the Docker image of SURFMAP or not, you will still need to [install the SURFMAP package](#install_option1)**. Indeed the package contains internal features that make the use of the Docker image totally transparent for the user who will not have to enter 'complex' commands for the connection of useful mounting points. In fact, the SURFMAP commands are almost exactly the same between the use of the docker image or not (see [here](#cmd_docker_or_not)).
 
@@ -95,13 +95,12 @@ See below the requirements that must be met for the use of SURFMAP through its D
 
 ### Requirements
 
-<details>
+<details open>
 <summary><b>For a usage of the docker image</b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
 - [Docker](https://docs.docker.com/get-docker/)
-- the SURFMAP docker image: `docker pull lopesi2bc/surfmap`
 
 </details>
 
@@ -206,14 +205,10 @@ python3 -m pip install -e .
 [Go to the top](#Table-of-contents)
 
 
-#### The example directory
-To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
+#### Use SURFMAP with Docker or not
+Once you have met the corresponding [requirements](#requirements) depending on how you want to use SURFMAP, please note that the commands are almost exactly the same between the use of the docker image or not.
 
-```bash
-python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
-```
-
-All command examples will make use of the docker image of SURFMAP thanks to the CLI option **`--docker`**. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
+In order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
 
 <a id="cmd_docker_or_not"></a>
 
@@ -224,6 +219,18 @@ surfmap -pdb foo.pdb -tomap stickiness --docker
 # the same command that will run locally
 surfmap -pdb foo.pdb -tomap stickiness
 ```
+
+If the Docker image of SURFMAP is absent from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
+
+
+#### The example directory
+To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
+
+```bash
+python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
+```
+
+Please note that for all command examples illustrated below, we will make use of the docker image of SURFMAP.
 
 
 ## Projection of a protein surface feature on a 2D map
