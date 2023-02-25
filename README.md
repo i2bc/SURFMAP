@@ -28,8 +28,7 @@
 # Table of contents
 
 - [Aims](#Aims)
-- [Preamble](#Preamble)
-- [Download](#Download)
+- [How it works](#How-it-works)
 - [Installation](#Installation)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
@@ -40,16 +39,58 @@
 <div>
 <img src="./doc/images/TOC_Schweke_manuscript_revisions_forGitHub.png" width="60%" align="right"/>
 
-SURFMAP is a free standalone and easy-to-use command-line interface (CLI) software that enables the fast and automated 2-D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2-D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
+SURFMAP is a free standalone and easy-to-use command-line interface (CLI) software that enables the fast and automated 2D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 </div>
+
+# How it works
+[Go to the top](#Table-of-contents)
+
+<div align="center">
+  <img src="./doc/images/surfmap_workflow.png" width="80%"/>
+
+The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).
+</div>
+
+<br>
+
+
+SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
+
+[Using a PDB file as input]() is the most classic usage of SURFMAP. In this case, two outputs are generated: the 2D map projection in a PDF format (PNG is also available) and a text file. This text file is a matrix written in a SURFMAP-specific format containing all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+
+<details>
+<summary><b>Example of a SURFMAP-specific matrix format (.txt)</b></summary>
+
+<pre>absc    ord     svalue  residues
+5       5       Inf     NA
+5       10      Inf     NA
+5       15      Inf     NA
+...
+5       80      Inf     GLU_120_A
+5       85      Inf     GLU_120_A, GLN_301_A
+5       90      Inf     GLN_301_A
+5       95      Inf     GLN_301_A
+5       100     Inf     GLN_301_A
+5       105     Inf     GLN_301_A
+...
+360	175	Inf	NA
+360	180	Inf	NA
+</pre>
+</details>
+
+[Using a text file in a SURFMAP-specific matrix format as input]() to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
 
 
 # Installation
 [Go to the top](#Table-of-contents)
 
-SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6) and bash. It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations. 
+SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6). It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations.
 
-All those requirements (including APBS) are fullfilled in a [**pre-built Docker image**](https://hub.docker.com/r/lopesi2bc/surfmap) that we recommend the user to use. If you don't want to use Docker, SURFMAP can be installed locally on your computer. See below the requirements for each case.
+All those requirements (including APBS) are met in a [predefined Docker image](https://hub.docker.com/r/lopesi2bc/surfmap) that we recommend the user to use. 
+
+**Please also note that whether you want to use the Docker image of SURFMAP or not, you will still need to [install the SURFMAP package](#install_option1)**. Indeed the package contains internal features that make the use of the Docker image totally transparent for the user who will not have to enter 'complex' commands for the connection of useful mounting points. In fact, the SURFMAP commands are almost exactly the same between the use of the docker image or not (see [here](#cmd_docker_or_not)).
+
+See below the requirements that must be met for the use of SURFMAP through its Docker image or a complete local installation.
 
 ### Requirements
 
@@ -64,7 +105,7 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 </details>
 
 <details>
-<summary><b>For a local install</b></summary>
+<summary><b>For a complete local installation</b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
@@ -75,14 +116,13 @@ All those requirements (including APBS) are fullfilled in a [**pre-built Docker 
 
 #### Notes
 
-1. You will still need to install the SURFMAP package on your machine to use the [**pre-built Docker image**](https://hub.docker.com/r/lopesi2bc/surfmap).
-2. We strongly recommend that you install the SURFMAP package and its python dependencies in an isolated environment. Click in the section below for a short illustration on why and how to use an isolated environment.
+We strongly recommend that you install the SURFMAP package and its python dependencies in an isolated environment. Click in the section below for a short illustration on why and how to use an isolated environment.
 
 <details style="margin-left: 32px">
 <summary>How to use an isolated environment (recommended)</summary>
 <br>
 <p>
-By using an isolated environment you'll avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
+By using an isolated environment you will avoid potential version conflicts between python libraries when working on different projects. Some of the most popular tools to work with isolated python environments are [virtualenv](https://pypi.org/project/virtualenv/), [pyenv](https://pypi.org/project/pyenv/), [pipenv](https://pypi.org/project/pipenv/). 
 </p>
 
 Below is an example on how to use [virtualenv](https://pypi.org/project/virtualenv/).
@@ -114,6 +154,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 ## How to install SURFMAP
 Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
+<a id="install_option1"></a>
 <details open>
 <summary><h4>Option 1: from the archive (git not required)</h4></summary>
 
@@ -163,13 +204,17 @@ python3 -m pip install -e .
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-To illustrate the usage of SURFMAP, we'll make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
+
+#### The example directory
+To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
 
 ```bash
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
 
 All command examples will make use of the docker image of SURFMAP thanks to the CLI option **`--docker`**. If you want to use SURFMAP through a local install, then simply remove this option. For instance:
+
+<a id="cmd_docker_or_not"></a>
 
 ```bash
 # a command that will run on a docker container

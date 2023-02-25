@@ -114,7 +114,7 @@ def compute_map(params: Parameters, matrix_file: str, property: str, reslist: st
     else:
         scale_opt = "--" + property
 
-    cmd = ["Rscript", params.map_script, "-i", matrix_file, scale_opt,  "-s", str(params.cellsize), "-p", params.pdb_id, "-P", params.proj, "-o", str(params.outdir), "--suffix", suffix]
+    cmd = ["Rscript", params.map_script, "-i", str(matrix_file), scale_opt,  "-s", str(params.cellsize), "-p", params.pdb_id, "-P", params.proj, "-o", str(params.outdir), "--suffix", suffix]
     
     if params.coordstomap:
         cmd += ["-c", params.coordstomap]
@@ -177,13 +177,13 @@ def surfmap_from_pdb(params: Parameters, with_copyright: bool=True):
 
 
         step_index += 1
-        logger.info(msg=f"Step {step_index}: computing spherical coordinates of each shell particle and generate a raw matrix file")
+        logger.info(msg=f"Step {step_index}: computing the 2D {params.proj} projection coordinates of each shell particle")
         _, coordfile = compute_coords_list(params=params, coords_file=partlist_outfile, property=property)
         junk_optional.add(element=[coordfile, Path(coordfile).parent])
 
         
         step_index += 1
-        logger.info(msg=f"Step {step_index}: smoothing the raw matrix file values")
+        logger.info(msg=f"Step {step_index}: dividing the 2D projection into {int(360/params.cellsize)}x{int(180/params.cellsize)} cells and smoothing the values")
         _, matrix_file, smoothed_matrix_file = compute_matrix(params=params, coords_file=coordfile, property=tomap)
         junk_optional.add(element=[matrix_file, Path(matrix_file).parent])
 

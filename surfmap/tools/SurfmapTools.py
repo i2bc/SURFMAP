@@ -51,6 +51,27 @@ def parseResidueList(reslist, dPDB, outfile):
     outf.close()
 
 
+def write_shell_pdb(dshell: dict, outfile: str):
+    with open(outfile, "w") as out_shell:
+        for i, particle in enumerate(dshell["partlist"], start=1):
+            line = "{:6s}{:5d} {:^4s}{:1s}{:3s} {:1s}{:4d}{:1s}   {:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}\n".format(
+                "ATOM",
+                i,
+                "O",
+                "",
+                "POS",
+                "A",
+                1,
+                "",
+                dshell[particle]["x"],
+                dshell[particle]["y"],
+                dshell[particle]["z"],
+                1.00,
+                dshell[particle]["charge"]
+            )
+            out_shell.write(line)
+
+
 def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap: str, outdir: Union[str, Path]=".", res: Union[str, Path]=None):
     """Assign atom/residue property value to its closest shell particle and compute the spherical coordinates of this particle.
 
@@ -74,9 +95,14 @@ def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap:
         tomap (str): Property to map
         outdir (str): Path to the output directory. Defaults to '.'.
         res (Union[str, Path]): Optional path to a file with list of residues to map (optional)
+
+    Returns:
+        outfile_res_to_map (str | None): path to the spherical coords file of the list of residues to be mapped. None if no list of residues exists.
+        partlist_outfile (str): Path to the file with spherical coords of every shell particles. The file has the following format: #phi #theta #scalevalue, #resnb, #resname, #chain
+
     """
     if not Path(shell).exists():
-        print("Could not find the shell file. This is probably because MSMS could not compute it. Generally it is due to a malformed pdb file.\nExiting now")
+        print("Could not find the shell file. Exiting now\n")
         exit()
 
     # extracting information from receptor and particles
@@ -97,6 +123,7 @@ def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap:
 
     logger.debug(f"Get dictionary of the shell structure from {shell}")
     dshell = Structure.parsePDBParticule(shell, infile=is_charge)
+    
 
     # remove pdb of circular_variance if exists
     try:
@@ -147,15 +174,22 @@ def run_particles_mapping(shell: Union[str, Path], pdb: Union[str, Path], tomap:
             if property == "electrostatics":
                 scalevalue = dshell[particle]["charge"]
                 logger.debug(f"Electrostatic value {scalevalue} read from the shell structure has been assigned to the particle {i}")
-            elif  property == "bfactor":
+            elif property == "bfactor":
                     scalevalue = dPDB[chainid][resid][atomtype]["bfactor"]
                     logger.debug(f"{tomap} value {scalevalue} read from the atom {chainid}-{resid}-{atomtype} of {input_pdb} has been assigned to the particle {i}")
             else:
                 scalevalue = Structure.returnPropensity(aa=dPDB[chainid][resid]["resname"], scale=tomap)
                 logger.debug(f"{tomap} value {scalevalue} computed for the residue {chainid}-{resid} of {input_pdb} has been assigned to the particle {i}")
 
+            # temporary - assign value to shell
+            dshell[particle]["charge"] = scalevalue
+
             out.write("{:8f} {:8f} {:3f} {:8} {:8} {:8}\n".format(phi, theta, scalevalue, dPDB[chainid][resid]["resnum"], dPDB[chainid][resid]["resname"], chainid))
 
+    # temporary - write shell pdb with assigned values
+    # shell_pdb = Path(outdir) / f"{Path(pdb).stem}_{tomap}_shell.pdb"
+    # write_shell_pdb(dshell=dshell, outfile=shell_pdb)
+    
     return outfile_res_to_map, partlist_outfile
 
 

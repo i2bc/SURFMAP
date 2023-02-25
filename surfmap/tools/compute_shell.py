@@ -106,8 +106,8 @@ def run(pdb_filename: Union[str, Path], out_dir: Union[str, Path]=".", extra_rad
     cmd_msms = [msms, "-if", outfile_xyzr, "-of", f"{outfile_basename}"]
     logger.debug(f"Running MSMS command: {' '.join(cmd_msms)}")
     status = subprocess.run(cmd_msms, capture_output=True)
-    if status != 0:
-        logger.error(f"Error occured during the MSMS command, the process will stop.")
+    if status.returncode != 0:
+        logger.error(f"Error occured during the MSMS command, the process will stop. Status: {status}")
         exit(1)
     
 
