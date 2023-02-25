@@ -51,19 +51,22 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 
 <i>The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).</i>
 </div>
-
 <br>
 
 SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
+<br>
 
 [Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: 
 - the 2D map projection in a PDF format (PNG is also available)
 - a matrix text file written in a SURFMAP-specific format
 
 The matrix text file contains all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+<br>
+
+[Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file) to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
 
 <details>
-<summary><b>Example of a SURFMAP-specific matrix format (.txt)</b></summary>
+<summary>Example of a SURFMAP-specific matrix format (.txt)</summary>
 
 <pre>absc    ord     svalue  residues
 5       5       Inf     NA
@@ -81,8 +84,6 @@ The matrix text file contains all information about each projected surface resid
 360	180	Inf	NA
 </pre>
 </details>
-
-[Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file) to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
 
 
 # Installation
