@@ -116,6 +116,14 @@ def get_args():
     )
 
     parser.add_argument(
+        "-ff",
+        required=False,
+        type=str,
+        default="CHARMM",
+        help="pdb2pqr force-field used for electrostatics calculation. One of the following: AMBER, CHARMM, PARSE, TYL06, PEOEPB, SWANSON. Defaults to CHARMM."
+    )
+
+    parser.add_argument(
         "-verbose",
         required=False,
         type=int,
@@ -156,6 +164,7 @@ class Parameters:
     - docker: bool  # True to run SURFMAP on a docker container
     - outdir: Union[str, Path]  # path to the output directory
     - pqr: str=None  # path to a PQR file used for electrostatics calculation. Defaults to None
+    - ff: str=CHARMM  # pdb2pqr force-field used for electrostatics calculation. One of the following: AMBER, CHARMM, PARSE, TYL06, PEOEPB, SWANSON. Defaults to CHARMM.
     - verbose: int=2  # Verbose level of the console log. 0 for silence, 1 for debug level, 2 for info level. Defaults to 2.
 
     """
@@ -163,6 +172,7 @@ class Parameters:
 
     PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
+    PDB2PQR_FORCE_FIELDS = ["AMBER", "CHARMM", "PARSE", "TYL06", "PEOEPB", "SWANSON"]
 
     VERBOSE_MAP = {
         0: 100,
@@ -210,8 +220,16 @@ class Parameters:
         # define property to map
         self.ppttomap: str = args.tomap
 
-        # define optional pqr file (optionally used for electrostatics)
+        # define optional pqr file (optionally used for electrostatics only)
         self.pqr: str = args.pqr
+
+        # define the force-field used for atomis parameters (optionally used for electrostatics only)
+        self.force_field: str = str(args.ff).upper()
+        if self.force_field not in self.PDB2PQR_FORCE_FIELDS:
+            print(f"Error, the force field {self.force_field} is not accepted.")
+            print(f"Accepted force fields are: {' '.join(self.PDB2PQR_FORCE_FIELDS)}.\n")
+            exit(1)
+        
 
         # define residues to map, if any
         self.resfile: str = args.res

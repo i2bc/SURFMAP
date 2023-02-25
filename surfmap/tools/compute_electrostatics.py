@@ -67,7 +67,7 @@ def edit_inputgen(inputgen_file: Union[str, Path], pqrfile: Union[str, Path]):
         _file.write(data)
 
 
-def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], pqr_filename: Union[str, Path]="", out_dir: Union[str, Path]="."):
+def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], force_field: str="CHARMM", pqr_filename: Union[str, Path]="", out_dir: Union[str, Path]="."):
     """Calls the function run_compute_electrostatics() to compute electrostatics potential of the PDB file.
 
     Args:
@@ -79,8 +79,16 @@ def run(pdb_filename: Union[str, Path], csv_filename: Union[str, Path], pqr_file
     Returns:
         str: Path to a PDB file with coordinates of the shell particles and atomic electrostatic potential values in bfactor
     """
+    PDB2PQR_FORCE_FIELDS = ["AMBER", "CHARMM", "PARSE", "TYL06", "PEOEPB", "SWANSON"]
 
-
+    # check if force field is allowed
+    if force_field.upper() not in PDB2PQR_FORCE_FIELDS:
+        logger.error(f"Error, the force field {force_field} is not accepted.")
+        logger.error(f"Accepted force fields are: {' '.join(PDB2PQR_FORCE_FIELDS)}.")
+        logger.error(f"Exiting now.\n")
+        exit(1)
+        
+        
     # define access to useful APBS executables
     PATH_APBS = Path(os.getenv("APBS"))
     apbs = f"{str(PATH_APBS / 'bin' / 'apbs')}"

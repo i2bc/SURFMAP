@@ -166,7 +166,7 @@ def surfmap_from_pdb(params: Parameters, with_copyright: bool=True):
             step_index += 1
             outdir_elec = Path(params.outdir) / "tmp-elec"
             logger.info(msg=f"Step {step_index}: computing electrostatics potential")
-            shell = run_compute_electrostatics(pdb_filename=params.pdbarg, csv_filename=csv_coords, pqr_filename=params.pqr, out_dir=outdir_elec)
+            shell = run_compute_electrostatics(pdb_filename=params.pdbarg, csv_filename=csv_coords, force_field=params.force_field, pqr_filename=params.pqr, out_dir=outdir_elec)
 
 
         step_index += 1
