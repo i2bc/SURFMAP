@@ -42,13 +42,14 @@
 SURFMAP is a free standalone and easy-to-use command-line interface (CLI) software that enables the fast and automated 2D projection of either predefined features of protein surface (electrostatic potential, Kyte-Doolittle hydrophobicity, Wimley-White hydrophobicity, stickiness and surface relief) or any descriptor encoded in the temperature factor column of a PDB file. The 2D maps computed by SURFMAP can be used to analyze and/or compare protein surface properties.
 </div>
 
+
 # How it works
 [Go to the top](#Table-of-contents)
 
 <div align="center">
-  <img src="./doc/images/surfmap_workflow.png" width="80%"/>
+  <img src="./doc/images/surfmap_workflow.png" width="75%"/>
 
-The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).
+<i>The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).</i>
 </div>
 
 <br>
@@ -56,7 +57,7 @@ The figure above represents the main steps of the SURFMAP worflow to compute the
 
 SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
 
-[Using a PDB file as input]() is the most classic usage of SURFMAP. In this case, two outputs are generated: the 2D map projection in a PDF format (PNG is also available) and a text file. This text file is a matrix written in a SURFMAP-specific format containing all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+[Using a PDB file as input](#from-a-pdb-structure--pdb) is the most classic usage of SURFMAP. In this case, two outputs are generated: the 2D map projection in a PDF format (PNG is also available) and a text file. This text file is a matrix written in a SURFMAP-specific format containing all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
 
 <details>
 <summary><b>Example of a SURFMAP-specific matrix format (.txt)</b></summary>
@@ -78,7 +79,7 @@ SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specif
 </pre>
 </details>
 
-[Using a text file in a SURFMAP-specific matrix format as input]() to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
+[Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file--mat) to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
 
 
 # Installation
@@ -257,20 +258,20 @@ The output has the following structure and content:
 
 with:
 - `parameters.log`: a summary of the parameters used to compute the map
-- `1g3n_A_stickiness_map.pdf`: the generated 2D map in pdf format
+- `1g3n_A_stickiness_map.pdf`: the generated 2D map in PDF format
 - `1g3n_A_stickiness_smoothed_matrix.txt`: a computed smoothed matrix file (txt file) used to generate the 2D map. This matrix has the expected format of a matrix file that can be used as a direct input of SURFMAP through the used of the `-mat` argument.
 
 
 ### From a SURFMAP matrix file `-mat`
 
-A SURFMAP matrix file can also be used as an input to generate a 2D map. The feature to map has to be the same as the one used to generate the matrix file. As a fancy usage example, the command below will reproduce the 2D map generated from the command above:
+A matrix written in a SURFMAP-specific format can also be used as an input to generate a 2D map. The feature to map has to be the same as the one used to generate the matrix file. As a fancy usage example, the command below will reproduce the 2D map generated from the command above:
 
 ```bash
 # example - command to create a map from a SURFMAP matrix file generated with stickiness values
 surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickiness_smoothed_matrix.txt -tomap stickiness --docker
 ```
 
-A more realistic usage of this option is to compute maps from your own customized matrices. For example you can create maps of a same protein in different conformational states. In this case, you may want to compute an averaged matrix file (please note that we don't provide such script utilities). The `-mat` option could then be used to generate a 2D map of this averaged matrix.
+A more realistic usage of this option is to compute maps from your own customized matrices. For example you can create maps of a same protein in different conformational states. In this case, you may want to compute an averaged matrix file (please note that we don't provide such script utilities).
 
 
 ## Projection of interface residues on a 2D map
