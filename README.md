@@ -43,49 +43,6 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 </div>
 
 
-# How it works
-[Go to the top](#Table-of-contents)
-
-<div align="center">
-  <img src="./doc/images/surfmap_workflow.png" width="75%"/>
-
-<i>The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).</i>
-</div>
-<br>
-
-SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
-<br>
-
-[Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: 
-- the 2D map projection in a PDF format (PNG is also available)
-- a matrix text file written in a SURFMAP-specific format
-
-The matrix text file contains all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
-<br>
-
-[Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file) to SURFMAP represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
-
-<details>
-<summary>Example of a SURFMAP-specific matrix format (.txt)</summary>
-
-<pre>absc    ord     svalue  residues
-5       5       Inf     NA
-5       10      Inf     NA
-5       15      Inf     NA
-...
-5       80      Inf     GLU_120_A
-5       85      Inf     GLU_120_A, GLN_301_A
-5       90      Inf     GLN_301_A
-5       95      Inf     GLN_301_A
-5       100     Inf     GLN_301_A
-5       105     Inf     GLN_301_A
-...
-360	175	Inf	NA
-360	180	Inf	NA
-</pre>
-</details>
-
-
 # Installation
 [Go to the top](#Table-of-contents)
 
@@ -156,6 +113,8 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 
 
 ## How to install SURFMAP
+[Go to the top](#Table-of-contents)
+
 Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
 <a id="install_option1"></a>
@@ -205,19 +164,60 @@ python3 -m pip install -e .
 </details>
 
 
-# Usage of SURFMAP
+# How it works
 [Go to the top](#Table-of-contents)
 
 
-#### Use SURFMAP with Docker or not
-Once you have met the corresponding [requirements](#requirements) depending on how you want to use SURFMAP, please note that the commands are almost exactly the same between the use of the Docker image or not.
+## SURFMAP workflow: inputs/outputs
 
-In order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP through a local install, then simply remove this option. For example:
+<div align="center">
+  <img src="./doc/images/surfmap_workflow.png" width="75%"/>
+
+<i>The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).</i>
+</div>
+<br>
+
+SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
+<br>
+
+[Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: 
+- the 2D map projection in a PDF format (PNG is also available)
+- a matrix text file written in a SURFMAP-specific format
+
+The matrix text file contains all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+<br>
+
+[Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file) represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
+
+<details>
+<summary>Example of a SURFMAP-specific matrix format (.txt)</summary>
+
+<pre>absc    ord     svalue  residues
+5       5       Inf     NA
+5       10      Inf     NA
+5       15      Inf     NA
+...
+5       80      Inf     GLU_120_A
+5       85      Inf     GLU_120_A, GLN_301_A
+5       90      Inf     GLN_301_A
+5       95      Inf     GLN_301_A
+5       100     Inf     GLN_301_A
+5       105     Inf     GLN_301_A
+...
+360	175	Inf	NA
+360	180	Inf	NA
+</pre>
+</details>
+
+
+## Calling SURFMAP with Docker or not
+
+Whether you want to use SURFMAP through a Docker or not, the commands are almost exactly the same. Indeed, in order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP through a local installation, then simply remove this option. For example:
 
 <a id="cmd_docker_or_not"></a>
 
 ```bash
-# a command that will run on a docker container
+# a command that will run on a Docker container
 surfmap -pdb foo.pdb -tomap stickiness --docker
 
 # the same command that will run locally
@@ -227,6 +227,18 @@ surfmap -pdb foo.pdb -tomap stickiness
 If the Docker image of SURFMAP is missing from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
 
 
+# Usage of SURFMAP
+[Go to the top](#Table-of-contents)
+
+Once you have fulfilled the [requirements](#requirements) that met your needs and have the SURFMAP package installed, you should be ready to use SURFMAP. 
+
+The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` variable environment with a value corresponding to an available tag version:
+
+```bash
+# set SURFMAP_DOCKER_VERSION to 2.0.0 for using the SURFMAP Docker image tagged 2.0.0
+export SURFMAP_DOCKER_VERSION=2.0.0 
+```
+
 #### The example directory
 To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
 
@@ -234,7 +246,7 @@ To guide the user in the usage of SURFMAP, we will make use of files that you ca
 python3 -c "import surfmap; print(surfmap.PATH_TO_EXAMPLES)"
 ```
 
-Please note that for all command examples illustrated below, we will make use of the docker image of SURFMAP.
+Please note that for all command examples illustrated below, we will make [use of the Docker image of SURFMAP](#use-surfmap-with-docker-or-not).
 
 
 ## Projection of a protein surface feature on a 2D map
