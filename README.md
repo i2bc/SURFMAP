@@ -62,7 +62,7 @@ All those requirements (including APBS) are met in a [predefined Docker image](h
 </details>
 
 <details>
-<summary><b>For a complete local installation</b></summary>
+<summary><b>For a usage on your local OS</b></summary>
 
 - an UNIX-based OS system (any linux distribution, a MacOS system or [WSL2](https://learn.microsoft.com/fr-fr/windows/wsl/install) on windows)
 - [Python >= 3.7](https://www.python.org/downloads)
@@ -176,7 +176,8 @@ python3 -m pip install -e .
 </div>
 <br>
 
-SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*
+SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specific matrix format*.
+<br>
 <br>
 
 [Using a PDB file as input](#from-a-pdb-structure) is the most classic usage of SURFMAP. In this case, two outputs are generated: 
@@ -184,6 +185,7 @@ SURFMAP accepts as input either a *PDB file* or a *text file in a SURFMAP-specif
 - a matrix text file written in a SURFMAP-specific format
 
 The matrix text file contains all information about each projected surface residue and their associated feature value. As the above figure shows, this text file is the direct input for the last step of the SURFMAP workflow as it is read to generate the 2D map projection.
+<br>
 <br>
 
 [Using a text file in a SURFMAP-specific matrix format as input](#from-a-surfmap-matrix-file) represents a special case that could be useful if the user wants to generate a 2D map from an internally pre-processed matrix, such as to normalize or average with other matrices.
@@ -211,7 +213,7 @@ The matrix text file contains all information about each projected surface resid
 
 ### Calling SURFMAP with Docker or not
 
-Whether you want to use SURFMAP through a Docker or not, the commands are almost exactly the same. Indeed, in order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP through a local installation, then simply remove this option. For example:
+Whether you want to use SURFMAP through a Docker or not, the commands are almost exactly the same. Indeed, in order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP from an installation on your local OS, then simply remove this option. For example:
 
 <a id="cmd_docker_or_not"></a>
 
@@ -219,17 +221,11 @@ Whether you want to use SURFMAP through a Docker or not, the commands are almost
 # a command that will run on a Docker container
 surfmap -pdb foo.pdb -tomap stickiness --docker
 
-# the same command that will run locally
+# the same command that will run on your local OS
 surfmap -pdb foo.pdb -tomap stickiness
 ```
 
 If the Docker image of SURFMAP is missing from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
-
-
-# Usage of SURFMAP
-[Go to the top](#Table-of-contents)
-
-Once you have fulfilled the [requirements](#requirements) that met your needs and have the SURFMAP package installed, you should be ready to use SURFMAP. 
 
 The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` variable environment with a value corresponding to an available tag version:
 
@@ -237,6 +233,12 @@ The version of the SURFMAP Docker image used is the same as the version of SURFM
 # set SURFMAP_DOCKER_VERSION to 2.0.0 for using the SURFMAP Docker image tagged 2.0.0
 export SURFMAP_DOCKER_VERSION=2.0.0 
 ```
+
+
+# Usage of SURFMAP
+[Go to the top](#Table-of-contents)
+
+Once you have fulfilled the [requirements](#requirements) that met your needs and have the SURFMAP package installed, you should be ready to use SURFMAP. 
 
 #### The example directory
 To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
