@@ -114,7 +114,7 @@ Once you're done working on your project, simply type `deactivate` to exit the e
 ## How to install SURFMAP
 [Go to the top](#Table-of-contents)
 
-Choose option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
+First, make sure you meet the [system requirements](#requirements) outlined earlier and consider the [recommendation](#recommendation). Then, follow instructions described in option 1 or 2 if you're not interested in accessing/modifying the source code, otherwise prefer option 3. 
 
 <a id="install_option1"></a>
 <details open>
