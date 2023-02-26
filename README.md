@@ -167,10 +167,10 @@ python3 -m pip install -e .
 [Go to the top](#Table-of-contents)
 
 
-## SURFMAP workflow: inputs/outputs
+### SURFMAP workflow: inputs/outputs
 
 <div align="center">
-  <img src="./doc/images/surfmap_workflow.png" width="75%"/>
+  <img src="./doc/images/surfmap_workflow.png" width="70%"/>
 
 <i>The figure above represents the main steps of the SURFMAP worflow to compute the projection on a 2D map of a protein surface feature. More details about each step can be found in [our article](https://pubs.acs.org/doi/10.1021/acs.jcim.1c01269).</i>
 </div>
@@ -209,7 +209,7 @@ The matrix text file contains all information about each projected surface resid
 </details>
 
 
-## Calling SURFMAP with Docker or not
+### Calling SURFMAP with Docker or not
 
 Whether you want to use SURFMAP through a Docker or not, the commands are almost exactly the same. Indeed, in order to use the Docker image of SURFMAP, you will just have to add the CLI option **`--docker`**. If you want to use SURFMAP through a local installation, then simply remove this option. For example:
 
