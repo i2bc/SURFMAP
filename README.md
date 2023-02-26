@@ -227,7 +227,7 @@ surfmap -pdb foo.pdb -tomap stickiness
 
 If the Docker image of SURFMAP is missing from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
 
-The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` variable environment with a value corresponding to an available tag version:
+The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` environment variable with a value corresponding to an available tag version:
 
 ```bash
 # set SURFMAP_DOCKER_VERSION to 2.0.0 for using the SURFMAP Docker image tagged 2.0.0
@@ -238,7 +238,7 @@ export SURFMAP_DOCKER_VERSION=2.0.0
 # Usage of SURFMAP
 [Go to the top](#Table-of-contents)
 
-Once you have fulfilled the [requirements](#requirements) that met your needs and have the SURFMAP package installed, you should be ready to use SURFMAP. 
+Once you have [installed the SURFMAP package](#how-to-install-surfmap), you should be ready to use SURFMAP. 
 
 #### The example directory
 To guide the user in the usage of SURFMAP, we will make use of files that you can find in the `example/` directory of SURFMAP. You can see where this directory is located on your machine with the following command:
@@ -263,6 +263,24 @@ In order to generate a 2D map projection of a protein surface feature, two input
   - `electrostatics` (requires APBS)
   - `bfactor`
   - `all` (to compute sequentially kyte_doolittle, wimley_white, stickiness and circular_variance features)
+
+
+## Projection of a protein surface feature on a 2D map
+
+In order to generate a 2D map projection of a protein surface feature, two inputs are required:
+- either a PDB file (`-pdb` option) OR a matrix text file written in a SURFMAP-specific format (`-mat` option)
+- a valid key referring to a feature to map (listed in the table below)
+
+| Valid feature key | Feature details |
+| --- | --- |
+`kyte_doolittle` | Residue hydrophobicity directly derived from the Kyte-Doolittle scale
+`wimley_white` | Residue hydrophobicity directly derived from the Wimley-White scale
+`stickiness` | Propensity of each amino acid to be involved in protein−protein interfaces
+`circular_variance` | Descriptor of the local (residue scale) geometry of a surface region: low values reﬂects protruding residues, while high values indicates residues located in cavities.
+`circular_variance_atom` | Descriptor of the local geometry (atomic scale) of a surface region: low values reﬂects protruding atoms, while high values indicates atoms located in cavities.
+`electrostatics` | Electrostatic potential of the protein surface (atomic scale) - Requires the APBS software
+`bfactor` | Any feature stored in the temperature factor of the input PDB ﬁle
+`all` | Compute sequentially the following features: `kyte_doolittle`, `wimley_white`, `stickiness` and `circular_variance`
 
 #### From a PDB structure
 
