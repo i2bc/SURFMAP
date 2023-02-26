@@ -326,7 +326,7 @@ surfmap -mat output_SURFMAP_1g3n_A_stickiness/smoothed_matrices/1g3n_A_stickines
 A more realistic usage of this option would be to compute maps from your internally pre-processed matrices. For example you may have generated 2D maps of a same protein in different conformational states and then may want to compute an averaged matrix file (please note that we don't provide such script utilities).
 
 <details>
-<summary><b>Example of a SURFMAP-specific matrix format (.txt)</b></summary>
+<summary>Example of a SURFMAP-specific matrix format (.txt)</summary>
 
 <pre>absc    ord     svalue  residues
 5       5       Inf     NA
@@ -344,6 +344,7 @@ A more realistic usage of this option would be to compute maps from your interna
 360	180	Inf	NA
 </pre>
 </details>
+
 
 
 ## Projection of interface residues on a 2D map
@@ -425,6 +426,39 @@ write_pdb_bs -pdb 1g3n_ABC_chain-A_bs.pdb -res 1g3n_ABC_chain-A_interface.txt
 
 The output file will have the basename of the PDB file given as input with the suffix `_bs.pdb`
 
+
+## SURFMAP options
+
+
+
+<pre>usage: surfmap [-h] (-pdb PDB | -mat MAT | -v) -tomap TOMAP [-proj PROJ] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png] [--keep]
+               [--docker] [--pqr PQR] [-ff FF] [-verbose VERBOSE]
+
+options:
+  -h, --help        show this help message and exit
+  -pdb PDB          Path to a PDB file
+  -mat MAT          Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it.
+  -v, --version     Print the current version of SURFMAP.
+  -tomap TOMAP      Specific key of the feature to map. One of the following: stickiness, kyte_doolittle, wimley_white, electrostatics,
+                    circular_variance, bfactor, binding_sites, all.
+  -proj PROJ        Choice of the projection. Argument must be one of the following: flamsteed, mollweide, lambert. Defaults to flamsteed.
+  -res RES          File containing a list of residues to map on the projection. Expected format has the following space/tab separated column
+                    values: chainid resid resname
+  -rad RAD          Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the
+                    smoother the surface. Defaults to 3.0
+  -d D              Output directory where all files will be written. Defaults to &apos;./output_SURFMAP_$pdb_$tomap&apos; with $pdb and $tomap based on
+                    -pdb and -tomap given values
+  -s S              Value defining the size of a grid cell. The value must be a multiple of 180. Defaults to 5.0
+  --nosmooth        If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!)
+  --png             If chosen, a map in png format is computed (default: only pdf format is generated)
+  --keep            If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept)
+  --docker          If chosen, SURFMAP will be run on a docker container (requires docker installed).
+  --pqr PQR         Path to a PQR file used for electrostatics calculation. Option only available if &apos;-tomap electrosatics&apos; is requested.
+                    Defaults to None.
+  -ff FF            Force-field used by pdb2pqr for electrostatics calculation. One of the following: AMBER, CHARMM, PARSE, TYL06, PEOEPB,
+                    SWANSON. Defaults to CHARMM.
+  -verbose VERBOSE  Verbose level of the console log. 0 for silence, 1 for info level, 2 for debug level. Defaults to 1.
+</pre>
 
 # How to cite SURFMAP
 [Go to the top](#Table-of-contents)
