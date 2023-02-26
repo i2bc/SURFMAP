@@ -28,8 +28,8 @@
 # Table of contents
 
 - [Aims](#Aims)
-- [How it works](#How-it-works)
 - [Installation](#Installation)
+- [How it works](#How-it-works)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
 
@@ -46,15 +46,11 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 # Installation
 [Go to the top](#Table-of-contents)
 
+### Requirements
+
 SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6). It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations.
 
 All those requirements (including APBS) are met in a [predefined Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags) that we recommend the user to use. 
-
-**Please also note that whether you want to use the Docker image of SURFMAP or not, you will still need to [install the SURFMAP package](#install_option1)**. Indeed the package contains internal features that make the use of the Docker image totally transparent for the user who will not have to enter 'complex' commands for the connection of useful mounting points. In fact, the SURFMAP commands are almost exactly the same between the use of the docker image or not (see [here](#cmd_docker_or_not)).
-
-See below the requirements that must be met for the use of SURFMAP through its Docker image or a complete local installation.
-
-### Requirements
 
 <details open>
 <summary><b>For a usage of the docker image</b></summary>
@@ -75,7 +71,10 @@ See below the requirements that must be met for the use of SURFMAP through its D
  
 </details>
 
-#### Notes
+**Please also note that whether you want to use the Docker image of SURFMAP or not, you will still need to [install the SURFMAP package](#install_option1)**. Indeed the package contains internal features that make the use of the Docker image totally transparent for the user who will not have to enter 'complex' commands for the connection of useful mounting points. In fact, the SURFMAP commands are almost exactly the same between the use of the docker image or not (see [here](#cmd_docker_or_not)).
+
+
+### Recommendation
 
 We strongly recommend that you install the SURFMAP package and its python dependencies in an isolated environment. Click in the section below for a short illustration on why and how to use an isolated environment.
 
