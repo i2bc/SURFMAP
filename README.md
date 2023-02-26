@@ -48,7 +48,7 @@ SURFMAP is a free standalone and easy-to-use command-line interface (CLI) softwa
 
 ### Requirements
 
-SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6). It relies on the already included MSMS software (1) and may optionally require APBS (2) if the user wants to perform electrostatics calculations.
+SURFMAP is a CLI tool that requires a UNIX-based OS system. It is written in python (version 3.7), R (version 3.6). It relies on the already included MSMS software ([1](#ref-1)) and may optionally require APBS ([2](#ref-2)) if the user wants to perform electrostatics calculations.
 
 All those requirements (including APBS) are met in a [predefined Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags) that we recommend the user to use. 
 
@@ -254,31 +254,16 @@ Please note that for all command examples illustrated below, we will make [use o
 
 In order to generate a 2D map projection of a protein surface feature, two inputs are required:
 - either a PDB file (`-pdb` option) OR a matrix text file written in a SURFMAP-specific format (`-mat` option)
-- a valid key referring to a feature to map:
-  - `kyte_doolittle`
-  - `wimley_white`
-  - `stickiness`
-  - `circular_variance`
-  - `circular_variance_atom`
-  - `electrostatics` (requires APBS)
-  - `bfactor`
-  - `all` (to compute sequentially kyte_doolittle, wimley_white, stickiness and circular_variance features)
-
-
-## Projection of a protein surface feature on a 2D map
-
-In order to generate a 2D map projection of a protein surface feature, two inputs are required:
-- either a PDB file (`-pdb` option) OR a matrix text file written in a SURFMAP-specific format (`-mat` option)
 - a valid key referring to a feature to map (listed in the table below)
 
 | Valid feature key | Feature details |
 | --- | --- |
-`kyte_doolittle` | Residue hydrophobicity directly derived from the Kyte-Doolittle scale
-`wimley_white` | Residue hydrophobicity directly derived from the Wimley-White scale
-`stickiness` | Propensity of each amino acid to be involved in protein−protein interfaces
-`circular_variance` | Descriptor of the local (residue scale) geometry of a surface region: low values reﬂects protruding residues, while high values indicates residues located in cavities.
-`circular_variance_atom` | Descriptor of the local geometry (atomic scale) of a surface region: low values reﬂects protruding atoms, while high values indicates atoms located in cavities.
-`electrostatics` | Electrostatic potential of the protein surface (atomic scale) - Requires the APBS software
+`kyte_doolittle` | Residue hydrophobicity directly derived from the Kyte-Doolittle scale ([3](#ref-3))
+`wimley_white` | Residue hydrophobicity directly derived from the Wimley-White scale ([4](#ref-4))
+`stickiness` | Propensity of each amino acid to be involved in protein−protein interfaces ([5](#ref-5))
+`circular_variance` | Descriptor of the local (residue scale) geometry of a surface region: low values reﬂects protruding residues, while high values indicates residues located in cavities ([6](#ref-6))
+`circular_variance_atom` | Descriptor of the local geometry (atomic scale) of a surface region: low values reﬂects protruding atoms, while high values indicates atoms located in cavities. ([6](#ref-6))
+`electrostatics` | Electrostatic potential of the protein surface (atomic scale) - Requires the APBS software ([2](#ref-2))
 `bfactor` | Any feature stored in the temperature factor of the input PDB ﬁle
 `all` | Compute sequentially the following features: `kyte_doolittle`, `wimley_white`, `stickiness` and `circular_variance`
 
@@ -444,6 +429,31 @@ Moreover, if you use APBS in your research, please cite one or more of the follo
 # References
 [Go to the top](#Table-of-contents)
 
-(1) Michel Sanner, Arthur J. Olson, Jean Claude Spehner (1996). Reduced Surface: an Efficient Way to Compute Molecular Surfaces. Biopolymers, Vol 38, (3), 305-320.
+<a id="ref-1"></a>
 
-(2) Jurrus E, Engel D, Star K, Monson K, Brandi J, Felberg LE, Brookes DH, Wilson L, Chen J, Liles K, Chun M, Li P, Gohara DW, Dolinsky T, Konecny R, Koes DR, Nielsen JE, Head-Gordon T, Geng W, Krasny R, Wei GW, Holst MJ, McCammon JA, Baker NA. Improvements to the APBS biomolecular solvation software suite. Protein Science, 27, 112-128, 2018.
+> (1) Michel Sanner, Arthur J. Olson, Jean Claude Spehner (1996). Reduced Surface: an Efficient Way to Compute Molecular Surfaces. Biopolymers, Vol 38, (3), 305-320.
+
+
+<a id="ref-2"></a>
+
+> (2) Jurrus E, Engel D, Star K, Monson K, Brandi J, Felberg LE, Brookes DH, Wilson L, Chen J, Liles K, Chun M, Li P, Gohara DW, Dolinsky T, Konecny R, Koes DR, Nielsen JE, Head-Gordon T, Geng W, Krasny R, Wei GW, Holst MJ, McCammon JA, Baker NA. Improvements to the APBS biomolecular solvation software suite. Protein Science, 27, 112-128, 2018.
+
+
+<a id="ref-3"></a>
+
+> (3) Kyte, J.; Doolittle, R. F. A Simple Method for Displaying the Hydropathic Character of a Protein. J. Mol. Biol. 1982, 157 (1), 105−132.
+
+
+<a id="ref-4"></a>
+
+> (4) Wimley, W. C.; White, S. H. Experimentally Determined Hydrophobicity Scale for Proteins at Membrane Interfaces. Nat. Struct. Biol. 1996, 3 (10), 842−848.
+
+
+<a id="ref-5"></a>
+
+> (5) Levy, E. D. A Simple Definition of Structural Regions in Proteins and Its Use in Analyzing Interface Evolution. J. Mol. Biol. 2010, 403 (4), 660−670.
+
+
+<a id="ref-6"></a>
+
+> (6) Mezei, M. A New Method for Mapping Macromolecular Topography. J. Mol. Graph. Model 2003, 21 (5), 463−472.
