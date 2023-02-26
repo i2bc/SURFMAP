@@ -13,7 +13,7 @@ def get_args():
     
     group_mutually_exclusive.add_argument(
         "-pdb",
-        help="Input pdb file (path + file name)"
+        help="Path to a PDB file"
     )
 
     group_mutually_exclusive.add_argument(
@@ -25,15 +25,14 @@ def get_args():
     group_mutually_exclusive.add_argument(
         "-v", "--version",
         action="store_true",
-        help="Print the current used version of SURFMAP."
+        help="Print the current version of SURFMAP."
     )
 
     parser.add_argument(
         "-tomap",
         type=str,
         required=True,
-        choices=set(("all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites")),
-        help="Choice of the scale. Argument must be one of the following: stickiness; kyte_doolittle; wimley_white; electrostatics; circular_variance; bfactor; binding_sites; all"
+        help="Specific key defining the feature to map. Accepted feature keys are: stickiness, kyte_doolittle, wimley_white, electrostatics, circular_variance, bfactor, binding_sites, all."
     )
 
     parser.add_argument(
@@ -41,8 +40,7 @@ def get_args():
         type=str,
         required=False,
         default="flamsteed",
-        choices=set(("flamsteed", "mollweide", "lambert")),
-        help="Choice of the projection. Argument must be one of the following: flamsteed; mollweide; lambert (default: flamsteed)"
+        help="Type of projection. Accepted projection types are: flamsteed, mollweide, lambert. Defaults to flamsteed."
     )
 
 
@@ -56,7 +54,7 @@ def get_args():
         "-res",
         type=str,
         default='',
-        help="File containing a list of residues to map on the projection. Format must be the following: col 1 = chain id; col 2 = res number; col 3 = res type"
+        help="Path to a file containing a list of residues to map on the projection. Expected format has the following space/tab separated column values: chainid resid resname"
     )
 
     parser.add_argument(
@@ -64,7 +62,7 @@ def get_args():
         required=False,
         type=float,
         default=3.0,
-        help="Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface (default: 3.0)"
+        help="Radius in Angstrom added to usual atomic radius (used for calculation solvent excluded surface). The higher the radius the smoother the surface. Defaults to 3.0"
     )
 
     parser.add_argument(
@@ -72,7 +70,7 @@ def get_args():
         required=False,
         type=str,
         default="output_SURFMAP_{}_{}",
-        help = "Output directory where all files will be written (default: './output_SURFMAP_$pdb_$tomap' where $pdb and $tomap are the inputs given to -pdb and -tomap arguments, respectiveley)"
+        help = "Path to the output directory. Defaults to './output_SURFMAP_$pdb_$tomap' with $pdb and $tomap based on -pdb and -tomap given values"
     )
 
     parser.add_argument(
@@ -80,31 +78,31 @@ def get_args():
         required=False,
         type=int,
         default=5,
-        help="Size of a grid cell. Necessary that 180%%cellsize == 0 (default: 5.0)"
+        help="Value defining the size of a grid cell. The value must be a multiple of 180 and can not exceed 20. Defaults to 5"
     )
 
     parser.add_argument(
         "--nosmooth",
         action="store_true",
-        help="If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!)"
+        help="If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!)."
     )
 
     parser.add_argument(
         "--png",
         action="store_true", 
-        help="If chosen, a map in png format is computed (default: only pdf format is generated)"
+        help="If chosen, a map in PNG format is computed instead of the default PDF."
     )
 
     parser.add_argument(
         "--keep",
         action="store_true",
-        help="If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept)"
+        help="If chosen, all intermediary files are kept in the output."
     )
 
     parser.add_argument(
         "--docker",
         action="store_true",
-        help="If chosen, SURFMAP will be run on a docker container (requires docker installed)."
+        help="If chosen, SURFMAP will be run on a Docker container (requires docker installed)."
     )
 
     parser.add_argument(
@@ -120,7 +118,7 @@ def get_args():
         required=False,
         type=str,
         default="CHARMM",
-        help="pdb2pqr force-field used for electrostatics calculation. One of the following: AMBER, CHARMM, PARSE, TYL06, PEOEPB, SWANSON. Defaults to CHARMM."
+        help="Force-field used by pdb2pqr for electrostatics calculation. One of the following: AMBER, CHARMM, PARSE, TYL06, PEOEPB, SWANSON. Defaults to CHARMM."
     )
 
     parser.add_argument(
@@ -170,8 +168,12 @@ class Parameters:
     """
     REQUIREMENTS = ["R", "awk", "apbs"]
 
-    PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
+    ALLOWED_PROPERTIES = ["all", "stickiness", "kyte_doolittle", "wimley_white", "electrostatics", "circular_variance", "circular_variance_atom", "bfactor", "binding_sites"]
     PROPERTIES = {"all": ["kyte_doolittle", "stickiness", "wimley_white", "circular_variance"]}
+
+    ALLOWED_PROJECTION = ["flamsteed", "mollweide", "lambert"]
+    PROJECTION_MAP = {'flamsteed': 'sinusoidal', 'mollweide': 'mollweide', 'lambert': 'lambert'}
+
     PDB2PQR_FORCE_FIELDS = ["AMBER", "CHARMM", "PARSE", "TYL06", "PEOEPB", "SWANSON"]
 
     VERBOSE_MAP = {
@@ -213,21 +215,28 @@ class Parameters:
         self.map_script: str = str(Path(path_to_scripts) / "computeMaps.R")
 
         # define projection type
+        if str(args.proj).lower() not in self.ALLOWED_PROJECTION:
+            print(f"Error, the projection '{args.proj}' is not accepted.")
+            print(f"Accepted projections are: {', '.join(self.ALLOWED_PROJECTION)}.\n")
+            exit(1)
         self.proj: str = self.PROJECTION_MAP[args.proj]
 
         # define property to map
+        if str(args.tomap).lower() not in self.ALLOWED_PROPERTIES:
+            print(f"Error, the feature to map '{args.tomap}' is not accepted.")
+            print(f"Accepted feature keys are: {', '.join(self.ALLOWED_PROPERTIES)}.\n")
+            exit(1)
         self.ppttomap: str = args.tomap
 
         # define optional pqr file (optionally used for electrostatics only)
         self.pqr: str = args.pqr
 
         # define the force-field used for atomis parameters (optionally used for electrostatics only)
-        self.force_field: str = str(args.ff).upper()
-        if self.force_field not in self.PDB2PQR_FORCE_FIELDS:
-            print(f"Error, the force field {self.force_field} is not accepted.")
+        if str(args.ff).upper() not in self.PDB2PQR_FORCE_FIELDS:
+            print(f"Error, the force field {args.ff} is not accepted.")
             print(f"Accepted force fields are: {', '.join(self.PDB2PQR_FORCE_FIELDS)}.\n")
             exit(1)
-        
+        self.force_field: str = str(args.ff).upper()
 
         # define residues to map, if any
         self.resfile: str = args.res

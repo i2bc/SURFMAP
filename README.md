@@ -392,18 +392,31 @@ The command `write_pdb_bs` is made to avoid the manual editing of the b-factor c
 - a text file listing interface residues of interest
 
 The text file listing interface residues must be formatted as follows:
-- 1st column: the chain name that has an interface residue
-- 2nd column: a residue ID
-- 3rd column: a residue name
-- 4th column: a discrete value (one value per different binding site)
+- 1st column: interface residue chain name
+- 2nd column: residue ID
+- 3rd column: residue name
+- 4th column: discrete value (one value per different binding site; one color will be assigned to each different value)
 
-For example, if you want to map the residues GLU-14 and CYS-15 of the chain A as part of an interface, and the residues GLY-50 and GLU-51 of the chain A as part of another interface, you should create your input file as follows:
-```
-A	14	GLU	1
+<details>
+<summary>Example of a text file listing interface residues</summary>
+
+<pre>A	14	GLU	1
 A	15	CYS	1
+A	16	VAL	1
+...
+A	155	SER	1
+A	156	SER	1
+A	47	VAL	2
+A	49	THR	2
 A	50	GLY	2
-A	17	GLU	2
-```
+...
+A	139	HIS	2
+A	140	ARG	2
+A	292	TYR	2
+
+</pre>
+</details>
+
 
 As a fancy example, the command below will reproduce the PDB file `1g3n_ABC_chain-A_bs.pdb` ready for use by `surfmap` with the option `-tomap binding_sites`:
 ```bash
