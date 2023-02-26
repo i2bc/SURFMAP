@@ -429,8 +429,6 @@ The output file will have the basename of the PDB file given as input with the s
 
 ## SURFMAP options
 
-
-
 <pre>usage: surfmap [-h] (-pdb PDB | -mat MAT | -v) -tomap TOMAP [-proj PROJ] [-res RES] [-rad RAD] [-d D] [-s S] [--nosmooth] [--png] [--keep]
                [--docker] [--pqr PQR] [-ff FF] [-verbose VERBOSE]
 
@@ -459,6 +457,7 @@ options:
                     SWANSON. Defaults to CHARMM.
   -verbose VERBOSE  Verbose level of the console log. 0 for silence, 1 for info level, 2 for debug level. Defaults to 1.
 </pre>
+
 
 # How to cite SURFMAP
 [Go to the top](#Table-of-contents)
