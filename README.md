@@ -419,7 +419,7 @@ It will generate two output files:
 So now, we can map interface residues of the chain A of 1G3N:
 ```bash
 # Use the PDB file generated with the command above to project labelled residues on a 2D map 
-surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
+surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites --docker
 ```
 
 ##### Usage of write_pdb_bs
