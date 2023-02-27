@@ -31,6 +31,11 @@ class DockerCLI:
     def _mounting_points(self):
         mnt_point = []
         for input_file in self.input_files:
+            print("input_file",input_file)
+            print(self.input_dir)
+            print(f"{Path(input_file).name}")
+
+
             mnt_point += ["-v", f"{Path(input_file).resolve()}:{self.input_dir}/{Path(input_file).name}"]
         
         mnt_point += ["-v", f"{Path(self.output).resolve()}:{self.output_dir}:rw"]
