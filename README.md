@@ -147,7 +147,7 @@ python3 -m pip install SURFMAP-2.0.0.zip # (or .tar.gz)
 python3 -m pip install --upgrade pip
 
 # install SURFMAP 2.0.0
-python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
+python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@2.0.0#egg=surfmap
 ```
 </details>
 
