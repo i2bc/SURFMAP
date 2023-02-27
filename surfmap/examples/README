@@ -1,0 +1,13 @@
+Here are several SURFMAP commands to calculate maps with different parametes:
+
+- Basic SURFMAP command to compute map in directory example_1g3n_A_stickiness/:
+surfmap -pdb 1g3n_A.pdb -tomap stickiness
+
+- SURFMAP command to compute maps and files in directory example_1g3n_A_stickiness_allfiles/:
+surfmap -pdb 1g3n_A.pdb -tomap stickiness --keep
+
+- SURFMAP command to compute maps with residues from file residues_to_map.txt labelled directly on the map in directory example_1g3n_A_stickiness_mapping_residues/:
+surfmap -pdb 1g3n_A.pdb -tomap stickiness -res residues_to_map.txt
+
+- SURFMAP command to compute map of bfactor with discrete values (initially developped for binding site mapping) in directory example_1gv3_A_binding_sites/:
+surfmap -pdb 1g3n_ABC_chain-A_bs.pdb -tomap binding_sites
