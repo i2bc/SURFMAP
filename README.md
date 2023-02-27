@@ -31,7 +31,11 @@
 - [Installation](#Installation)
 - [How it works](#How-it-works)
 - [Usage of SURFMAP](#Usage-of-SURFMAP)
+- [Supporting the project](#Supporting-the-project)
+- [Contacts](#Contacts)
+- [Licence](#Licence)
 - [How to cite SURFMAP](#How-to-cite-SURFMAP)
+- [References](#References)
 
 # Aims
 [Go to the top](#Table-of-contents)
@@ -70,6 +74,7 @@ All those requirements (including APBS) are met in a [predefined Docker image](h
 - [APBS](https://github.com/Electrostatics/apbs/releases) (optional - only if you want to compute electrostatic potential)
  
 </details>
+<br>
 
 > :bell: Please note that **whether you want to use the Docker image of SURFMAP or not, you will still need to [install the SURFMAP package](#install_option1)**. Indeed the package contains internal features that make the use of the Docker image totally transparent for the user who will not have to enter 'complex' commands for the connection of useful mounting points. In fact, the SURFMAP commands are almost exactly the same between the use of the docker image or not (see [here](#cmd_docker_or_not)).
 
@@ -227,12 +232,7 @@ surfmap -pdb foo.pdb -tomap stickiness
 
 If the Docker image of SURFMAP is missing from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
 
-The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` environment variable with a value corresponding to an available tag version:
-
-```bash
-# set SURFMAP_DOCKER_VERSION to 2.0.0 for using the SURFMAP Docker image tagged 2.0.0
-export SURFMAP_DOCKER_VERSION=2.0.0 
-```
+> :bell: The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` environment variable with a value corresponding to an available tag version (e.g. `export SURFMAP_DOCKER_VERSION=2.0.0`).
 
 
 # Usage of SURFMAP
@@ -463,6 +463,27 @@ write_pdb_bs -pdb 1g3n_ABC_chain-A_bs.pdb -res 1g3n_ABC_chain-A_interface.txt
 The output file will have the basename of the PDB file given as input with the suffix `_bs.pdb`
 
 
+# Supporting the project
+[Go to the top](#Table-of-contents)
+
+- If you find a bug or have a suggestion for a new feature, please report it via an [issue](https://github.com/i2bc/SURFMAP/issues)
+- If you find SURFMAP useful, consider starring the repository
+
+
+# Contacts
+[Go to the top](#Table-of-contents)
+
+If you have any question regarding SURFMAP, you can contact us:
+- [@anne.lopes@i2bc.paris-saclay.fr](mailto:anne.lopes@i2bc.paris-saclay.fr) (project leader)
+- [@hugo.schweke@weizmann.ac.il](mailto:hugo.schweke@weizmann.ac.il) (original code author)
+- [@nicolas.chevrollier@laposte.net](mailto:nicolas.chevrollier@laposte.net) (project maintainer)
+
+
+# Licence
+
+This project is under the MIT License terms. Please have a look at the LICENSE file for more details.
+
+
 # How to cite SURFMAP
 [Go to the top](#Table-of-contents)
 
@@ -507,8 +528,3 @@ Moreover, if you use APBS in your research, please cite one or more of the follo
 <a id="ref-6"></a>
 
 > (6) Mezei, M. A New Method for Mapping Macromolecular Topography. J. Mol. Graph. Model 2003, 21 (5), 463−472.
-
-
-# Licence
-
-This project is under the MIT License terms. Please have a look at the LICENSE file for more details.
