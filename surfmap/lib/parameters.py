@@ -106,7 +106,7 @@ def get_args():
     )
 
     parser.add_argument(
-        "--pqr",
+        "-pqr",
         required=False,
         type=str,
         default=None,

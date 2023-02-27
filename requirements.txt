@@ -1,5 +1,0 @@
-pdb2pqr==3.1.0
-requests==2.22.0
-# docker==5.0.3
-freesasa==2.1.0
-numpy==1.24.1

@@ -2,7 +2,7 @@
 include \
   LICENSE \
   MANIFEST.in \
-  how_to_cite_us.txt \
+  CHANGELOG.md \
   README.md \
   setup.*
 
