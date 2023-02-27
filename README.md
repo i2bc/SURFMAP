@@ -480,6 +480,7 @@ If you have any question regarding SURFMAP, you can contact us:
 
 
 # Licence
+[Go to the top](#Table-of-contents)
 
 This project is under the MIT License terms. Please have a look at the LICENSE file for more details.
 
