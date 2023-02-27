@@ -7,8 +7,8 @@
   <a><img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" width="8.5%"/></a>
 
 
-  <img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="GitHub Release"/>
-  <img src="https://img.shields.io/github/license/i2bc/SURFMAP.svg?style=flat" alt="GitHub License"/>
+  <a href="https://github.com/i2bc/SURFMAP/releases/latest" target="_blank"><img src="https://img.shields.io/github/release/i2bc/SURFMAP.svg?style=flat" alt="SURFMAP Release"/></a>
+  <a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat" alt="MIT License"/></a>
   <!-- <br> -->
 
   <!-- <img src="https://badgen.net/docker/pulls/lopesi2bc/surfmap?icon=docker&label=pulls" alt="Docker Pulls"/>
@@ -18,6 +18,8 @@
 </div>
 
 ---
+
+
 
 # SURFMAP
 
