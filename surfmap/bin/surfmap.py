@@ -30,31 +30,24 @@ def surfmap_container(params: Parameters):
     Args:
         params (Parameters): Set of useful parameters.
     """
-    cli = None
     if params.pdbarg:
-        cli = DockerCLI(
-            input_args=["-pdb"],
-            output_args="-d",
-            out_dirname=params.outdir,
-            input_dir="/home/surfmap/input",
-            output_dir="/home/surfmap/output",
-            args=params.args
-        )
+        input_args = ['-pdb']
+        if params.ppttomap == "electrostatics" and params.pqr:
+            input_args.append('-pqr')
     elif params.mat:
-        cli = DockerCLI(
-            input_args=["-mat"],
-            output_args="-d",
-            out_dirname=params.outdir,
-            input_dir="/home/surfmap/input",
-            output_dir="/home/surfmap/output",
-            args=params.args
-        )
+        input_args = ['-mat']
 
-    if cli:
-        cli.show()
-        cli.run()
-    else:
-        print("Error with the CLI Docker interface. Exiting now.\n")
+    cli = DockerCLI(
+        input_args=input_args,
+        output_args="-d",
+        out_dirname=params.outdir,
+        input_dir="/home/surfmap/input",
+        output_dir="/home/surfmap/output",
+        args=params.args
+    )
+
+    cli.show()
+    cli.run()
 
 
 def main():
