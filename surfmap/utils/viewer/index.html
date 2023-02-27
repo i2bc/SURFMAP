@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SURFMAP Visualizer</title>
+
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/d3.min.js"></script>
+    <!-- <script src="static/node_modules/ngl/dist/ngl.js"></script> -->
+   
+    
+</head>
+<body>
+    
+    <h1>SURFMAP viewer</h1>
+
+    <div class="container">
+
+        <div id="surfmap-container">
+            <form enctype="multipart/form-data">
+                <label class="label-matrix-file" for="matrix-file">Upload a matrix file</label>
+                <input id="matrix-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+
+            <div id="scale-controller"></div>
+
+            <div id='svg-container'></div>
+            </div>
+        <!-- <div id="ngl-container">
+            <form enctype="multipart/form-data">
+                <label for="pdb-file">Upload a pdb file</label>
+                <input id="pdb-file" type=file accept="*" name="files[]" size=30 hidden>
+            </form>
+                    
+            <div id="viewport"></div>
+            <div id='sequence-container'>
+                <h4>Sequence</h4>
+            </div>
+        </div> -->
+    </div>
+
+    
+    <script src="static/js/scripts_d3.js"></script>
+    <!-- <script src="static/js/jq.js"></script> -->
+    <!-- <script src="static/js/script_ngl.js"></script> -->
+        
+</body>
+
+</html>

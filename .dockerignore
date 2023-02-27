@@ -1,12 +1,15 @@
 **/*.py[cod]
 **/__pycache__/
-**/*io.mc
-APBS*
+**io.mc
 # MSMS
-Dockerfile
+Dockerfile*
 example/output**
 **.Rmd
 .vscode
 .env
 .Rhistory
-**.egg-info
+*.egg-info
+doc
+.git
+*.pdb
+.*ignore

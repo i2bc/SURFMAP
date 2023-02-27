@@ -1,0 +1,30 @@
+# add base files
+include \
+  LICENSE \
+  MANIFEST.in \
+  CHANGELOG.md \
+  README.md \
+  setup.*
+
+# add doc directory
+graft doc
+
+# add example directory
+graft surfmap/examples
+
+# add R scripts 
+graft surfmap/scripts
+
+# add utils directory
+graft surfmap/utils
+
+# remove files that were added in the commands above
+global-exclude \
+  *.py[co] \
+  .DS_Store \
+  .env \
+  .gitignore \
+  .Rhistory \
+  *.egg-info
+
+prune **/__pycache__  # Same as *.py[co] above.
