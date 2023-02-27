@@ -131,8 +131,8 @@ First download an archive of our latest release <a href="https://github.com/i2bc
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP v2.0.0
-python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz) 
+# install SURFMAP 2.0.0
+python3 -m pip install SURFMAP-2.0.0.zip # (or .tar.gz) 
 ```
 </details>
 
@@ -144,7 +144,7 @@ python3 -m pip install SURFMAP-v2.0.0.zip # (or .tar.gz)
 # upgrade pip to its latest version
 python3 -m pip install --upgrade pip
 
-# install SURFMAP v2.0.0
+# install SURFMAP 2.0.0
 python -m pip install -e git+https://github.com/i2bc/SURFMAP.git@v2.0.0#egg=surfmap
 ```
 </details>
