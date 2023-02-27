@@ -18,9 +18,11 @@ packages = [
 
 setuptools.setup(
     name='surfmap',
+    version='2.0.0',
     python_requires='>=3.7',
     license=get_license(),
     packages=packages,
+    package_data={'surfmap': ['examples/*']},
     include_package_data=True,
     install_requires=[
         "freesasa==2.1.0",

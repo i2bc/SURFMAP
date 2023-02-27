@@ -12,6 +12,7 @@ MAJOR release where SURFMAP has been completely restructured as a python package
 ### Added
 - added a new docker CLI handler
 - added surfmap options `-pqr` and `-ff`
+- added `surfmap` executable command
 - added `extract_interface` utility script
 - added `write_pdb_bs` utility script
 - added MANIFEST.in
@@ -24,7 +25,7 @@ MAJOR release where SURFMAP has been completely restructured as a python package
 - added surfmap.log file as output
 - added multival_csv2pdb as binary
 
-## Changed
+### Changed
 - changed README
 - changed LICENCE from GPL to MIT
 - changed install process

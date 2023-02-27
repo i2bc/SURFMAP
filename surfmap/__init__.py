@@ -8,7 +8,7 @@ with pkg_resources.path("surfmap.scripts", 'compute_shell.sh') as resource:
 
 PATH_R_SCRIPTS = ROOT / "surfmap" / "scripts"
 PATH_MSMS = ROOT / "surfmap" / "utils" / "MSMS"
-PATH_TO_EXAMPLES = ROOT / "example"
+PATH_TO_EXAMPLES = ROOT / "surfmap"/ "examples"
 
 
 __VERSION__ = '2.0.0'

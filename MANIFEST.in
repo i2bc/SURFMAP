@@ -10,7 +10,7 @@ include \
 graft doc
 
 # add example directory
-graft example
+graft surfmap/examples
 
 # add R scripts 
 graft surfmap/scripts
