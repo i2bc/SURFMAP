@@ -24,8 +24,8 @@ def surfmap_container(params: Parameters):
     """Execute SURFMAP from a docker container.
 
     This requires to convert the command arguments in order to:
-        1. map required input/output mount point between local and container file systems
-        2. run the container as sa subprocess
+        1. map required input/output mounting points between local and container file systems
+        2. run the container as a subprocess
 
     Args:
         params (Parameters): Set of useful parameters.
@@ -34,8 +34,11 @@ def surfmap_container(params: Parameters):
         input_args = ['-pdb']
         if params.ppttomap == "electrostatics" and params.pqr:
             input_args.append('-pqr')
+        if params.resfile:
+            input_args.append('-res')
     elif params.mat:
         input_args = ['-mat']
+
 
     cli = DockerCLI(
         input_args=input_args,
