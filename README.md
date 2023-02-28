@@ -234,7 +234,7 @@ surfmap -pdb foo.pdb -tomap stickiness
 
 If the Docker image of SURFMAP is missing from your system, it will be automatically downloaded the first time you will execute a SURFMAP command.
 
-> :bell: The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` environment variable with a value corresponding to an available tag version (e.g. `export SURFMAP_DOCKER_VERSION=v2.0.0`).
+> :bell: The version of the SURFMAP Docker image used is the same as the version of SURFMAP you will have installed. You can check your current version with the command `surfmap -v`. Yet if you want to use [another version of the SURFMAP Docker image](https://hub.docker.com/r/lopesi2bc/surfmap/tags), you will have to set a `SURFMAP_DOCKER_VERSION` environment variable with a value corresponding to an available tag version (e.g. `export SURFMAP_DOCKER_VERSION=2.0.0`).
 
 
 # Usage of SURFMAP
