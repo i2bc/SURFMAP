@@ -37,8 +37,18 @@ smoother_adj <- function(row, datamat) {
       smoothed_value = Inf
     } else {
       # Actual smoothing of the cell (ignoring NA values. Rk: for energy maps we considered NA as 0 values).
+      if(opt$ipops) {
+        seq_case = c(as.double(row[3]), as.double(adj_cells))
+      
+        #smoothed_value = mean(seq_case, na.rm=T)
+        seq_case[is.na(seq_case)] <- 0
+        smoothed_value = mean(seq_case)
+
+      } else {
       seq_case = c(row[3], adj_cells)
       smoothed_value = mean(seq_case, na.rm=T)
+
+      }
     }  
   } else {
     smoothed_value = Inf
@@ -214,6 +224,14 @@ comp_val_matrix <- function(Data) {
   if (opt$discrete) {
   datameancells = sapply(datacells, function(x) {nord = names(x);
                    lapply(nord, function(y) {x[[y]][,3]=max(x[[y]][,3]); return(x[[y]][1,c(1:3)])})})
+  } else if (opt$ipops){
+    datameancells = sapply(datacells, function(x) {nord = names(x);
+                   lapply(nord, function(y) {
+                          x[[y]][which(x[[y]][,3]>0),3] <- 0; 
+                          limval = min(x[[y]][,3])+2.7;
+                          x[[y]][,3] = mean(x[[y]][which(x[[y]][,3]<limval),3]); 
+                          return(x[[y]][1,c(1:3)])
+                        })})
   } else {
   datameancells = sapply(datacells, function(x) {nord = names(x);
                    lapply(nord, function(y) {x[[y]][,3]=mean(x[[y]][,3]); return(x[[y]][1,c(1:3)])})})
@@ -234,12 +252,11 @@ comp_val_matrix <- function(Data) {
   datalistcells$absc = as.integer(datalistcells$absc)
   datalistcells$ord = as.integer(datalistcells$ord)
   colnames(datalistcells)[3] = "residues"
-
   datacells = merge(as.data.frame(datameancells), as.data.frame(datalistcells), by=c("absc", "ord"))
 
   # Creating the matrix.
   filledmat = merge(as.data.frame(blankmat), datacells, by=c("absc", "ord"), all = TRUE)
-    
+
   # Finding all pixels outside projection and attributing a value of Inf to differenciate with residues inside projection.
   if (projection != "lambert") {
     if (projection == "sinusoidal"){
@@ -276,6 +293,8 @@ option_list = list(
               help="if TRUE map is not smoothed, if FALSE map is smoothed", metavar="boolean"),
   make_option(c("--discrete"), action="store_true", default="FALSE", 
               help="if TRUE discrete value are used (max value per cell instead of mean)", metavar="boolean"),
+  make_option(c("--ipops"), action="store_true", default="FALSE", 
+              help="if TRUE a threshold is used when calculating the mean value of each cells", metavar="boolean"),
   make_option(c("-P", "--projection"), type="character", default="sinusoidal", 
               help="type of projection, must be chosen between: sinusoidal, mollweide", metavar="character"),
   make_option(c("-o", "--outdir"), type="character", default=".",
