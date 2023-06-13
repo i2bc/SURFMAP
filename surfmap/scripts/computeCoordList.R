@@ -39,12 +39,14 @@ energy_matrix <- function(Data, nb_file) {
   seqcol = seq(-180,180,by=width)
   seqrow = seq(-90,90,by=height)
   
+ 
   # First using sapply to gather all coordinate belonging to a same pixel. Result is a list of list of dataframe/
   # First level list contain list of dataframe of elem belonging to a same column (for ex. all pixel of abscissa coords belonging to (80,90)). These element are grouped into dataframes.
-  datasp1 = split(Data,findInterval(Data[,1], seqcol))
+  datasp1 = split(Data,findInterval(Data[,1], seqcol,all.inside = TRUE))
+
   nabs <- names(datasp1)
   datasp1 = lapply(nabs, function(x) {datasp1[[x]][,1] = as.integer(x)*width; return(datasp1[[x]])})
-  datasp2 = lapply(datasp1, function(x) split(x, findInterval(x[,2], seqrow)))
+  datasp2 = lapply(datasp1, function(x) split(x, findInterval(x[,2], seqrow,all.inside = TRUE)))
   datasp3 = sapply(datasp2, function(x) {nord = names(x); 
                    lapply(nord, function(y) {x[[y]][,2] = as.integer(y)*height; return(x[[y]])})})
   datasp4 = unlist(datasp3, recursive = FALSE)
