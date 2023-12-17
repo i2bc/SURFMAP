@@ -82,6 +82,14 @@ def get_args():
     )
 
     parser.add_argument(
+        "--color-max-val",
+        required=False,
+        type=float,
+        default=None,
+        help="Maximum color absolute value to be used for the electrostatics scale. E.g. 5.63 will scale the electrosctatics color values from -5.63 to 5.63."
+    )
+
+    parser.add_argument(
         "--nosmooth",
         action="store_true",
         help="If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!)."
@@ -155,6 +163,7 @@ class Parameters:
     - resfile: str  # residue filename to map, if given
     - rad: float  # radius used for shell computation
     - cellsize: str  # unit size of a grid cell
+    - color_max_val: str  # Maximum color absolute value to be used for the electrostatics scale definition (e.g. 6.3)
     - coordstomap: Any = None  #
     - nosmooth: bool  # True to have map not smoothed (for discrete values only)
     - png: bool  # True to generate a PNG file of the map in addition to the usual PDF
@@ -255,6 +264,9 @@ class Parameters:
         # define coords to map; not used
         self.coordstomap: Any = args.coords
 
+        # define max color value to be used for electrostatics scale
+        self.color_max_val: Any = args.color_max_val if self.ppttomap == "electrostatics" else None
+
         self.nosmooth: bool = args.nosmooth
         self.png: bool = args.png
         self.keep: bool = args.keep
@@ -347,6 +359,7 @@ Parameters used to compute the maps:
 - MSMS radius used for shell computation (-rad): {}
 - Unit size of the grid cell (-s): {}
 - Grid resolution: {}
+- Max color value: {}
 - Map not smoothed (--nosmooth): {}
 - Generate png (--png): {}
 - Keep intermediary files (--keep): {}
@@ -361,6 +374,7 @@ Parameters used to compute the maps:
         self.rad,
         self.cellsize,
         f"{int(360 / self.cellsize)}*{int(180 / self.cellsize)}",
+        self.color_max_val if self.color_max_val else "None",
         self.nosmooth,
         self.png,
         self.keep,

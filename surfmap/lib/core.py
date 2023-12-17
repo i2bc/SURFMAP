@@ -128,6 +128,8 @@ def compute_map(params: Parameters, matrix_file: str, property: str, reslist: st
     if params.png:
         cmd.append("--png")
         out_png = out_pdf.replace(".pdf", ".png")
+    if params.color_max_val:
+        cmd += ["--color_max_value", str(params.color_max_val)]
 
     logger.debug(f"Running the command: {' '.join(cmd)}")
     proc_status = subprocess.call(cmd)

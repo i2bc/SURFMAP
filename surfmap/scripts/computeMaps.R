@@ -141,7 +141,9 @@ option_list = list(
   make_option(c("-o", "--outdir"), type="character", default=".",
               help="output directory", metavar="character"),
   make_option(c("--suffix"), type="character", default="_smoothed_matrix.txt",
-              help="Input suffix that is removed to to build basename of output files.", metavar="character")
+              help="Input suffix that is removed to to build basename of output files.", metavar="character"),
+  make_option(c("--color_max_value"), type="numeric", default=NULL, 
+              help="Maximum color absolute value to be used for the electrostatics scale", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -159,6 +161,7 @@ if (file_test("-f", opt$input)) {
   quit(status=1)
   stop()
 }
+
 
 minval=0
 maxval=0
@@ -251,13 +254,22 @@ for (file in (1:length(files))) {
 
   if (opt$electrostatics == TRUE) { # electrostatics scale
     main_scale = "electrostatic potential distribution scale"
-    minval=min(val_matrix)
-    maxval=max(val_matrix[proj])
+
+    if (is.null(opt$color_max_value)) {
+      minval=min(val_matrix)
+      maxval=max(val_matrix[proj])      
+    } else {
+      minval = -(abs(opt$color_max_value))
+      maxval = abs(opt$color_max_value)
+    }
+    
     if (abs(minval) > abs(maxval)) {
       maxval = abs(minval)
     } else {
       minval=-(abs(maxval))
     }
+
+
     range=abs(minval-maxval)
     scale_main = paste0("electrostatic","\n","potential")
     main_title = paste0("electrostatic potential map", "\n", pdb_id)
