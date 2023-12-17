@@ -300,7 +300,7 @@ option_list = list(
   make_option(c("-o", "--outdir"), type="character", default=".",
               help="output directory", metavar="character"),
   make_option(c("-S", "--suffix"), type="character", default="_coord_list.txt",
-              help="Input suffix that is removed to to build basename of output files.", metavar="character")
+              help="Input suffix that is removed to build basename of output files.", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
