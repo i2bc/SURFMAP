@@ -9,7 +9,7 @@ from typing import Dict, List
 PROPERTIES = {
     "stickiness": {"ALA":0.0062, "CYS":1.0372, "ASP":-0.7485, "GLU":-0.7893, "PHE":1.2727, "GLY":-0.1771, "HIS":0.1204, "ILE":1.1109, "LYS":-1.1806, "LEU":0.9138, "MET":1.0124, "ASN":-0.2693, "PRO":-0.1799 , "GLN":-0.4114, "ARG":-0.0876, "SER":0.1376, "THR":0.1031, "VAL":0.7599, "TRP":0.7925, "TYR":0.8806},
     "wimley_white": {"ALA":4.08, "CYS":4.49, "ASP":3.02, "GLU":2.23, "PHE":5.38, "GLY":4.24, "HIS":4.08, "ILE":4.52, "LYS":3.77, "LEU":4.81, "MET":4.48, "ASN":3.83, "PRO":3.80 , "GLN":3.67, "ARG":3.91, "SER":4.12, "THR":4.11, "VAL":4.18, "TRP":6.10, "TYR":5.19},
-    "kyte_doolittle": {"ALA":1.8, "CYS":2.5, "ASP":-3.5, "GLU":-3.5, "PHE":2.8, "GLY":-0.4, "HIS":-3.2, "ILE":4.5, "LYS":-3.9, "LEU":3.8, "MET":1.9, "ASN":-3.5, "PRO":1.6 , "GLN":-3.5, "ARG":-4.5, "SER":-0.8, "THR":-0.7, "VAL":4.2, "TRP":-0.9, "TYR":-1.3}
+    "kyte_doolittle": {"ALA":1.8, "CYS":2.5, "ASP":-3.5, "GLU":-3.5, "PHE":2.8, "GLY":-0.4, "HIS":-3.2, "ILE":4.5, "LYS":-3.9, "LEU":3.8, "MET":1.9, "ASN":-3.5, "PRO":-1.6 , "GLN":-3.5, "ARG":-4.5, "SER":-0.8, "THR":-0.7, "VAL":4.2, "TRP":-0.9, "TYR":-1.3}
 }
 
 
