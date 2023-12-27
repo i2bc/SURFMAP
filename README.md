@@ -274,7 +274,9 @@ options:
                     smoother the surface. Defaults to 3.0
   -d D              Output directory where all files will be written. Defaults to &apos;./output_SURFMAP_$pdb_$tomap&apos; with $pdb and $tomap based on
                     -pdb and -tomap given values
-  -s S              Value defining the size of a grid cell. The value must be a multiple of 180. Defaults to 5.0
+  -s S              Value defining the size of a grid cell. The value must be a multiple of 180. Defaults to 5.0.
+  --color-max-val   Maximum value to be used for the electrostatics color scale. The value will be converted as an absolute value to make the scale symetric
+                    around 0. For instance, a value of 5.63 will scale the electrosctatics color values from -5.63 to 5.63.
   --nosmooth        If chosen, the resulted maps are not smoothed (careful: this option should be used only for discrete values!)
   --png             If chosen, a map in png format is computed (default: only pdf format is generated)
   --keep            If chosen, all intermediary files are kept in the output (default: only final text matrix and pdf map are kept)

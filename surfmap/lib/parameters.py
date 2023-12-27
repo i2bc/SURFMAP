@@ -86,7 +86,7 @@ def get_args():
         required=False,
         type=float,
         default=None,
-        help="Maximum color absolute value to be used for the electrostatics scale. E.g. 5.63 will scale the electrosctatics color values from -5.63 to 5.63."
+        help="Maximum value to be used for the electrostatics color scale. The value will be converted as an absolute value to make the scale symetric around 0. For instance, a value of 5.63 will scale the electrosctatics color values from -5.63 to 5.63."
     )
 
     parser.add_argument(
