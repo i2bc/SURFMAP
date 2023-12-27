@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest an idea or enhancement for SURFMAP
+title: "[FEATURE]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you for your feature request!** We value your contribution and will consider each suggestion to improve SURFMAP. Please provide as much detail as possible.
+  - type: input
+    id: title
+    attributes:
+      label: Feature Title
+      description: A short, descriptive title for your feature request.
+      placeholder: "Option to personalize electrostatics color scale value"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: What is the feature and why should it be added to SURFMAP?
+      placeholder: "Allow users to specify a value for the electrostatics color scale limit values"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and Context
+      description: Why is this feature important? How will it benefit SURFMAP users?
+      placeholder: "Currently, SURFMAP uses an automatically computed value for electrostatics color scale limit values. This way does not allow to visually compare electrostatic maps from different proteins since every protein will have different electrostatics limit values."
+    validations:
+      required: true
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Details and Implementation
+      description: Provide any technical details and potential ways to implement this feature.
+      placeholder: |
+        "Instead of automatically setting the electrostatics limmit values, it should be conditionnally set based on the presence/absence of an argument. This argument must be set from the command line."
+    validations:
+      required: false
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Duplicate Check
+      description: Have you searched for existing feature requests to avoid duplicates?
+      options:
+        - label: I have searched the existing feature requests and did not find a duplicate.
+          required: true

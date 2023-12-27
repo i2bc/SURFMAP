@@ -1,0 +1,91 @@
+name: Bug Report
+description: Create a report about a newly identified bug 
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: Which operating system is SURFMAP installed on?
+      options:
+        - Unix (e.g., Ubuntu 20.04)
+        - Mac OS (e.g., Big Sur 11.2.3)
+        - Windows
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What SURFMAP version are you using?
+      placeholder: 2.1.0
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version (optional)
+      description: Which version of Python are you using with SURFMAP?
+      placeholder: 3.9.1
+  - type: dropdown
+    id: virtual-env
+    attributes:
+      label: Python Virtual Environment
+      description: What virtual environment is being used?
+      options:
+        - Conda (or related)
+        - venv/virtualenv/other
+        - Not using a virtual environment
+      default: 2
+    validations:
+      required: true
+  - type: dropdown
+    id: execution-environment
+    attributes:
+      label: Execution Environment
+      description: Which execution environment are you using for SURFMAP?
+      options:
+        - Encapsulated environment from the SURFMAP Docker image
+        - Local environment after installation of all external dependencies
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Bug Description
+      description: What is the bug? What did you expect to happen and what actually happened?
+      placeholder: "I expected ... but instead ..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Provide detailed steps to reproduce the behavior.
+      placeholder: "1. Execute command '...'\n2. Error occurs..."
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please copy and paste any relevant log output or error messages.
+      placeholder: "Paste logs here."
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: extra-details
+    attributes:
+      label: Additional context (optional)
+      description: Please provide other additional details that could be relevant to the issue.
+      placeholder: "e.g. (CPU, memory, input file(s) size...)"
+    validations:
+      required: false
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Confirmation
+      description: Please confirm that you have checked for duplicates and reviewed the documentation for this issue.
+      options:
+        - label: I confirm I have searched for duplicates and reviewed the relevant documentation.
+          required: true
