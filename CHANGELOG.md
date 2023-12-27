@@ -13,7 +13,7 @@ MINOR release of SURFMAP - no breaking changes
 - command line option to set min/max values for the electrostatics color scale
 
 ### Patched
-- changge the Proline value in the Kyte and Doolittle scale (from 1.6 to -1.6)
+- change the Proline value in the Kyte and Doolittle scale (from 1.6 to -1.6)
 
 
 ## [2.0.0] - 2023-02-27
