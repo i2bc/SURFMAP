@@ -19,7 +19,7 @@ def get_args():
     group_mutually_exclusive.add_argument(
         "-mat",
         type=str,
-        help="Input matrix. If the user gives an imput matrix, SURFMAP will directly compute a map from it."
+        help="Input matrix. If the user gives an input matrix, SURFMAP will directly compute a map from it."
     )
 
     group_mutually_exclusive.add_argument(
