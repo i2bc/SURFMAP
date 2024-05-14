@@ -142,8 +142,12 @@ option_list = list(
               help="output directory", metavar="character"),
   make_option(c("--suffix"), type="character", default="_smoothed_matrix.txt",
               help="Input suffix that is removed to to build basename of output files.", metavar="character"),
-  make_option(c("--color_max_value"), type="numeric", default=NULL, 
-              help="Maximum color absolute value to be used for the electrostatics scale", metavar="character")
+  make_option(c("--elec_max_value"), type="numeric", default=NULL, 
+              help="Maximum absolute value to be used for the electrostatics color scale", metavar="character"),
+  make_option(c("--bfactor_min_value"), type="numeric", default=NULL, 
+              help="Minimum bfactor value to be used for the bfactor color scale", metavar="character"),
+  make_option(c("--bfactor_max_value"), type="numeric", default=NULL, 
+              help="Maximum bfactor value to be used for the bfactor color scale", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -161,7 +165,6 @@ if (file_test("-f", opt$input)) {
   quit(status=1)
   stop()
 }
-
 
 minval=0
 maxval=0
@@ -255,12 +258,12 @@ for (file in (1:length(files))) {
   if (opt$electrostatics == TRUE) { # electrostatics scale
     main_scale = "electrostatic potential distribution scale"
 
-    if (is.null(opt$color_max_value)) {
+    if (is.null(opt$elec_max_value)) {
       minval=min(val_matrix)
-      maxval=max(val_matrix[proj])      
+      maxval=max(val_matrix[proj])
     } else {
-      minval = -(abs(opt$color_max_value))
-      maxval = abs(opt$color_max_value)
+      minval = -(abs(opt$elec_max_value))
+      maxval = abs(opt$elec_max_value)
     }
     
     if (abs(minval) > abs(maxval)) {
@@ -332,11 +335,23 @@ for (file in (1:length(files))) {
     scale_at = c(0,1/6,2/6,3/6,4/6,5/6,1)
 
   } else if (opt$bfactor == TRUE) { # b-factor scale
+    
+    # Initialize minval and maxval with default values
+    minval <- min(val_matrix[proj])
+    maxval <- max(val_matrix[proj])
+
+    # Override the default minval if a specific minimum value is provided
+    if (!is.null(opt$bfactor_min_value)) {
+      minval <- opt$bfactor_min_value
+    }
+
+    # Override the default maxval if a specific maximum value is provided
+    if (!is.null(opt$bfactor_max_value)) {
+      maxval <- opt$bfactor_max_value
+    }
+
     main_scale = "b-factor"
     main_title = paste0("b-factor map\n", pdb_id)
-    
-    minval = min(val_matrix[proj])
-    maxval = max(val_matrix[proj])
     range = abs(minval-maxval)
 
     scale_main = "b-factor"

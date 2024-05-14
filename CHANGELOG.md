@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2024-05-14
+
+MINOR release of SURFMAP - minor breaking changes
+
+### Added
+- command line option to set min/max values for the bfactor color scale (`--bfactor-min-value`, `--bfactor-max-value`)
+
+### Changed
+- change command line option to set max absolute value for electrostatics color scale [BREAKING CHANGE]
+  - from `--color-max-val` to  `--elec-max-value`
+
+
 ## [2.1.0] - 2023-12-27
 
 MINOR release of SURFMAP - no breaking changes

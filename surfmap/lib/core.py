@@ -128,8 +128,12 @@ def compute_map(params: Parameters, matrix_file: str, property: str, reslist: st
     if params.png:
         cmd.append("--png")
         out_png = out_pdf.replace(".pdf", ".png")
-    if params.color_max_val:
-        cmd += ["--color_max_value", str(params.color_max_val)]
+    if params.elec_max_value is not None:
+        cmd += ["--elec_max_value", str(params.elec_max_value)]
+    if params.bfactor_min_value is not None:
+        cmd += ["--bfactor_min_value", str(params.bfactor_min_value)]
+    if params.bfactor_max_value is not None:
+        cmd += ["--bfactor_max_value", str(params.bfactor_max_value)]
 
     logger.debug(f"Running the command: {' '.join(cmd)}")
     proc_status = subprocess.call(cmd)

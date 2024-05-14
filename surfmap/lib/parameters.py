@@ -82,11 +82,27 @@ def get_args():
     )
 
     parser.add_argument(
-        "--color-max-val",
+        "--elec-max-value",
         required=False,
         type=float,
         default=None,
         help="Maximum value to be used for the electrostatics color scale. The value will be converted as an absolute value to make the scale symetric around 0. For instance, a value of 5.63 will scale the electrosctatics color values from -5.63 to 5.63."
+    )
+
+    parser.add_argument(
+        "--bfactor-min-value",
+        required=False,
+        type=float,
+        default=None,
+        help="Minimum value to be used for the bfactor color scale."
+    )
+
+    parser.add_argument(
+        "--bfactor-max-value",
+        required=False,
+        type=float,
+        default=None,
+        help="Maximum value to be used for the bfactor color scale."
     )
 
     parser.add_argument(
@@ -163,7 +179,9 @@ class Parameters:
     - resfile: str  # residue filename to map, if given
     - rad: float  # radius used for shell computation
     - cellsize: str  # unit size of a grid cell
-    - color_max_val: str  # Maximum color absolute value to be used for the electrostatics scale definition (e.g. 6.3)
+    - elec_max_value: str  # Maximum absolute color value to be used for the electrostatics color scale definition (e.g. 6.3)
+    - bfactor_min_value: str  # Minimum bfactor value to be used for the bfactor color scale
+    - bfactor_max_value: str  # Maximum bfactor value to be used for the bfactor color scale
     - coordstomap: Any = None  #
     - nosmooth: bool  # True to have map not smoothed (for discrete values only)
     - png: bool  # True to generate a PNG file of the map in addition to the usual PDF
@@ -264,8 +282,10 @@ class Parameters:
         # define coords to map; not used
         self.coordstomap: Any = args.coords
 
-        # define max color value to be used for electrostatics scale
-        self.color_max_val: Any = args.color_max_val if self.ppttomap == "electrostatics" else None
+        # define min/max color value to be used for electrostatics/bfactor color scale
+        self.elec_max_value: Any = args.elec_max_value if self.ppttomap == "electrostatics" else None
+        self.bfactor_min_value: Any = args.bfactor_min_value if self.ppttomap == "bfactor" else None
+        self.bfactor_max_value: Any = args.bfactor_max_value if self.ppttomap == "bfactor" else None
 
         self.nosmooth: bool = args.nosmooth
         self.png: bool = args.png
@@ -359,7 +379,9 @@ Parameters used to compute the maps:
 - MSMS radius used for shell computation (-rad): {}
 - Unit size of the grid cell (-s): {}
 - Grid resolution: {}
-- Max color value: {}
+- Max absolute value for electrostatics color scale: {}
+- Min value for bfactor color scale: {}
+- Max value for bfactor color scale: {}
 - Map not smoothed (--nosmooth): {}
 - Generate png (--png): {}
 - Keep intermediary files (--keep): {}
@@ -374,7 +396,9 @@ Parameters used to compute the maps:
         self.rad,
         self.cellsize,
         f"{int(360 / self.cellsize)}*{int(180 / self.cellsize)}",
-        self.color_max_val if self.color_max_val else "None",
+        self.elec_max_value if self.elec_max_value is not None else "None",
+        self.bfactor_min_value if self.bfactor_min_value is not None else "None",
+        self.bfactor_max_value if self.bfactor_max_value is not None else "None",
         self.nosmooth,
         self.png,
         self.keep,
