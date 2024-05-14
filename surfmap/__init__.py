@@ -11,7 +11,7 @@ PATH_MSMS = ROOT / "surfmap" / "utils" / "MSMS"
 PATH_TO_EXAMPLES = ROOT / "surfmap"/ "examples"
 
 
-__VERSION__ = '2.1.0'
+__VERSION__ = '2.2.0'
 SURFMAP_DOCKER_VERSION = os.getenv('SURFMAP_DOCKER_VERSION', __VERSION__)
 
 SEP = f"{'-' * 80}"
